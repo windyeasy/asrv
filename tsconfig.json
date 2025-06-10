@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    // 通过tsc生成声明文件
+    // "declaration": true,
+    // "emitDeclarationOnly": true,
+    // "declarationDir": "dist/types",
+    "target": "ESNext",
+    "lib": ["ESNext", "dom"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "strict": true,
+    // 是否必须明确空值的类型
+    "strictNullChecks": true,
+    // 不生成任何输出，比如 .d.ts 文件
+    "noEmit": true,
+    // 用于处理：ejs和cjs的兼容性，关闭时，ejs会强制包装esm，有使用cjs和ejs时开启
+    "esModuleInterop": true,
+    // 用于 严格控制模块导入/导出的语法形式，确保代码中的模块语句（import/export）在编译后保持原样，避免被 TypeScript 自动转换。
+    // 纯 ESM 项目：代码仅运行在支持原生 ESM 的环境（如现代浏览器、Node.js 的 "type": "module" 模式）。
+    "verbatimModuleSyntax": true,
+    // 跳过默认库的类型检查，提升编译速度
+    "skipDefaultLibCheck": true,
+    // 跳过第三库的类型检查，提升编译速度，在第三方库很大时，ts需要遍历整个类型文件，而编译速度会变慢
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts", "test/sum.test.ts"]
+}
