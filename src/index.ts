@@ -1,18 +1,22 @@
-interface Point {
-  x: number
-  y: number
-  z?: number
-}
+import Koa from 'koa'
+import cors from '@koa/cors'
+import KoaRouter from '@koa/router'
+import { bodyParser } from '@koa/bodyparser'
 
-function printPoint(point: Point) {
-  console.log(`x: ${point.x}, y: ${point.y}`)
-}
+const PORT = 3000
 
-printPoint({ x: 1, y: 2 })
+const app = new Koa()
+app.use(cors())
+app.use(bodyParser())
+const router = new KoaRouter()
 
-console.log('hello world')
-console.log('hello world2')
+router.get('/', async (ctx) => {
+  ctx.body = 'Hello World'
+})
 
-export {
-  printPoint,
-}
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`)
+})

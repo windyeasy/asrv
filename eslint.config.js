@@ -71,13 +71,14 @@ export default defineConfig([
       'prefer-template': 'error',
       // 禁止模板字符串中的空格
       'template-curly-spacing': ['error', 'never'],
-      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-console': ['error', { allow: ['log', 'warn', 'error'] }],
       ...stylistic.configs.recommended.rules,
       '@stylistic/indent': ['error', 2],
       '@stylistic/jsx-indent': ['error', 2],
       '@stylistic/quotes': ['error', 'single'],
       ...unicorn.configs.recommended.rules,
       'unicorn/no-anonymous-default-export': 'off',
+      'unicorn/prevent-abbreviations': 'off',
       // jsdoc
       'jsdoc/check-access': 'warn',
       'jsdoc/check-param-names': 'warn',
