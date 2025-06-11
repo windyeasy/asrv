@@ -31,6 +31,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.2",
     "@stylistic/eslint-plugin": "^4.4.1",
+    "@types/cors": "^2.8.19",
     "@types/koa": "^2.15.0",
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
@@ -60,6 +61,10 @@
     "@koa/cors": "^5.0.0",
     "@koa/router": "^13.1.0",
     "chalk": "^5.4.1",
-    "koa": "^3.0.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5",
+    "koa": "^3.0.0",
+    "koa-proxies": "^0.12.4"
   }
 }

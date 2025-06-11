@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Service from '../src/service/index.ts'
+import Service from '../src/plugins/json-server/service'
 
 describe('Service', () => {
   const db = {
@@ -16,7 +16,7 @@ describe('Service', () => {
     expect(data).toEqual(db.user)
   })
 
-  it("通过id 获取数据", () => {
+  it('通过id 获取数据', () => {
     const data = service.findById('user', 1)
     expect(data).toEqual(db.user[0])
   })
