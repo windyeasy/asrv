@@ -122,6 +122,7 @@ export default defineConfig([
       'unicorn/prevent-abbreviations': 'off',
       'unicorn/no-array-callback-reference': 'off',
       'unicorn/no-array-for-each': 'off',
+      'unicorn/explicit-length-check': 'off',
       // jsdoc
       'jsdoc/check-access': 'warn',
       'jsdoc/check-param-names': 'warn',
