@@ -8,8 +8,9 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rimraf dist && rollup -c",
-    "start": "node --enable-source-maps dist/index.cjs",
-    "dev": "nodemon --watch src --exec \"npm run build && npm run start\"",
+    "watch": "rimraf dist && rollup -c -w",
+    "start": "nodemon --enable-source-maps dist/index.cjs",
+    "dev": "concurrently 'npm run watch' 'npm run start'",
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "pnpm run lint --fix"
@@ -34,6 +35,7 @@
     "@types/koa__cors": "^5.0.0",
     "@types/koa__router": "^12.0.4",
     "@types/node": "^22.15.30",
+    "concurrently": "^9.1.2",
     "eslint": "^9.28.0",
     "eslint-plugin-import-x": "^4.15.1",
     "eslint-plugin-jsdoc": "^50.7.1",
