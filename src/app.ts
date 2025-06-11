@@ -5,7 +5,7 @@ import cors from 'cors'
 import { useProxyMiddlewares } from './middleware/proxy'
 import type { ProxyConfig } from './middleware/proxy'
 
-interface Context {
+export interface Context {
   app: Express
   config: AppConfig
   request?: express.Request
@@ -20,16 +20,16 @@ export interface AppConfig {
   plugins?: PluginType[]
 }
 
-export interface App extends Express {
+export interface AServerApp extends Express {
   context?: Context
 }
 
-function createAppByExpress(): App {
+function createAppByExpress(): AServerApp {
   const app = express()
   return app
 }
 
-export default function createApp(config: AppConfig): App {
+export default function createApp(config: AppConfig): AServerApp {
   const port = config.port || 9000
 
   const app = createAppByExpress()
@@ -44,6 +44,8 @@ export default function createApp(config: AppConfig): App {
     return next()
   })
   app.use(cors())
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
 
   // 配置代理
   if (config.proxy) {

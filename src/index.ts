@@ -1,5 +1,5 @@
 import createApp from './app'
-
+import jsonServerPlugin from './plugins/json-server'
 createApp({
   port: 9000,
   proxy: {
@@ -11,4 +11,5 @@ createApp({
       },
     },
   },
+  plugins: [jsonServerPlugin],
 })

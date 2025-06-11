@@ -1,9 +1,5 @@
-type Data = {
-  [key: string]: unknown
-}
-
-export default class Service {
-  constructor(private _db: Data) {}
+export default class Service<T = any> {
+  constructor(private _db: Record<string, T>) {}
 
   get db() {
     return this._db
@@ -19,6 +15,5 @@ export default class Service {
       const result = data.find(item => item.id === id)
       return result
     }
-    return
   }
 }
