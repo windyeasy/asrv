@@ -11,6 +11,7 @@ import markdown from '@eslint/markdown'
 import jsdoc from 'eslint-plugin-jsdoc'
 import unusedImports from 'eslint-plugin-unused-imports'
 import { importX } from 'eslint-plugin-import-x'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 /**
  * finished: node, unicorn, markdown,  , jsdoc
  * todo: jsonc order
@@ -65,6 +66,34 @@ export default defineConfig([
     extends: ['import-x/flat/recommended'],
     rules: {
       'import-x/no-dynamic-require': 'warn',
+
+    },
+    settings: {
+      'import-x/resolver-next': [
+        createTypeScriptImportResolver({
+          alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+          bun: true, // resolve Bun modules https://github.com/import-js/eslint-import-resolver-typescript#bun
+
+          // use <root>/path/to/folder/tsconfig.json or <root>/path/to/folder/jsconfig.json
+          project: 'path/to/folder',
+
+          // use a glob pattern
+          project: 'packages/*/{ts,js}config.json',
+
+          // use an array
+          project: [
+            'packages/module-a/tsconfig.json',
+            'packages/module-b/jsconfig.json',
+          ],
+
+          // use an array of glob patterns
+          project: [
+            'packages/*/tsconfig.json',
+            'other-packages/*/jsconfig.json',
+          ],
+        }),
+      ],
     },
   },
   {
@@ -91,6 +120,7 @@ export default defineConfig([
       ...unicorn.configs.recommended.rules,
       'unicorn/no-anonymous-default-export': 'off',
       'unicorn/prevent-abbreviations': 'off',
+      'unicorn/no-array-callback-reference': 'off',
       // jsdoc
       'jsdoc/check-access': 'warn',
       'jsdoc/check-param-names': 'warn',
@@ -129,6 +159,8 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
+      // typescript
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ])

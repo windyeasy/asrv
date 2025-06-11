@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "watch": "rimraf dist && rollup -c -w",
-    "start": "nodemon --enable-source-maps dist/index.cjs",
+    "start": "nodemon --enable-source-maps dist/index.mjs",
     "dev": "concurrently 'npm run watch' 'npm run start'",
     "test": "vitest",
     "lint": "eslint .",
@@ -37,6 +37,7 @@
     "@types/node": "^22.15.30",
     "concurrently": "^9.1.2",
     "eslint": "^9.28.0",
+    "eslint-import-resolver-typescript": "^4.4.3",
     "eslint-plugin-import-x": "^4.15.1",
     "eslint-plugin-jsdoc": "^50.7.1",
     "eslint-plugin-jsonc": "^2.20.1",
@@ -58,6 +59,7 @@
     "@koa/bodyparser": "^6.0.0",
     "@koa/cors": "^5.0.0",
     "@koa/router": "^13.1.0",
+    "chalk": "^5.4.1",
     "koa": "^3.0.0"
   }
 }
