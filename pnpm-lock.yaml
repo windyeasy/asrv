@@ -87,9 +87,6 @@ importers:
       globals:
         specifier: ^16.2.0
         version: 16.2.0
-      jiti:
-        specifier: ^2.4.2
-        version: 2.4.2
       jsonc-eslint-parser:
         specifier: ^2.4.0
         version: 2.4.0
@@ -3692,7 +3689,8 @@ snapshots:
     dependencies:
       '@isaacs/cliui': 8.0.2
 
-  jiti@2.4.2: {}
+  jiti@2.4.2:
+    optional: true
 
   js-tokens@4.0.0:
     optional: true

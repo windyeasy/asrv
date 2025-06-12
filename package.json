@@ -46,7 +46,6 @@
     "eslint-plugin-unicorn": "^59.0.1",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
-    "jiti": "^2.4.2",
     "jsonc-eslint-parser": "^2.4.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.41.1",
