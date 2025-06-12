@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import cors from 'cors'
 import { useProxyMiddlewares } from './middleware/proxy'
 import type { ProxyConfig } from './middleware/proxy'
+import createInterceptMiddleware, { type InterceptInfo } from './middleware/intercept'
 
 export interface Context {
   app: Express
@@ -11,8 +12,9 @@ export interface Context {
   request?: express.Request
   response?: express.Response
   port: number
-
+  interceptInfos?: InterceptInfo[]
 }
+
 export type PluginType = (context: Context) => void
 export interface AppConfig {
   port?: number
@@ -29,6 +31,7 @@ function createAppByExpress(): AServerApp {
   return app
 }
 
+const interceptInfos: InterceptInfo[] = []
 export default function createApp(config: AppConfig): AServerApp {
   const port = config.port || 9000
 
@@ -37,12 +40,17 @@ export default function createApp(config: AppConfig): AServerApp {
     app,
     config,
     port,
+    interceptInfos,
   }
   app.use((req, res, next) => {
     context.request = req
     context.response = res
     return next()
   })
+  // 处理请求拦截，请求拦截信息放入上下文
+  app.use(createInterceptMiddleware((interceptInfo) => {
+    interceptInfos.push(interceptInfo)
+  }))
   app.use(cors())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
