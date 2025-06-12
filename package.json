@@ -57,14 +57,9 @@
     "vitest": "^3.2.3"
   },
   "dependencies": {
-    "@koa/bodyparser": "^6.0.0",
-    "@koa/cors": "^5.0.0",
-    "@koa/router": "^13.1.0",
     "chalk": "^5.4.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "http-proxy-middleware": "^3.0.5",
-    "koa": "^3.0.0",
-    "koa-proxies": "^0.12.4"
+    "http-proxy-middleware": "^3.0.5"
   }
 }
