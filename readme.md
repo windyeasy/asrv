@@ -4,9 +4,15 @@
 
 ## TODO
 
-- [ ] 实现代理功能
-- [ ] 拦截所有的请求
-- [ ] 实现插件系统
+- [x] 实现代理功能
+- [x] 实现插件系统
+- [x] 拦截所有的请求
+- [ ] cli
+- [ ] defineConfig
+- [ ] repley-plugin
+- [ ] json-server-mock-pugins
+
+
 
 ## License
 

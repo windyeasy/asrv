@@ -2,10 +2,13 @@
   "name": "assist-server",
   "type": "module",
   "version": "0.0.1",
-  "description": "_description_",
+  "description": "A server-side tool that assists front-end development",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "asr": "bin/cli.mjs"
+  },
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "watch": "rimraf dist && rollup -c -w",
@@ -59,10 +62,22 @@
     "express": "^5.1.0",
     "http-proxy-middleware": "^3.0.5"
   },
-   "simple-git-hooks": {
+  "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*": "eslint --fix"
-  }
+    "*": "eslint --fix",
+     "packages/*/{src,types}/**/*.ts": [
+      "eslint --fix"
+    ],
+    "packages/**/*.d.ts": [
+      "eslint --fix"
+    ],
+    "playground/**/__tests__/**/*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "workspaces": [
+    "packages/*"       
+  ]
 }
