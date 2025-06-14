@@ -1,7 +1,7 @@
-import createApp, { type AppConfig } from './app'
 import process from 'node:process'
-import pkg from '../package.json'
 import chalk from 'chalk'
+import pkg from '../package.json'
+import createApp, { type AppConfig } from './app'
 import { resloveConfig } from './config'
 
 export type AppConfigCbType = () => AppConfig
@@ -20,12 +20,12 @@ export type AppConfigCbType = () => AppConfig
 //   plugins: [jsonServerPlugin],
 // })
 
-export function runApp(configOrCb: AppConfig | AppConfigCbType) {
+export function runApp(configOrCb: AppConfig | AppConfigCbType): void {
   const config: AppConfig = typeof configOrCb === 'function' ? configOrCb() : configOrCb
   createApp(config)
 }
 
-export async function runCli() {
+export async function runCli(): Promise<void> {
   const args = process.argv.slice(2).filter(Boolean)
   if (args.length === 1 && (args[0].toLowerCase() === '-v' || args[0].toLowerCase() === '--version')) {
     console.log(chalk.green(`v${pkg.version}`))
@@ -33,7 +33,7 @@ export async function runCli() {
   }
   if (args.length === 1 && (args[0].toLowerCase() === '-h' || args[0].toLowerCase() === '--help')) {
     console.log(`${chalk.green(`${pkg.name}`)}: ${chalk.gray(`${pkg.description}`)} \n`)
-    console.log('Usage: asr [options] \n')
+    console.log(`Usage: ${pkg.name} [options] \n`)
 
     const options = [
       {

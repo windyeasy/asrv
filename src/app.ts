@@ -1,11 +1,11 @@
-import express from 'express'
 import type { Express } from 'express'
+import type { ProxyConfig } from './middleware/proxy'
+import type { PluginType } from './plugin-deriver'
 import chalk from 'chalk'
 import cors from 'cors'
-import { useProxyMiddlewares } from './middleware/proxy'
-import type { ProxyConfig } from './middleware/proxy'
+import express from 'express'
 import createInterceptMiddleware, { type InterceptInfo } from './middleware/intercept'
-import type { PluginType } from './plugin-deriver'
+import { useProxyMiddlewares } from './middleware/proxy'
 import PluginDeriver from './plugin-deriver'
 
 export interface Context {
@@ -34,7 +34,7 @@ function createAppByExpress(): AServerApp {
 
 const interceptInfos: InterceptInfo[] = []
 
-export function installPlugins(context: Context, plugins: PluginType[]) {
+export function installPlugins(context: Context, plugins: PluginType[]): void {
   const pluginDeriver = new PluginDeriver(context)
   plugins.forEach(plugin => pluginDeriver.install(plugin))
 }

@@ -1,3 +1,3 @@
-import type { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 
 export type MiddlewareType = (request: Request, response: Response, next: NextFunction) => void

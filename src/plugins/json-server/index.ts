@@ -1,5 +1,5 @@
-import Service from './service/index'
 import type { Context } from '../../app'
+import Service from './service/index'
 
 const db = {
   user: [
@@ -15,22 +15,22 @@ const db = {
 }
 const service = new Service(db)
 
-export default function jsonServerPlugin(context: Context) {
+export default function jsonServerPlugin(context: Context): void {
   const app = context.app
   app.get('/:name', async (req, res, next) => {
     const { name } = req.params
-    res.locals['data'] = service.find(name)
+    res.locals.data = service.find(name)
     await next()
   })
 
   app.get('/:name/:id', async (req, res, next) => {
     const { name, id } = req.params
-    res.locals['data'] = service.findById(name, id)
+    res.locals.data = service.findById(name, id)
     await next()
   })
 
   app.use((_, res) => {
-    const data = res.locals['data']
+    const data = res.locals.data
     if (data) {
       res.json(data)
     }

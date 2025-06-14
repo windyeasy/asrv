@@ -1,5 +1,6 @@
 import type { AppConfig } from './app'
 import { loadConfig } from 'unconfig'
+
 export function defineConfig(config: AppConfig): AppConfig {
   return config
 }

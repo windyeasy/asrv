@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import Service from '../src/plugins/json-server/service'
 
-describe('Service', () => {
+describe('service', () => {
   const db = {
     user: [
       { id: 1, name: 'John' },

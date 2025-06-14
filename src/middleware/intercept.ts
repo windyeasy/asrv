@@ -19,7 +19,7 @@ export type InterceptCbType = (interceptInfo: InterceptInfo) => void
 /**
  * 是不是并不需要区分代理和普通请求， 当在web端请求数据时，同样访问的是同一的接口
  * @param callback - 回调函数，用于回传处理后的数据
- * @returns
+ * @returns 中间件函数
  */
 export default function createInterceptMiddleware(callback: InterceptCbType): MiddlewareType {
   return async function (req, _, next) {
