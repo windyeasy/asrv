@@ -2,6 +2,7 @@ import createApp, { type AppConfig } from './app'
 import process from 'node:process'
 import pkg from '../package.json'
 import chalk from 'chalk'
+import { resloveConfig } from './config'
 
 export type AppConfigCbType = () => AppConfig
 
@@ -24,16 +25,15 @@ export function runApp(configOrCb: AppConfig | AppConfigCbType) {
   createApp(config)
 }
 
-export function runCli() {
-  // 有一个解析配置文件的过程
+export async function runCli() {
   const args = process.argv.slice(2).filter(Boolean)
   if (args.length === 1 && (args[0].toLowerCase() === '-v' || args[0].toLowerCase() === '--version')) {
     console.log(chalk.green(`v${pkg.version}`))
     return
   }
   if (args.length === 1 && (args[0].toLowerCase() === '-h' || args[0].toLowerCase() === '--help')) {
-    console.log(`${chalk.green(`${pkg.name}`)} ${chalk.gray(`${pkg.description}`)} \n`)
-    console.log(`Usage: asr [options] \n`)
+    console.log(`${chalk.green(`${pkg.name}`)}: ${chalk.gray(`${pkg.description}`)} \n`)
+    console.log('Usage: asr [options] \n')
 
     const options = [
       {
@@ -54,5 +54,16 @@ export function runCli() {
       console.log(`  ${option.name}   - ${option.description}`)
     })
     return
+  }
+
+  if (args.length === 2 && (args[0].toLowerCase() === '-c' || args[0].toLowerCase() === '--config')) {
+    const config = await resloveConfig(args[1])
+    runApp(config)
+    return
+  }
+
+  if (args.length === 0) {
+    const config = await resloveConfig(args[1])
+    runApp(config)
   }
 }

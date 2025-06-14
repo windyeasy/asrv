@@ -16,6 +16,7 @@ export interface Context {
 }
 
 export type PluginType = (context: Context) => void
+
 export interface AppConfig {
   port?: number
   proxy?: ProxyConfig
