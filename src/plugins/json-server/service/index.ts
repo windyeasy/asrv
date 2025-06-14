@@ -9,7 +9,7 @@ export default class Service<T = any> {
     return this.db[name]
   }
 
-  findById(name: string, id: string) {
+  findById(name: string, id: string | number) {
     const data = this.db[name]
     if (data && Array.isArray(data)) {
       const result = data.find(item => item.id === id)

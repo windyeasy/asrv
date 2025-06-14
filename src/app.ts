@@ -5,6 +5,8 @@ import cors from 'cors'
 import { useProxyMiddlewares } from './middleware/proxy'
 import type { ProxyConfig } from './middleware/proxy'
 import createInterceptMiddleware, { type InterceptInfo } from './middleware/intercept'
+import type { PluginType } from './plugin-deriver'
+import PluginDeriver from './plugin-deriver'
 
 export interface Context {
   app: Express
@@ -14,8 +16,6 @@ export interface Context {
   port: number
   interceptInfos?: InterceptInfo[]
 }
-
-export type PluginType = (context: Context) => void
 
 export interface AppConfig {
   port?: number
@@ -33,6 +33,12 @@ function createAppByExpress(): AServerApp {
 }
 
 const interceptInfos: InterceptInfo[] = []
+
+export function installPlugins(context: Context, plugins: PluginType[]) {
+  const pluginDeriver = new PluginDeriver(context)
+  plugins.forEach(plugin => pluginDeriver.install(plugin))
+}
+
 export default function createApp(config: AppConfig): AServerApp {
   const port = config.port || 9000
 
@@ -62,10 +68,9 @@ export default function createApp(config: AppConfig): AServerApp {
   }
   // 配置插件
   if (config.plugins && config.plugins.length) {
-    config.plugins.forEach(m => m && m(context))
+    installPlugins(context, config.plugins)
   }
-  // 挂载context
-  app.context = context
+
   app.listen(port, () => {
     const url = `http://localhost:${port}`
     console.log(`${chalk.gray('server:')}: ${chalk.green(url)}`)
