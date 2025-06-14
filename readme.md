@@ -1,4 +1,4 @@
-# assist-server
+# asrv
 
 一个开发助手服务
 
