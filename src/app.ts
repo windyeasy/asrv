@@ -1,19 +1,23 @@
 import type { Express } from 'express'
 import type { ProxyConfig } from './middleware/proxy'
 import type { PluginType } from './plugin-deriver'
+import type { IServer, ServerContext } from './plugins/server-plugin'
 import chalk from 'chalk'
 import cors from 'cors'
 import express from 'express'
 import createInterceptMiddleware, { type InterceptInfo } from './middleware/intercept'
 import { useProxyMiddlewares } from './middleware/proxy'
-import PluginDeriver from './plugin-deriver'
 
+import PluginDeriver from './plugin-deriver'
 import clientPlugin from './plugins/client-plugin'
+import serverPlugin from './plugins/server-plugin'
 
 export interface AppConfig {
   port?: number
   proxy?: ProxyConfig
   plugins?: PluginType[]
+  enableServer?: boolean
+  server?: IServer
 }
 
 export interface Context {
@@ -23,6 +27,7 @@ export interface Context {
   response?: express.Response
   port: number
   interceptInfos?: InterceptInfo[]
+  server?: ServerContext
 }
 
 export interface AServerApp extends Express {
@@ -45,6 +50,7 @@ function reslovePlugins(config: AppConfig): AppConfig {
   const plugins = config.plugins || []
   const defaultPlugin = [
     clientPlugin(),
+    serverPlugin()
   ]
 
   return {

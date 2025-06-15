@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import Service from '../src/plugins/json-server/service'
+import Service from './index'
 
 describe('service', () => {
   const db = {

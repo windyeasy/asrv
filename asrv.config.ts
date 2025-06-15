@@ -1,12 +1,3 @@
-import createApp from './app'
-export * from './config'
-export type { PluginType } from './plugin-deriver'
-
-export * from './runner'
-
-export {
-  createApp
-}
 const db = {
   user: [
     { id: 1, name: 'John' },
@@ -19,8 +10,8 @@ const db = {
     { id: 3, title: 'Post 3', userId: 3 },
   ],
 }
-
-createApp({
+// todo: 当数据改变时，刷新页面，刷新服务
+export default {
   port: 9000,
   enableServer: true, // default true
   server: {
@@ -36,8 +27,8 @@ createApp({
             age: 18
           }),
           // 数据的读写
-          list2(_, res, _2, context) {
-            const { useData } = context!.server!
+          'list2': function (req, res, next, context) {
+            const { useData } = context.server.lib
             const [data, setData] = useData()
             // todo: 修改数据与保存
             data.user[0] = {
@@ -51,4 +42,4 @@ createApp({
       }
     },
   },
-})
+}

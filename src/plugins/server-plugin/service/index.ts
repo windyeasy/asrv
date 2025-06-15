@@ -4,6 +4,9 @@ export default class Service<T = any> {
   get db(): Record<string, T> {
     return this._db
   }
+  set db(value: Record<string, T>) {
+    this._db = value
+  }
 
   find(name: string): any {
     return this.db[name]

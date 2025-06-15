@@ -1,22 +1,58 @@
+import type { NextFunction, Request, Response } from 'express'
 import type { Context } from '../../app'
 import type { PluginType } from '../../plugin-deriver'
+import chalk from 'chalk'
 import Service from './service/index'
+import { handleApi } from './utils'
 
-const db = {
-  user: [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Jane' },
-    { id: 3, name: 'Jim' },
-  ],
-  post: [
-    { id: 1, title: 'Post 1', userId: 1 },
-    { id: 2, title: 'Post 2', userId: 2 },
-    { id: 3, title: 'Post 3', userId: 3 },
-  ],
+export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction, context: Context) => void
+
+type AnyO = Record<string, any>
+
+
+export type ApiKeyType = string | AnyO | APIMiddlewareType
+
+export type ApiType = {
+  [key: string]: string | ApiType | APIMiddlewareType | any[]
 }
-const service = new Service(db)
+
+export interface IServer<T = AnyO> {
+  db: T
+  api: ApiType
+}
+
+export interface ServerContext<T = AnyO> {
+  useData: () => [T, (value: T) => void]
+}
+
 export function jsonServer(context: Context): void {
   const app = context.app
+  const { enableServer, server: serverConfig } = context.config
+  if (!enableServer || !serverConfig)
+    return
+
+  const db = serverConfig.db
+  if (!db) {
+    console.warn(chalk.yellow('[json-server] db is not defined'))
+    return
+  }
+
+  const service = new Service(db)
+  
+  // 添加server方法
+  context.server = {
+    useData() {
+      const db = service.db
+      function setDb(newDb: AnyO): void {
+        if (db !== newDb) {
+          service.db = db
+        }
+      }
+      return [db, setDb]
+    },
+  }
+  handleApi(serverConfig.api, context)
+  
   app.get('/:name', async (req, res, next) => {
     const { name } = req.params
     res.locals.data = service.find(name)
