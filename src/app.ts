@@ -8,19 +8,21 @@ import createInterceptMiddleware, { type InterceptInfo } from './middleware/inte
 import { useProxyMiddlewares } from './middleware/proxy'
 import PluginDeriver from './plugin-deriver'
 
-export interface Context {
-  app: Express
-  config: AppConfig
-  request?: express.Request
-  response?: express.Response
-  port: number
-  interceptInfos?: InterceptInfo[]
-}
+import clientPlugin from './plugins/client-plugin'
 
 export interface AppConfig {
   port?: number
   proxy?: ProxyConfig
   plugins?: PluginType[]
+}
+
+export interface Context {
+  app: AServerApp
+  config: AppConfig
+  request?: express.Request
+  response?: express.Response
+  port: number
+  interceptInfos?: InterceptInfo[]
 }
 
 export interface AServerApp extends Express {
@@ -34,9 +36,24 @@ function createAppByExpress(): AServerApp {
 
 const interceptInfos: InterceptInfo[] = []
 
-export function installPlugins(context: Context, plugins: PluginType[]): void {
+function installPlugins(context: Context, plugins: PluginType[]): void {
   const pluginDeriver = new PluginDeriver(context)
   plugins.forEach(plugin => pluginDeriver.install(plugin))
+}
+
+function reslovePlugins(config: AppConfig): AppConfig {
+  const plugins = config.plugins || []
+  const defaultPlugin = [
+    clientPlugin(),
+  ]
+
+  return {
+    ...config,
+    plugins: [
+      ...defaultPlugin,
+      ...plugins,
+    ],
+  }
 }
 
 export default function createApp(config: AppConfig): AServerApp {
@@ -66,6 +83,7 @@ export default function createApp(config: AppConfig): AServerApp {
   if (config.proxy) {
     useProxyMiddlewares(app, config.proxy)
   }
+  config = reslovePlugins(config)
   // 配置插件
   if (config.plugins && config.plugins.length) {
     installPlugins(context, config.plugins)

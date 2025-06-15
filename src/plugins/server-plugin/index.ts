@@ -1,4 +1,5 @@
 import type { Context } from '../../app'
+import type { PluginType } from '../../plugin-deriver'
 import Service from './service/index'
 
 const db = {
@@ -14,8 +15,7 @@ const db = {
   ],
 }
 const service = new Service(db)
-
-export default function jsonServerPlugin(context: Context): void {
+export function jsonServer(context: Context): void {
   const app = context.app
   app.get('/:name', async (req, res, next) => {
     const { name } = req.params
@@ -38,4 +38,11 @@ export default function jsonServerPlugin(context: Context): void {
       res.status(404)
     }
   })
+}
+
+export default function serverPlugin(): PluginType {
+  return {
+    name: 'server-plugin',
+    apply: jsonServer,
+  }
 }

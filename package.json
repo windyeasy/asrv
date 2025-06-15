@@ -5,8 +5,8 @@
   "description": "A server-side tool that assists front-end development.",
   "author": "windyeasy <windyeasy13gb@163.com>",
   "license": "MIT",
-  "homepage": "https://github.com/asrv/starter-ts#readme",
-  "bugs": "https://github.com/asrv/starter-ts/issues",
+  "homepage": "https://github.com/asrv/@asrv/replay-plugin#readme",
+  "bugs": "https://github.com/asrv/@asrv/replay-plugin/issues",
   "keywords": [],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.14.1",
+    "@types/cors": "^2.8.19",
     "@types/node": "^24.0.1",
     "concurrently": "^9.1.2",
     "eslint": "^9.28.0",

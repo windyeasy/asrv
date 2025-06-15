@@ -1,5 +1,5 @@
 export * from './app'
 export * from './config'
-export { default as jsonServerPlugin } from './plugins/json-server'
+export type { PluginType } from './plugin-deriver'
 
 export * from './runner'
