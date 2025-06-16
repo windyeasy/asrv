@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { Context } from '../../app'
-import type { PluginType } from '../../plugin-deriver'
+import type { Context } from '@/app'
+import type { PluginType } from '@/plugin-deriver'
 import chalk from 'chalk'
 import Service from './service/index'
 import { apiRegister, changeRedirectApiPrefix } from './utils'

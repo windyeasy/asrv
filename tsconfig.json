@@ -22,7 +22,10 @@
     // 跳过默认库的类型检查，提升编译速度
     "skipDefaultLibCheck": true,
     // 跳过第三库的类型检查，提升编译速度，在第三方库很大时，ts需要遍历整个类型文件，而编译速度会变慢
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
   },
   "include": ["src/**/*.ts", "test/**/*.ts", "types/**/*.d.ts"]
 }

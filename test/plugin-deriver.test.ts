@@ -1,7 +1,7 @@
 import type { Express } from 'express'
-import type { Context } from '../src/app'
+import type { Context } from '@/app'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import PluginDeriver from '../src/plugin-deriver'
+import PluginDeriver from '@/plugin-deriver'
 
 const mockApp = {
   use: vi.fn(),

@@ -1,5 +1,5 @@
 import type {  APIMiddlewareType, ApiType,  RedirectApiPrefix } from '..'
-import type { Context } from '../../../app'
+import type { Context } from '@/app'
 import chalk from 'chalk'
 
 export function checkApiKey(key: string): boolean {

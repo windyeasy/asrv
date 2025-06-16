@@ -1,4 +1,4 @@
-import type { MiddlewareType } from '../types'
+import type { MiddlewareType } from '@/types'
 
 export interface interceptRequestInfo {
   url: string
