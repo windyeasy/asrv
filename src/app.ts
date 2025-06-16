@@ -7,7 +7,6 @@ import cors from 'cors'
 import express from 'express'
 import createInterceptMiddleware, { type InterceptInfo } from './middleware/intercept'
 import { useProxyMiddlewares } from './middleware/proxy'
-
 import PluginDeriver from './plugin-deriver'
 import clientPlugin from './plugins/client-plugin'
 import serverPlugin from './plugins/server-plugin'
@@ -18,6 +17,7 @@ export interface AppConfig {
   plugins?: PluginType[]
   enableServer?: boolean
   server?: IServer
+
 }
 
 export interface Context {
@@ -89,12 +89,16 @@ export default function createApp(config: AppConfig): AServerApp {
   if (config.proxy) {
     useProxyMiddlewares(app, config.proxy)
   }
+
+  
   config = reslovePlugins(config)
   // 配置插件
   if (config.plugins && config.plugins.length) {
     installPlugins(context, config.plugins)
   }
 
+
+  // todo: 开始静态地址，认别人能够访问
   app.listen(port, () => {
     const url = `http://localhost:${port}`
     console.log(`${chalk.gray('server:')}: ${chalk.green(url)}`)

@@ -26,6 +26,7 @@ createApp({
   enableServer: true, // default true
   server: {
     db,
+    redirectApiPrefixes: [{ from: '/api', to: '' }],
     api: {
       api: 'testString',
       api2: {

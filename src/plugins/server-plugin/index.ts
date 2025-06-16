@@ -3,7 +3,7 @@ import type { Context } from '../../app'
 import type { PluginType } from '../../plugin-deriver'
 import chalk from 'chalk'
 import Service from './service/index'
-import { apiRegister } from './utils'
+import { apiRegister, changeRedirectApiPrefix } from './utils'
 
 export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction, context: Context) => void
 
@@ -15,9 +15,15 @@ export interface ApiType {
   [key: string]: string | ApiType | APIMiddlewareType | any[]
 }
 
+export interface RedirectApiPrefix {
+  from: string
+  to: string
+}
+
 export interface IServer<T = AnyO> {
   db: T
   api: ApiType
+  redirectApiPrefixes?: RedirectApiPrefix[]
 }
 
 export interface ServerContext<T = AnyO> {
@@ -27,9 +33,23 @@ export interface ServerContext<T = AnyO> {
 export function jsonServer(context: Context): void {
   const app = context.app
   const { enableServer, server: serverConfig } = context.config
+  
+ 
   if (!enableServer || !serverConfig)
     return
 
+  // handle redirectApiPrefixes
+  if (serverConfig.redirectApiPrefixes && serverConfig.redirectApiPrefixes.length){
+    app.use((req, res, next) => {
+      for (const redirect of serverConfig.redirectApiPrefixes!){
+        if (req.url.startsWith(redirect.from)){
+          req.url = changeRedirectApiPrefix(req.url, redirect)
+        }
+      }
+      return next()
+    })
+  }
+  
   const db = serverConfig.db
   if (!db) {
     console.warn(chalk.yellow('[json-server] db is not defined'))
