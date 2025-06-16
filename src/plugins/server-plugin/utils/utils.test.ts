@@ -1,5 +1,7 @@
+import type { ApiType } from '..'
+
 import { describe, expect, it } from 'vitest'
-import { checkApiKey, getReqMethodAndUrlByKey, handleApi } from './index'
+import { checkApiKey, flatApiInfo, getReqMethodAndUrlByKey } from './index'
 
 describe('utils', () => {
   describe('checkApiKey', () => {
@@ -55,6 +57,63 @@ describe('utils', () => {
       const key = `${method} ${url}`
       const result = getReqMethodAndUrlByKey(key)
       expect(result).toEqual(['get', url])
+    })
+  })
+
+  describe('flatApiInfo', () => {
+    const apiInfo: ApiType = {
+      'api': {
+        user: {
+          list: [],
+          detail: 'detail',
+        },
+      },
+
+      'api2': 'api2',
+      'post api3': 'api3',
+      'post api4': {
+        'get post': [],
+      },
+    }
+
+    it('should return correct result', () => {
+      expect(flatApiInfo(apiInfo)).toEqual([
+        {
+          method: 'get',
+          url: '/api/user/list',
+          value: [],
+        },
+        {
+          method: 'get',
+          url: '/api/user/detail',
+          value: 'detail',
+        },
+        {
+          method: 'get',
+          url: '/api2',
+          value: 'api2',
+        },
+        {
+          method: 'post',
+          url: '/api3',
+          value: 'api3',
+        },
+        {
+          method: 'get',
+          url: '/api4/post',
+          value: [],
+        },
+      ])
+    })
+
+    it('should return correct result when apiInfo is empty', () => {
+      expect(flatApiInfo({})).toEqual([])
+    })
+
+    it('a warning is issued if the wrong value is passed', () => {
+      expect(flatApiInfo({
+        'post api5 test': 'test',
+      })).toEqual([])
     })
   })
 })

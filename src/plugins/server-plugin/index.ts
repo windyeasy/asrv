@@ -3,16 +3,15 @@ import type { Context } from '../../app'
 import type { PluginType } from '../../plugin-deriver'
 import chalk from 'chalk'
 import Service from './service/index'
-import { handleApi } from './utils'
+import { apiRegister } from './utils'
 
 export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction, context: Context) => void
 
 type AnyO = Record<string, any>
 
-
 export type ApiKeyType = string | AnyO | APIMiddlewareType
 
-export type ApiType = {
+export interface ApiType {
   [key: string]: string | ApiType | APIMiddlewareType | any[]
 }
 
@@ -38,7 +37,7 @@ export function jsonServer(context: Context): void {
   }
 
   const service = new Service(db)
-  
+
   // 添加server方法
   context.server = {
     useData() {
@@ -51,8 +50,9 @@ export function jsonServer(context: Context): void {
       return [db, setDb]
     },
   }
-  handleApi(serverConfig.api, context)
-  
+
+  apiRegister(serverConfig.api, context)
+
   app.get('/:name', async (req, res, next) => {
     const { name } = req.params
     res.locals.data = service.find(name)

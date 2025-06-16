@@ -1,6 +1,6 @@
-import chalk from 'chalk'
-import type { ApiKeyType, IServer } from '..'
+import type { ApiKeyType, APIMiddlewareType, ApiType, IServer } from '..'
 import type { Context } from '../../../app'
+import chalk from 'chalk'
 
 export function checkApiKey(key: string): boolean {
   if (!key)
@@ -8,13 +8,13 @@ export function checkApiKey(key: string): boolean {
   const keyArray = key.split(' ')
   const requestMethods = ['get', 'post', 'put', 'delete', 'patch']
   if (keyArray.length > 2 || keyArray.length < 1) {
-    console.warn(chalk.yellow(`api key ${key} is not valid`))
+    console.warn(chalk.yellow(`api key "${key}" is not valid`))
     return false
   }
 
   if (keyArray.length === 2) {
     if (!requestMethods.includes(keyArray[0].toLowerCase())) {
-      console.warn(chalk.yellow(`api key ${key} is not valid`))
+      console.warn(chalk.yellow(`api key "${key}" is not valid`))
       return false
     }
   }
@@ -30,58 +30,63 @@ export function getReqMethodAndUrlByKey(key: string): [RequestMethod, string] {
   return ['get', key]
 }
 
-// todo: 后面获取类型
-export function apiRegister(key: string, value: ApiKeyType, context: Context): any {
-  const app = context.app
-  const [method, url] = getReqMethodAndUrlByKey(key)
-
-  if (typeof value === 'string' || Array.isArray(value)) {
-    console.log(key, value)
-    console.log(method, url)
-    const newUrl = url[0] !== '/' ? '/' + url : url
-    app[method](newUrl, (_, res) => {
-      console.log("apiRegister", {method, url})
-      res.json(value)
-    })
-    return
-  }
-  // todo: useJsonServer
-  if (typeof value === 'function') {
-    app[method](url, (req, res, next) => {
-      return value(req, res, next, context)
-    })
-    return
-  }
-
-  // todo: 将配置信息解析为数组：[[method, url, value]] = ['get', '/api/user', 'string']
-  // { api: { list: []}} => `get /api/list`
-  // { `post api`: { list: [] }} => `post /api/list`
-  // { `post api`: { 'get list': [] }} => `post /api/get list`
-  
-  // todo: 写方档时记录，定义的API，会覆盖掉JSONServer的API, 给警句提示
-  if (typeof value === 'object') {
-    const childKeys = Object.keys(value)
-    for (const childKey of childKeys) {
-      if (checkApiKey(childKey)) {
-        continue
-      }
-      const childKeySplitArray = childKey.split(' ')
-      let newKey = `${key}/${childKeySplitArray[1]}`
-      if (childKeySplitArray.length === 2){
-        newKey = `${childKeySplitArray[0]} ${key+childKeySplitArray[1]}}`
-      }
-      apiRegister(`${newKey}`, value[childKey], context)
-    }
-  }
+export interface RegisterApiInfo {
+  method: RequestMethod
+  url: string
+  value: string | any[] | APIMiddlewareType
 }
 
-export function handleApi(api: IServer['api'], context: Context): void {
-  const keys = Object.keys(api)
+export function flatApiInfo(apiInfo: ApiType, prefix: string = ''): RegisterApiInfo[] {
+  const keys = Object.keys(apiInfo)
+  const result: RegisterApiInfo[] = []
   for (const key of keys) {
-    if (!checkApiKey(key)) {
+    if (!checkApiKey(key))
       continue
+
+    const [method, url] = getReqMethodAndUrlByKey(key)
+    const value = apiInfo[key]
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      result.push(...flatApiInfo(value, `${prefix}/${url}`))
     }
-    const value = api[key]
-    apiRegister(key, value, context)
+    else {
+      result.push({ method, url: `${prefix}/${url}`, value })
+    }
   }
+
+  return result
+}
+
+function isJSON(str: string): boolean {
+  try {
+    JSON.parse(str)
+    return true
+  }
+  catch {
+    return false
+  }
+}
+// todo: 后面获取类型
+export function apiRegister(api: ApiType, context: Context): void {
+  const app = context.app
+  const registerApiInfos = flatApiInfo(api)
+
+  registerApiInfos.forEach((info) => {
+    app[info.method](info.url, (req, res, next) => {
+      const value = info.value
+      if (typeof value === 'function') {
+        return value(req, res, next, context)
+      }
+      else if (typeof value === 'string') {
+        if (isJSON(value)) {
+          res.json(JSON.parse(value))
+        }
+        else {
+          res.send(value)
+        }
+      }
+      else {
+        res.json(value)
+      }
+    })
+  })
 }

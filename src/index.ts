@@ -1,11 +1,12 @@
 import createApp from './app'
+
 export * from './config'
 export type { PluginType } from './plugin-deriver'
 
 export * from './runner'
 
 export {
-  createApp
+  createApp,
 }
 const db = {
   user: [
@@ -29,11 +30,11 @@ createApp({
       api: 'testString',
       api2: {
         user: {
-          'list': [],
-          'info': JSON.stringify({
+          list: [],
+          info: JSON.stringify({
             id: 30,
             name: 'xiaoming',
-            age: 18
+            age: 18,
           }),
           // 数据的读写
           list2(_, res, _2, context) {
@@ -42,13 +43,13 @@ createApp({
             // todo: 修改数据与保存
             data.user[0] = {
               id: 20,
-              name: 'xiaoming'
+              name: 'xiaoming',
             }
             setData({ ...data })
-            res.send("数据写入成功")
-          }
-        }
-      }
+            res.send('数据写入成功')
+          },
+        },
+      },
     },
   },
 })
