@@ -10,7 +10,9 @@
 - [x] defineConfig
 - [x] cli
 - [ ] client-plugin
-- [ ] mock-server-plugin
+- [ ] server-plugin
+  - [ ] 将代理接口重定向，jonserver: 无需在写接口
+  - [ ] 增加参数包装，加入JSONServer后，增加失败状态码，返回错误信息如何设计
 
 ## client-plugin 设计
 
@@ -20,79 +22,33 @@
       1. josnserver 应该放在那个接口位置
       2. 其它接口如何不与jsonserver冲突
         1. josnserver作为子功能
-```js
-const data = {
-  user: {
-
-  }
-}
-
-const config = {
-  enableServer: true, // default true
-  server: {
-    'db': data,
-    
-    'api': {
-
-      'get user/list': function (req, res, next, context) {
-        // todo: 这里如何得到data， req中得到data
-        const { useData } = context.server
-        const [data, setData] = useData()
-        // todo: 修改数据与保存
-        data.user[0] = {
-          id: 20,
-          name: 'xiaoming'
-        }
-        setData({ ...data })
-        // todo: 与代理如何放行, mock
-      },
-      // todo: 可能实现，可能不实现, 考虑: useJsonServer方法，
-      'user/list2': useJSONServer(data),
-
-    },
-
-    '/app-api': {
-
-    }
-  }
-
-}
-```
-
-test:
-
-```js
-  const api =  {
-      'api': 'testString',
-      api2: {
-        user: {
-          'list': [],
-          'info': JSON.stringify({
-            id: 30,
-            name: 'xiaoming',
-            age: 18
-          }),
-          // 数据的读写
-          'list2': function (req, res, next, context) {
-            const { useData } = context.server
-            const [data, setData] = useData()
-            // todo: 修改数据与保存
-            data.user[0] = {
-              id: 20,
-              name: 'xiaoming'
-            }
-            setData({ ...data })
-            res.send("数据写入成功")
-          }
-        }
-      }
-    }
-```
-      3. 前端静态路由使用`#`
-    2. 两个服务存在的问题
-  2. mockjs的设计
-    1.
+      1. 前端静态路由使用`#`
+    1. 两个服务存在的问题
+  1. mockjs的设计
 2. 客户端设计
+
+### Server拦截器设计
+
+开始拦截器：
+
+```js
+// 使用代理时需要有API前缀
+const url = '/api/user/'
+// 1. 重定向到/user通过拦截器
+// 2. 通过一个配置重定向， 重定向：[{ from: '/api', to: ''}]
+```
+
+响应拦截器：
+
+```js
+function responseInterceptor(data) {
+  return {
+    code: 0,
+    data,
+    message: 'success'
+  }
+}
+```
 
 ## License
 
