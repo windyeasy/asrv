@@ -43,13 +43,21 @@ export function flatApiInfo(apiInfo: ApiType, prefix: string = ''): RegisterApiI
     if (!checkApiKey(key))
       continue
 
-    const [method, url] = getReqMethodAndUrlByKey(key)
+    let [method, url] = getReqMethodAndUrlByKey(key)
+    url = url[0] === '/' ? url.replace('/', '') : url
     const value = apiInfo[key]
     if (typeof value === 'object' && !Array.isArray(value)) {
       result.push(...flatApiInfo(value, `${prefix}/${url}`))
     }
     else {
-      result.push({ method, url: `${prefix}/${url}`, value })
+      const urlValue = `${prefix}/${url}`
+      // Check if the url is repeated
+      const checkIndex = result.findIndex(item => item.url === urlValue)
+      if (checkIndex !== -1) {
+        result.splice(checkIndex, 1)
+        console.warn(chalk.yellow(`api key "${key}" is repeated`))
+      }
+      result.push({ method, url: urlValue, value })
     }
   }
 
@@ -65,7 +73,7 @@ function isJSON(str: string): boolean {
     return false
   }
 }
-// todo: 后面获取类型
+
 export function apiRegister(api: ApiType, context: Context): void {
   const app = context.app
   const registerApiInfos = flatApiInfo(api)

@@ -65,15 +65,17 @@ describe('utils', () => {
       'api': {
         user: {
           list: [],
-          detail: 'detail',
+          info: 'info',
+          detail: 'detail', // 会被下面覆盖
         },
       },
-
       'api2': 'api2',
       'post api3': 'api3',
       'post api4': {
         'get post': [],
       },
+      'api/user/detail': 'detail2',
+      '/api5': 'api5',
     }
 
     it('should return correct result', () => {
@@ -85,8 +87,8 @@ describe('utils', () => {
         },
         {
           method: 'get',
-          url: '/api/user/detail',
-          value: 'detail',
+          url: '/api/user/info',
+          value: 'info',
         },
         {
           method: 'get',
@@ -102,6 +104,16 @@ describe('utils', () => {
           method: 'get',
           url: '/api4/post',
           value: [],
+        },
+        {
+          method: 'get',
+          url: '/api/user/detail',
+          value: 'detail2',
+        },
+        {
+          method: 'get',
+          url: '/api5',
+          value: 'api5',
         },
       ])
     })
