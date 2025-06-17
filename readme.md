@@ -12,12 +12,14 @@
 - [ ] client-plugin
   - [ ] 描述
   - [ ] 展示所有接口
+  - [ ] 使用vue开发页面
 - [ ] server-plugin
-  - [ ] 将代理接口重定向，jonserver: 无需在写接口
+  - [x] 将代理接口重定向，jonserver: 无需在写接口
+  - [x] json-server
+  - [ ] 为API添加swagger
   - [ ] 增加参数包装，加入JSONServer后，增加失败状态码，返回错误信息如何设计
-  - [ ] useJsonServer
-  - [ ] useMock
   - [ ] ws处理
+- [ ] 监听文件变化重启服务
 
 ## client-plugin 设计
 
