@@ -1,8 +1,9 @@
+import type { Data } from '@windyeasy/json-server/lib'
 import type { NextFunction, Request, Response } from 'express'
 import type { Context } from '@/app'
 import type { PluginType } from '@/plugin-deriver'
 import chalk from 'chalk'
-import Service from './service/index'
+import { addJonServer } from './json-server'
 import { apiRegister, changeRedirectApiPrefix } from './utils'
 
 export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction, context: Context) => void
@@ -20,85 +21,49 @@ export interface RedirectApiPrefix {
   to: string
 }
 
-export interface IServer<T = AnyO> {
-  db: T
+export interface IServer {
+  db: Data
   api: ApiType
   redirectApiPrefixes?: RedirectApiPrefix[]
 }
 
-export interface ServerContext<T = AnyO> {
-  useData: () => [T, (value: T) => void]
+export interface ServerContext {
+  useData: () => [Data, (value: Data) => Promise<void>]
 }
 
-export function jsonServer(context: Context): void {
+export function applayServer(context: Context): void {
   const app = context.app
   const { enableServer, server: serverConfig } = context.config
-  
- 
+
   if (!enableServer || !serverConfig)
     return
-
+  // register api
+  apiRegister(serverConfig.api, context)
   // handle redirectApiPrefixes
-  if (serverConfig.redirectApiPrefixes && serverConfig.redirectApiPrefixes.length){
-    app.use((req, res, next) => {
-      for (const redirect of serverConfig.redirectApiPrefixes!){
-        if (req.url.startsWith(redirect.from)){
+  if (serverConfig.redirectApiPrefixes && serverConfig.redirectApiPrefixes.length) {
+    app.use((req, _, next) => {
+      for (const redirect of serverConfig.redirectApiPrefixes!) {
+        if (req.url.startsWith(redirect.from)) {
           req.url = changeRedirectApiPrefix(req.url, redirect)
         }
       }
       return next()
     })
   }
-  
+
   const db = serverConfig.db
   if (!db) {
     console.warn(chalk.yellow('[json-server] db is not defined'))
     return
   }
 
-  const service = new Service(db)
-
-  // 添加server方法
-  context.server = {
-    useData() {
-      const db = service.db
-      function setDb(newDb: AnyO): void {
-        if (db !== newDb) {
-          service.db = db
-        }
-      }
-      return [db, setDb]
-    },
-  }
-
-  apiRegister(serverConfig.api, context)
-
-  app.get('/:name', async (req, res, next) => {
-    const { name } = req.params
-    res.locals.data = service.find(name)
-    await next()
-  })
-
-  app.get('/:name/:id', async (req, res, next) => {
-    const { name, id } = req.params
-    res.locals.data = service.findById(name, id)
-    await next()
-  })
-
-  app.use((_, res) => {
-    const data = res.locals.data
-    if (data) {
-      res.json(data)
-    }
-    else {
-      res.status(404)
-    }
-  })
+  // add json server
+  addJonServer(context, db)
 }
 
 export default function serverPlugin(): PluginType {
   return {
     name: 'server-plugin',
-    apply: jsonServer,
+    apply: applayServer,
   }
 }

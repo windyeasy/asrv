@@ -9,16 +9,17 @@ export {
   createApp,
 }
 const db = {
-  user: [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Jane' },
-    { id: 3, name: 'Jim' },
+  posts: [
+    { id: '1', title: 'a title' },
+    { id: '2', title: 'another title' },
   ],
-  post: [
-    { id: 1, title: 'Post 1', userId: 1 },
-    { id: 2, title: 'Post 2', userId: 2 },
-    { id: 3, title: 'Post 3', userId: 3 },
+  comments: [
+    { id: '1', text: 'a comment about post 1', postId: '1' },
+    { id: '2', text: 'another comment about post 1', postId: '1' },
   ],
+  profile: {
+    name: 'typicode',
+  },
 }
 
 createApp({
@@ -41,11 +42,9 @@ createApp({
           list2(_, res, _2, context) {
             const { useData } = context!.server!
             const [data, setData] = useData()
+            const newData = data as typeof db
             // todo: 修改数据与保存
-            data.user[0] = {
-              id: 20,
-              name: 'xiaoming',
-            }
+            newData.posts.push({ id: '3', title: 'another title 3' })
             setData({ ...data })
             res.send('数据写入成功')
           },

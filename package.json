@@ -5,8 +5,8 @@
   "description": "A server-side tool that assists front-end development.",
   "author": "windyeasy <windyeasy13gb@163.com>",
   "license": "MIT",
-  "homepage": "https://github.com/asrv/@asrv/replay-plugin#readme",
-  "bugs": "https://github.com/asrv/@asrv/replay-plugin/issues",
+  "homepage": "https://github.com/asrv/#readme",
+  "bugs": "https://github.com/asrv/issues",
   "keywords": [],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -31,10 +31,12 @@
     "lint:fix": "pnpm run lint --fix"
   },
   "dependencies": {
+    "@windyeasy/json-server": "1.0.0-beta.3-fork.1",
     "chalk": "^5.4.1",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "http-proxy-middleware": "^3.0.5"
+    "http-proxy-middleware": "^3.0.5",
+    "lowdb": "^7.0.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.14.1",

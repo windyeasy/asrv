@@ -1,22 +1,26 @@
-export default class Service<T = any> {
-  constructor(private _db: Record<string, T>) {}
+import type { Data } from '@windyeasy/json-server'
+import type { Low } from 'lowdb'
+import { Service } from '@windyeasy/json-server'
 
-  get db(): Record<string, T> {
-    return this._db
-  }
-  set db(value: Record<string, T>) {
-    this._db = value
+export type DbType = Low<Data>
+
+export class AsrvService extends Service {
+  #database: DbType
+  constructor(db: DbType) {
+    super(db)
+    this.#database = db
   }
 
-  find(name: string): any {
-    return this.db[name]
+  write(): Promise<void> {
+    return this.#database.write()
   }
 
-  findById(name: string, id: string | number): any {
-    const data = this.db[name]
-    if (data && Array.isArray(data)) {
-      const result = data.find(item => item.id === id)
-      return result
-    }
+  getData(): Data {
+    return this.#database.data
+  }
+
+  async setData(data: Data): Promise<void> {
+    this.#database.data = data
+    return this.write()
   }
 }
