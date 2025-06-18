@@ -12,6 +12,7 @@ import clientPlugin from './plugins/client-plugin'
 import serverPlugin from './plugins/server-plugin'
 
 export interface AppConfig {
+  $deps: string[]
   port?: number
   proxy?: ProxyConfig
   plugins?: PluginType[]
@@ -50,7 +51,7 @@ function reslovePlugins(config: AppConfig): AppConfig {
   const plugins = config.plugins || []
   const defaultPlugin = [
     clientPlugin(),
-    serverPlugin()
+    serverPlugin(),
   ]
 
   return {
@@ -90,19 +91,13 @@ export default function createApp(config: AppConfig): AServerApp {
     useProxyMiddlewares(app, config.proxy)
   }
 
-  
   config = reslovePlugins(config)
   // 配置插件
   if (config.plugins && config.plugins.length) {
     installPlugins(context, config.plugins)
   }
 
-
-  // todo: 开始静态地址，认别人能够访问
-  app.listen(port, () => {
-    const url = `http://localhost:${port}`
-    console.log(`${chalk.gray('server:')}: ${chalk.green(url)}`)
-  })
+  
 
   return app
 }

@@ -18,28 +18,29 @@ export default {
     db,
     api: {
       api: 'testString',
+      api3: 'testString',
       api2: {
         user: {
-          'list': [],
-          'info': JSON.stringify({
+          list: [],
+          info: JSON.stringify({
             id: 30,
             name: 'xiaoming',
-            age: 18
+            age: 18,
           }),
           // 数据的读写
-          'list2': function (req, res, next, context) {
+          list2(req, res, next, context) {
             const { useData } = context.server.lib
             const [data, setData] = useData()
             // todo: 修改数据与保存
             data.user[0] = {
               id: 20,
-              name: 'xiaoming'
+              name: 'xiaoming',
             }
             setData({ ...data })
-            res.send("数据写入成功")
-          }
-        }
-      }
+            res.send('数据写入成功')
+          },
+        },
+      },
     },
   },
 }

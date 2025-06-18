@@ -1,8 +1,10 @@
+import type { Server } from 'node:http'
 import process from 'node:process'
 import chalk from 'chalk'
+import chokidar from 'chokidar'
 import pkg from '../package.json'
 import createApp, { type AppConfig } from './app'
-import { resloveConfig } from './config'
+import { parseDepPaths, resloveConfig } from './config'
 
 export type AppConfigCbType = () => AppConfig
 
@@ -20,10 +22,19 @@ export type AppConfigCbType = () => AppConfig
 //   plugins: [jsonServerPlugin],
 // })
 
-export function runApp(configOrCb: AppConfig | AppConfigCbType): void {
+export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   const config: AppConfig = typeof configOrCb === 'function' ? configOrCb() : configOrCb
-  createApp(config)
+  const app = createApp(config)
+
+  const server = app.listen(config.port, () => {
+    const url = `http://localhost:${config.port}`
+    console.log(`${chalk.gray('server:')}: ${chalk.green(url)}`)
+  })
+
+  return server
 }
+
+let server: null | Server = null
 
 export async function runCli(): Promise<void> {
   const args = process.argv.slice(2).filter(Boolean)
@@ -56,14 +67,32 @@ export async function runCli(): Promise<void> {
     return
   }
 
+  async function startRunApp(): Promise<void> {
+    if (server)
+      server.close()
+    const configPath: string | undefined = args.length === 2 ? args[1] : undefined
+    const { config, path } = await resloveConfig(configPath)
+    server = runApp(config)
+    const watchPaths: string[] = [path]
+
+    if (config.$deps) {
+      const deps = await parseDepPaths(config.$deps)
+      console.log(deps)
+      watchPaths.push(...deps)
+    }
+
+    chokidar.watch(watchPaths, { ignoreInitial: true }).on('change', () => {
+      console.log(chalk.green(`asrv Config changed`))
+      startRunApp()
+    })
+  }
+
   if (args.length === 2 && (args[0].toLowerCase() === '-c' || args[0].toLowerCase() === '--config')) {
-    const config = await resloveConfig(args[1])
-    runApp(config)
+    startRunApp()
     return
   }
 
   if (args.length === 0) {
-    const config = await resloveConfig(args[1])
-    runApp(config)
+    startRunApp()
   }
 }
