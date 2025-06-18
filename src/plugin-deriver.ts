@@ -1,4 +1,4 @@
-import type { Context } from './app'
+import type { Context } from './types'
 
 export interface PluginType {
   name: string

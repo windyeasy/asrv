@@ -1,4 +1,4 @@
-import type { AppConfig } from './app'
+import type { AppConfig } from './types'
 import path from 'node:path'
 import process from 'node:process'
 import fg from 'fast-glob'

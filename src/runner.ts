@@ -1,12 +1,13 @@
 import type { Server } from 'node:http'
+import type { AppConfig, AppConfigCbType } from './types'
 import process from 'node:process'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
 import pkg from '../package.json'
-import createApp, { type AppConfig } from './app'
+import createApp from './app'
 import { parseDepPaths, resloveConfig } from './config'
 
-export type AppConfigCbType = () => AppConfig
+
 
 // createApp({
 //   port: 9000,

@@ -1,20 +1,4 @@
-import type { MiddlewareType } from '@/types'
-
-export interface interceptRequestInfo {
-  url: string
-  method: string
-  headers: Record<string, any>
-  body?: any
-  query?: any
-  params?: any
-  timestamp: number
-}
-
-export interface InterceptInfo {
-  interceptRequestInfo?: interceptRequestInfo
-}
-
-export type InterceptCbType = (interceptInfo: InterceptInfo) => void
+import type { InterceptCbType, InterceptInfo, MiddlewareType } from '@/types'
 
 /**
  * 是不是并不需要区分代理和普通请求， 当在web端请求数据时，同样访问的是同一的接口

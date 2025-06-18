@@ -1,5 +1,5 @@
-import type { Context } from '@/app'
 import type { PluginType } from '@/plugin-deriver'
+import type { Context } from '@/types'
 
 export default function clientPlugin(): PluginType {
   return {
