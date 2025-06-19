@@ -1,6 +1,7 @@
 import type { AppConfig } from './types'
 import path from 'node:path'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import fg from 'fast-glob'
 import { loadConfig } from 'unconfig'
 
@@ -38,3 +39,6 @@ export function resolveConfigPath(configArg: string): string {
 export function parseDepPaths(deps: string[]): Promise<string[]> {
   return fg(deps, { absolute: true })
 }
+
+export const __filename = fileURLToPath(import.meta.url)
+export const __dirname = path.dirname(__filename)
