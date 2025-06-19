@@ -18,7 +18,8 @@
     "LICENSE",
     "README.md",
     "bin",
-    "dist"
+    "dist",
+    "packages/web/dist"
   ],
   "scripts": {
     "dev": "rimraf dist && tsdown --watch",

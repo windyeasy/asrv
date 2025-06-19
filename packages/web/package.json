@@ -1,0 +1,57 @@
+{
+  "name": "@asrv/web",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --cache  .",
+    "lint:fix": "eslint --cache . --fix",
+    "stylelint": "stylelint --cache .",
+    "stylelint:fix": "stylelint --cache . --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@vue/reactivity": "^3.5.17",
+    "@vue/shared": "^3.5.17",
+    "@vueuse/core": "^13.3.0",
+    "axios": "^1.10.0",
+    "normalize.css": "^8.0.1",
+    "pinia": "^3.0.3",
+    "sass": "^1.89.2",
+    "vue": "^3.5.17",
+    "vue-router": "4"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.14.1",
+    "@iconify-json/carbon": "^1.2.9",
+    "@types/node": "^24.0.3",
+    "@unocss/preset-icons": "^66.2.3",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "eslint": "^9.29.0",
+    "lint-staged": "^16.1.0",
+    "stylelint": "^16.20.0",
+    "stylelint-config-recommended-scss": "^15.0.1",
+    "stylelint-config-recommended-vue": "^1.6.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-scss": "^6.12.1",
+    "typescript": "^5.8.3",
+    "unocss": "^66.2.3",
+    "unplugin-auto-import": "^19.3.0",
+    "unplugin-vue-components": "^28.7.0",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^2.2.10"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,vue,md}": [
+      "eslint --cache --fix"
+    ],
+    "**/*.{vue,css,scss,html}": [
+      "stylelint --cache --fix"
+    ]
+  }
+
+}
