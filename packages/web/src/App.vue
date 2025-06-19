@@ -3,7 +3,8 @@
 </script>
 
 <template>
-  <div class="app">
+  <main>
+    <main-nav />
     <router-view />
-  </div>
+  </main>
 </template>

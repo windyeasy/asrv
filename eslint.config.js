@@ -15,7 +15,7 @@ export default antfu({
 
   // TypeScript and Vue are autodetected, you can also explicitly enable them:
   typescript: true,
-  vue: false,
+  vue: true,
 
   // Disable jsonc and yaml support
   jsonc: true,
@@ -23,10 +23,8 @@ export default antfu({
 
   // `.eslintignore` is no longer supported in Flat config, use `ignores` instead
   ignores: [
-    '**/packages/**',
     // ...globs
     '**/dist',
-
   ],
   rules: {
     'no-console': 'off',
