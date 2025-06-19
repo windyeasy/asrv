@@ -8,8 +8,6 @@
     "preview": "vite preview",
     "lint": "eslint --cache  .",
     "lint:fix": "eslint --cache . --fix",
-    "stylelint": "stylelint --cache .",
-    "stylelint:fix": "stylelint --cache . --fix",
     "test": "vitest"
   },
   "dependencies": {
@@ -31,12 +29,6 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "eslint": "^9.29.0",
     "lint-staged": "^16.1.0",
-    "stylelint": "^16.20.0",
-    "stylelint-config-recommended-scss": "^15.0.1",
-    "stylelint-config-recommended-vue": "^1.6.0",
-    "stylelint-config-standard": "^38.0.0",
-    "stylelint-config-standard-scss": "^15.0.1",
-    "stylelint-scss": "^6.12.1",
     "typescript": "^5.8.3",
     "unocss": "^66.2.3",
     "unplugin-auto-import": "^19.3.0",
@@ -48,9 +40,6 @@
   "lint-staged": {
     "*.{js,ts,tsx,vue,md}": [
       "eslint --cache --fix"
-    ],
-    "**/*.{vue,css,scss,html}": [
-      "stylelint --cache --fix"
     ]
   }
 
