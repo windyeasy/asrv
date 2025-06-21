@@ -1,5 +1,6 @@
 import type { Server } from 'node:http'
 import type { AppConfig, AppConfigCbType } from './types'
+import os from 'node:os'
 import process from 'node:process'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
@@ -7,29 +8,39 @@ import pkg from '../package.json'
 import createApp from './app'
 import { parseDepPaths, resloveConfig } from './config'
 
+/**
+ * 获取本机所有可通过网络访问的 IPv4 地址
+ * @param {number} port 要附加的端口号
+ * @returns {string[]} 可访问的完整地址数组（如 http://192.168.1.100:3000）
+ */
+export function getAccessibleAddresses(port: number): string[] {
+  const interfaces = os.networkInterfaces()
+  const addresses = []
 
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name]!) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        addresses.push(`http://${iface.address}:${port}`)
+      }
+    }
+  }
 
-// createApp({
-//   port: 9000,
-//   proxy: {
-//     '/api': {
-//       target: 'http://localhost:3000',
-//       changeOrigin: true,
-//       pathRewrite: {
-//         '^/api': '',
-//       },
-//     },
-//   },
-//   plugins: [jsonServerPlugin],
-// })
+  // 加上 localhost
+  addresses.push(`http://localhost:${port}`)
+
+  return addresses
+}
 
 export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   const config: AppConfig = typeof configOrCb === 'function' ? configOrCb() : configOrCb
   const app = createApp(config)
 
-  const server = app.listen(config.port, () => {
-    const url = `http://localhost:${config.port}`
-    console.log(`${chalk.gray('server:')}: ${chalk.green(url)}`)
+  const server = app.listen(config.port!, '0.0.0.0', () => {
+    console.log(`${chalk.gray('Server is running. Accessible at')}:`)
+    const addresses = getAccessibleAddresses(config.port!)
+    for (const address of addresses) {
+      console.log(`  → ${chalk.green(address)}`)
+    }
   })
 
   return server

@@ -1,5 +1,6 @@
 import type { PluginType } from './plugin-deriver'
 import type { AppConfig, AServerApp, Context, InterceptInfo } from './types'
+
 import cors from 'cors'
 import express from 'express'
 import createInterceptMiddleware from './middleware/intercept'
