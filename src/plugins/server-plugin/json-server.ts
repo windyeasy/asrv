@@ -1,4 +1,4 @@
-import type { AServerApp, Context } from '@/app'
+import type { AServerApp, Context } from '@/types'
 import { type Data, isItem } from '@windyeasy/json-server'
 import { type Adapter, Low } from 'lowdb'
 
@@ -86,6 +86,8 @@ export function bindRouter(app: AServerApp, service: AsrvService, prefix = ''): 
 
   app.use(`${prefix}/:name`, (req, res) => {
     const { data } = res.locals
+
+    // todo: 给一个拦截器对操作进行处理
     if (data === undefined) {
       res.sendStatus(404)
     }

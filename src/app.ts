@@ -3,6 +3,7 @@ import type { AppConfig, AServerApp, Context, InterceptInfo } from './types'
 
 import cors from 'cors'
 import express from 'express'
+import { createLoggerMiddleware } from './logger'
 import createInterceptMiddleware from './middleware/intercept'
 import { useProxyMiddlewares } from './middleware/proxy'
 import PluginDeriver from './plugin-deriver'
@@ -51,6 +52,10 @@ export default function createApp(config: AppConfig): AServerApp {
     context.response = res
     return next()
   })
+
+  app.use(createLoggerMiddleware({
+    enableLoggerFile: config.enableLoggerFile,
+  }))
 
   // 处理请求拦截，请求拦截信息放入上下文
   app.use(createInterceptMiddleware((interceptInfo) => {

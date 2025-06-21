@@ -14,6 +14,7 @@ const db = {
 export default {
   port: 9000,
   enableServer: true, // default true
+  enableLoggerFile: true,
   server: {
     db,
     api: {

@@ -39,7 +39,9 @@
     "express": "^5.1.0",
     "fast-glob": "^3.3.3",
     "http-proxy-middleware": "^3.0.5",
-    "lowdb": "^7.0.1"
+    "lowdb": "^7.0.1",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.14.1",
