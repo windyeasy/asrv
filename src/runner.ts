@@ -33,7 +33,7 @@ export function getAccessibleAddresses(port: number): string[] {
 
 function printProxyTips(addresses: string[], config: AppConfig['proxy']): void {
   if (config) {
-    console.log(chalk.gray('proxy server:'))
+    console.log(chalk.gray('Proxy server:'))
     const proxyKeys = Object.keys(config)
 
     proxyKeys.forEach((key) => {
@@ -51,14 +51,15 @@ export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   const app = createApp(config)
 
   const server = app.listen(config.port!, '0.0.0.0', () => {
-    console.log(`${chalk.gray('Server is running. Accessible at')}:`)
     const addresses = getAccessibleAddresses(config.port!)
+    // 提示代理信息
+    printProxyTips(addresses, config.proxy)
+
+    // 提示开启服务的信息
+    console.log(`\n${chalk.gray('Server is running. Accessible at')}:`)
     for (const address of addresses) {
       console.log(`  → ${chalk.green(address)}`)
     }
-
-    // 提示代理信息
-    printProxyTips(addresses, config.proxy)
   })
 
   return server
@@ -156,6 +157,30 @@ const config: AppConfig = {
   },
   server: {
     db,
+    jsonServerResponseInterceptor: (req, res) => {
+      const { data } = res.locals
+      if (data === undefined) {
+        res.json({
+          code: -1,
+          message: '数据不存在',
+        })
+      }
+      else {
+        if (req.method === 'POST') {
+          res.json({
+            code: 0,
+            message: '数据创建成功',
+          })
+        }
+        else {
+          res.json({
+            code: 0,
+            message: '数据获取成功',
+            data,
+          })
+        }
+      }
+    },
     api: {
       api: 'testString',
       api3: 'testString',

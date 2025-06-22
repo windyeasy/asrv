@@ -21,9 +21,14 @@ export interface RedirectApiPrefix {
 export interface IServer {
   db: Data
   api: ApiType
+  /**
+   * 重定向api前缀
+   * @description - json-server生成的API，没有前缀，所以可以通过这个功能添加前缀
+   */
   redirectApiPrefixes?: RedirectApiPrefix[]
+  //
+  jsonServerResponseInterceptor?: APIMiddlewareType
 }
-
 
 export interface ServerContext {
   useData: <T extends Data>() => [T, (value: T) => Promise<void>]

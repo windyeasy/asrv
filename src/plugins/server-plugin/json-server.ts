@@ -1,12 +1,12 @@
 import type { Data } from './service/index'
-import type { AServerApp, Context } from '@/types'
+import type { Context } from '@/types'
 import { isItem } from '@windyeasy/json-server'
 import { type Adapter, Low } from 'lowdb'
 
 import { AsrvService } from './service'
 
-
-export function bindRouter(app: AServerApp, service: AsrvService, prefix = ''): void {
+export function bindRouter(context: Context, service: AsrvService, prefix = ''): void {
+  const app = context.app
   app.get(`${prefix}/:name`, (req, res, next) => {
     const { name = '' } = req.params
     const query = Object.fromEntries(
@@ -84,10 +84,12 @@ export function bindRouter(app: AServerApp, service: AsrvService, prefix = ''): 
     next?.()
   })
 
-  app.use(`${prefix}/:name`, (req, res) => {
+  app.use(`${prefix}/:name`, (req, res, next) => {
     const { data } = res.locals
 
-    // todo: 给一个拦截器对操作进行处理
+    if (context.config.server?.jsonServerResponseInterceptor) {
+      return context.config.server.jsonServerResponseInterceptor(req, res, next, context)
+    }
     if (data === undefined) {
       res.sendStatus(404)
     }
@@ -113,7 +115,6 @@ export class AsrvAdapter implements Adapter<Data> {
 }
 
 export async function addJonServer(context: Context, data: Data): Promise<void> {
-  const app = context.app
   const asrvAdapter = new AsrvAdapter(data)
   const db = new Low(asrvAdapter, data)
 
@@ -123,7 +124,7 @@ export async function addJonServer(context: Context, data: Data): Promise<void> 
 
   // add use data
   context.server = {
-    useData: () => [service.getData(), (data) => service.setData(data)],
+    useData: () => [service.getData(), data => service.setData(data)],
   }
-  bindRouter(app, service)
+  bindRouter(context, service)
 }

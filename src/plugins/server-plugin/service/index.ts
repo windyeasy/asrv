@@ -1,8 +1,7 @@
-
 import type { Low } from 'lowdb'
 import { Service } from '@windyeasy/json-server'
 
-export type Data = Record<string, any> 
+export type Data = Record<string, any>
 
 export type DbType = Low<Data>
 
@@ -22,7 +21,9 @@ export class AsrvService extends Service {
   }
 
   async setData(data: Data): Promise<void> {
-    this.#database.data = data
-    return this.write()
+    if (this.#database.data !== data) {
+      this.#database.data = data
+      return this.write()
+    }
   }
 }
