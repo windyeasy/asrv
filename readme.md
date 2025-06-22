@@ -18,16 +18,23 @@
 - [ ] server-plugin
   - [x] 将代理接口重定向，jonserver: 无需在写接口
   - [x] json-server
+  - [x] json-server拦截器-由拦截器进行返回
   - [ ] 为API添加swagger
-  - [ ] 增加参数包装，加入JSONServer后，增加失败状态码，返回错误信息如何设计
+
   - [ ] ws处理
+
 - [x] 日志功能
-- [ ] 添加MOCK函数据
-- [ ] proxy提示
+- [x] 添加MOCK函数
+- [x] proxy提示
+
 - [ ] 数据持久化
 - [ ] 使用TSDoc写文档和生成文档
-- [ ] readme
 - [ ] replay-plugin
+- [ ] readme
+- [ ]  文档流
+  - [ ] 上传文件，有一个配置缓存位置
+  - [ ] 使用默认文件，通过接口返回文件，模拟文件下载
+- [ ] 加载静态资源
 
 ## License
 
