@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@windyeasy/json-server": "1.0.0-beta.3-fork.1",
+    "@wll8/better-mock": "0.3.3-alpha",
     "chalk": "^5.4.1",
     "chokidar": "^4.0.3",
     "cors": "^2.8.5",
