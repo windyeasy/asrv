@@ -1,4 +1,4 @@
-import type { ApiType } from '..'
+import type { ApiType } from '../types'
 
 import { describe, expect, it } from 'vitest'
 import { changeRedirectApiPrefix, checkApiKey, flatApiInfo, getReqMethodAndUrlByKey } from './index'
@@ -130,10 +130,10 @@ describe('utils', () => {
   })
 
   describe('changeRedirectApiPrefix', () => {
-      it('should changeRedirectApiPrefix', () => {
-        expect(changeRedirectApiPrefix('/api/test', { from: '/api', to: '' })).toBe('/test')
-        expect(changeRedirectApiPrefix('/api/api/test', { from: '/api', to: '' })).toBe('/api/test')
-        expect(changeRedirectApiPrefix('api/api/test', { from: '/api', to: '' })).toBe('api/api/test')
-      })
+    it('should changeRedirectApiPrefix', () => {
+      expect(changeRedirectApiPrefix('/api/test', { from: '/api', to: '' })).toBe('/test')
+      expect(changeRedirectApiPrefix('/api/api/test', { from: '/api', to: '' })).toBe('/api/test')
+      expect(changeRedirectApiPrefix('api/api/test', { from: '/api', to: '' })).toBe('api/api/test')
     })
+  })
 })

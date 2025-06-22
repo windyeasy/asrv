@@ -1,5 +1,5 @@
-import type {  APIMiddlewareType, ApiType,  RedirectApiPrefix } from '..'
-import type { Context } from '@/app'
+import type { APIMiddlewareType, ApiType, RedirectApiPrefix } from '../types'
+import type { Context } from '@/types'
 import chalk from 'chalk'
 
 export function checkApiKey(key: string): boolean {
@@ -99,9 +99,8 @@ export function apiRegister(api: ApiType, context: Context): void {
   })
 }
 
-
 export function changeRedirectApiPrefix(url: string, redirectApiPrefix: RedirectApiPrefix): string {
-  if (url.startsWith(redirectApiPrefix.from)){
+  if (url.startsWith(redirectApiPrefix.from)) {
     return url.replace(redirectApiPrefix.from, redirectApiPrefix.to)
   }
   return url
