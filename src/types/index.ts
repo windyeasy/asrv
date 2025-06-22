@@ -39,7 +39,7 @@ export interface AppConfig {
    * 依赖的其他文件，当其他文化变化时，会重新启动服务，当配置api过多时可以分模块定义
    * @example ['./src/app.ts', './src/*.js']
    */
-  $deps: string[]
+  $deps?: string[]
   port?: number
   /**
    * 代理配置 - 与vite 配置一致

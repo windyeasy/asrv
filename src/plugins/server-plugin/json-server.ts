@@ -1,10 +1,10 @@
+import type { Data } from './service/index'
 import type { AServerApp, Context } from '@/types'
-import { type Data, isItem } from '@windyeasy/json-server'
+import { isItem } from '@windyeasy/json-server'
 import { type Adapter, Low } from 'lowdb'
 
 import { AsrvService } from './service'
 
-export type UseDataType<T = any> = () => [T, (value: T) => void]
 
 export function bindRouter(app: AServerApp, service: AsrvService, prefix = ''): void {
   app.get(`${prefix}/:name`, (req, res, next) => {
@@ -123,7 +123,7 @@ export async function addJonServer(context: Context, data: Data): Promise<void> 
 
   // add use data
   context.server = {
-    useData: () => [service.getData(), (data: Data) => service.setData(data)],
+    useData: () => [service.getData(), (data) => service.setData(data)],
   }
   bindRouter(app, service)
 }

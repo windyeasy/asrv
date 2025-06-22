@@ -142,7 +142,7 @@ const config: AppConfig = {
           list2(req, res, next, context) {
             const { useData } = context.server!
             // todo: 修改类型
-            const [data, setData] = useData()
+            const [data, setData] = useData<typeof db>()
             // todo: 修改数据与保存
             data.user[0] = {
               id: 20,

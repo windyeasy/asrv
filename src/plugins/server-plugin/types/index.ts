@@ -1,5 +1,5 @@
-import type { Data } from '@windyeasy/json-server/lib'
 import type { NextFunction, Request, Response } from 'express'
+import type { Data } from '../service/index'
 
 import type { Context } from '@/types'
 
@@ -24,6 +24,7 @@ export interface IServer {
   redirectApiPrefixes?: RedirectApiPrefix[]
 }
 
+
 export interface ServerContext {
-  useData: () => [Data, (value: Data) => Promise<void>]
+  useData: <T extends Data>() => [T, (value: T) => Promise<void>]
 }
