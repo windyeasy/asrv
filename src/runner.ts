@@ -31,6 +31,21 @@ export function getAccessibleAddresses(port: number): string[] {
   return addresses
 }
 
+function printProxyTips(addresses: string[], config: AppConfig['proxy']): void {
+  if (config) {
+    console.log(chalk.gray('proxy server:'))
+    const proxyKeys = Object.keys(config)
+
+    proxyKeys.forEach((key) => {
+      addresses.forEach((address) => {
+        const target = config[key]!.target
+        const serverAddress = key.startsWith('/') ? `${address}${key}` : `${address}/${key}`
+        console.log(`  ${chalk.green(serverAddress)} → ${chalk.green(target)}`)
+      })
+    })
+  }
+}
+
 export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   const config: AppConfig = typeof configOrCb === 'function' ? configOrCb() : configOrCb
   const app = createApp(config)
@@ -41,6 +56,9 @@ export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
     for (const address of addresses) {
       console.log(`  → ${chalk.green(address)}`)
     }
+
+    // 提示代理信息
+    printProxyTips(addresses, config.proxy)
   })
 
   return server
@@ -108,6 +126,8 @@ export async function runCli(): Promise<void> {
     startRunApp()
   }
 }
+
+// ==== test ====
 const db = {
   user: [
     { id: 1, name: 'John' },
@@ -125,6 +145,15 @@ const config: AppConfig = {
   port: 9000,
   enableServer: true, // default true
   enableLoggerFile: true,
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3000',
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '',
+      },
+    },
+  },
   server: {
     db,
     api: {
