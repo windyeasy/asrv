@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const origin = location.origin
 </script>
 
 <template>
@@ -14,15 +15,15 @@
         <div class="link">
           <a
             rel="noreferrer"
-            href="https://api.juejin.cn/swagger-ui/index.html"
+            :href="`${origin}/api-swagger-doc`"
             target="_blank"
             class=" text-green"
           >
-            https://api.juejin.cn/swagger-ui/index.html
+            {{ origin }}/api-swagger-doc
           </a>
         </div>
       </section>
-      <section class="flex py-2">
+      <!-- <section class="flex py-2">
         <div class="title mr-2">
           History:
         </div>
@@ -36,7 +37,7 @@
             https://api.juejin.cn/swagger-ui/index.html
           </a>
         </div>
-      </section>
+      </section> -->
     </main>
   </div>
 </template>
