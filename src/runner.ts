@@ -103,14 +103,16 @@ export async function runCli(): Promise<void> {
       server.close()
     const configPath: string | undefined = args.length === 2 ? args[1] : undefined
     const { config, path } = await resloveConfig(configPath)
-    server = runApp(config)
+    config.swaggerDeps = [path]
     const watchPaths: string[] = [path]
-
     if (config.$deps) {
       const deps = await parseDepPaths(config.$deps)
-      console.log(deps)
       watchPaths.push(...deps)
+      // swagger依赖
+      config.swaggerDeps.push(...deps)
     }
+
+    server = runApp(config)
 
     chokidar.watch(watchPaths, { ignoreInitial: true }).on('change', () => {
       console.log(chalk.green(`asrv Config changed`))
@@ -129,86 +131,86 @@ export async function runCli(): Promise<void> {
 }
 
 // ==== test ====
-const db = {
-  user: [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Jane' },
-    { id: 3, name: 'Jim' },
-  ],
-  post: [
-    { id: 1, title: 'Post 1', userId: 1 },
-    { id: 2, title: 'Post 2', userId: 2 },
-    { id: 3, title: 'Post 3', userId: 3 },
-  ],
-}
+// const db = {
+//   user: [
+//     { id: 1, name: 'John' },
+//     { id: 2, name: 'Jane' },
+//     { id: 3, name: 'Jim' },
+//   ],
+//   post: [
+//     { id: 1, title: 'Post 1', userId: 1 },
+//     { id: 2, title: 'Post 2', userId: 2 },
+//     { id: 3, title: 'Post 3', userId: 3 },
+//   ],
+// }
 
-const config: AppConfig = {
-  port: 9000,
-  enableServer: true, // default true
-  enableLoggerFile: true,
-  proxy: {
-    '/api': {
-      target: 'http://localhost:3000',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api': '',
-      },
-    },
-  },
-  server: {
-    db,
-    jsonServerResponseInterceptor: (req, res) => {
-      const { data } = res.locals
-      if (data === undefined) {
-        res.json({
-          code: -1,
-          message: '数据不存在',
-        })
-      }
-      else {
-        if (req.method === 'POST') {
-          res.json({
-            code: 0,
-            message: '数据创建成功',
-          })
-        }
-        else {
-          res.json({
-            code: 0,
-            message: '数据获取成功',
-            data,
-          })
-        }
-      }
-    },
-    api: {
-      api: 'testString',
-      api3: 'testString',
-      api2: {
-        user: {
-          list: [],
-          info: JSON.stringify({
-            id: 30,
-            name: 'xiaoming',
-            age: 18,
-          }),
-          // 数据的读写
-          list2(req, res, next, context) {
-            const { useData } = context.server!
-            // todo: 修改类型
-            const [data, setData] = useData<typeof db>()
-            // todo: 修改数据与保存
-            data.user[0] = {
-              id: 20,
-              name: 'xiaoming',
-            }
-            setData({ ...data })
-            res.send('数据写入成功')
-          },
-        },
-      },
-    },
-  },
-}
+// const config: AppConfig = {
+//   port: 9000,
+//   enableServer: true, // default true
+//   enableLoggerFile: true,
+//   proxy: {
+//     '/api': {
+//       target: 'http://localhost:3000',
+//       changeOrigin: true,
+//       pathRewrite: {
+//         '^/api': '',
+//       },
+//     },
+//   },
+//   server: {
+//     db,
+//     jsonServerResponseInterceptor: (req, res) => {
+//       const { data } = res.locals
+//       if (data === undefined) {
+//         res.json({
+//           code: -1,
+//           message: '数据不存在',
+//         })
+//       }
+//       else {
+//         if (req.method === 'POST') {
+//           res.json({
+//             code: 0,
+//             message: '数据创建成功',
+//           })
+//         }
+//         else {
+//           res.json({
+//             code: 0,
+//             message: '数据获取成功',
+//             data,
+//           })
+//         }
+//       }
+//     },
+//     api: {
+//       api: 'testString',
+//       api3: 'testString',
+//       api2: {
+//         user: {
+//           list: [],
+//           info: JSON.stringify({
+//             id: 30,
+//             name: 'xiaoming',
+//             age: 18,
+//           }),
+//           // 数据的读写
+//           list2(req, res, next, context) {
+//             const { useData } = context.server!
+//             // todo: 修改类型
+//             const [data, setData] = useData<typeof db>()
+//             // todo: 修改数据与保存
+//             data.user[0] = {
+//               id: 20,
+//               name: 'xiaoming',
+//             }
+//             setData({ ...data })
+//             res.send('数据写入成功')
+//           },
+//         },
+//       },
+//     },
+//   },
+// }
 
-runApp(config)
+// runApp(config)

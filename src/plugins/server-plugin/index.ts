@@ -2,6 +2,7 @@ import type { PluginType } from '@/plugin-deriver'
 import type { Context } from '@/types'
 import chalk from 'chalk'
 import { addJonServer } from './json-server'
+import { useSwagger } from './swagger'
 import { apiRegister, changeRedirectApiPrefix } from './utils'
 
 export function applayServer(context: Context): void {
@@ -12,6 +13,8 @@ export function applayServer(context: Context): void {
     return
   // register api
   apiRegister(serverConfig.api, context)
+  // add swagger
+  useSwagger(context)
   // handle redirectApiPrefixes
   if (serverConfig.redirectApiPrefixes && serverConfig.redirectApiPrefixes.length) {
     app.use((req, _, next) => {

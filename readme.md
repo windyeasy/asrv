@@ -26,6 +26,8 @@
 - [x] 日志功能
 - [x] 添加MOCK函数
 - [x] proxy提示
+- [ ] defineServer
+- [ ] defineApi
 
 - [ ] 数据持久化
 - [ ] 使用TSDoc写文档和生成文档

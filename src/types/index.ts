@@ -58,6 +58,10 @@ export interface AppConfig {
    * @default true
    */
   enableLoggerFile?: boolean
+  /**
+   * swagger依赖文件，自动解析注入不需要手动传入
+   */
+  swaggerDeps?: string[]
 }
 
 export interface Context {
