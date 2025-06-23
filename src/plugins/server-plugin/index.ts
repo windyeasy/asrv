@@ -7,12 +7,12 @@ import { apiRegister, changeRedirectApiPrefix } from './utils'
 
 export function applayServer(context: Context): void {
   const app = context.app
-  const { enableServer, server: serverConfig } = context.config
+  const { enableServer = true, server: serverConfig } = context.config
 
   if (!enableServer || !serverConfig)
     return
   // register api
-  apiRegister(serverConfig.api, context)
+  serverConfig.api && apiRegister(serverConfig.api, context)
   // add swagger
   useSwagger(context)
   // handle redirectApiPrefixes
