@@ -3,20 +3,6 @@ import type { MiddlewareType } from './types'
 import { createLogger, format, transports } from 'winston'
 import DailyRotateFile from 'winston-daily-rotate-file'
 
-const dailyRotateTransport = new DailyRotateFile({
-  filename: 'asrv/logs/app-%DATE%.log',
-  datePattern: 'YYYY-MM-DD',
-  zippedArchive: true,
-  maxFiles: '14d',
-  level: 'info',
-  format: format.combine(
-    format.timestamp(),
-    format.printf(({ timestamp, level, message }) => {
-      return `${timestamp} [${level.toUpperCase()}] ${message}`
-    }),
-  ),
-})
-
 export interface LoggerConfig {
   /**
    * 是否开启日志文件
@@ -27,7 +13,22 @@ export interface LoggerConfig {
 
 export function createLoggerMiddleware(config: LoggerConfig): MiddlewareType {
   const { enableLoggerFile = true } = config
-  const dailyRotates = enableLoggerFile === true ? [dailyRotateTransport] : []
+  // 未开启日志文件，不生成日志文件，todo: 测试
+  const dailyRotates = enableLoggerFile === true
+    ? [new DailyRotateFile({
+        filename: 'asrv/logs/app-%DATE%.log',
+        datePattern: 'YYYY-MM-DD',
+        zippedArchive: true,
+        maxFiles: '14d',
+        level: 'info',
+        format: format.combine(
+          format.timestamp(),
+          format.printf(({ timestamp, level, message }) => {
+            return `${timestamp} [${level.toUpperCase()}] ${message}`
+          }),
+        ),
+      })]
+    : []
   const logger = createLogger({
     transports: [
       ...dailyRotates,
