@@ -52,7 +52,6 @@ export default function createApp(config: AppConfig): AServerApp {
     context.response = res
     return next()
   })
-  
   // 是否开启日志
   const { enableLogger = true } = config
   if (enableLogger) {

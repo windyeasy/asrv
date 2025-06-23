@@ -28,5 +28,6 @@ export default antfu({
   ],
   rules: {
     'no-console': 'off',
+    'antfu/no-import-dist': 'off',
   },
 })
