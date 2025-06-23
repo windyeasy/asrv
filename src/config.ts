@@ -1,3 +1,4 @@
+import type { IServer } from './plugins/server-plugin/types'
 import type { AppConfig } from './types'
 import path from 'node:path'
 import process from 'node:process'
@@ -6,6 +7,14 @@ import fg from 'fast-glob'
 import { loadConfig } from 'unconfig'
 
 export function defineConfig(config: AppConfig): AppConfig {
+  return config
+}
+
+export function defineServerConfig(config: IServer): IServer {
+  return config
+}
+
+export function defineApiConfig(config: IServer['api']): IServer['api'] {
   return config
 }
 
