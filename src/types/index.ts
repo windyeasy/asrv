@@ -45,6 +45,9 @@ export interface AppConfig {
    * 代理配置 - 与vite 配置一致
    */
   proxy?: ProxyConfig
+  /**
+   * 插件
+   */
   plugins?: PluginType[]
   /**
    * 是否开启服务端
@@ -53,6 +56,11 @@ export interface AppConfig {
    */
   enableServer?: boolean
   server?: IServer
+  /**
+   * 是否开启日志记录，默认开启
+   * @default true
+   */
+  enableLogger?: boolean
   /**
    * 是否开启日志文件, 默认开启
    * @default true

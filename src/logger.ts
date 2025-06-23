@@ -58,5 +58,3 @@ export function createLoggerMiddleware(config: LoggerConfig): MiddlewareType {
     next()
   }
 }
-
-

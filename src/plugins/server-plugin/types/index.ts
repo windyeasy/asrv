@@ -26,7 +26,9 @@ export interface IServer {
    * @description - json-server生成的API，没有前缀，所以可以通过这个功能添加前缀
    */
   redirectApiPrefixes?: RedirectApiPrefix[]
-  //
+  /**
+   * json-server响应拦截器
+   */
   jsonServerResponseInterceptor?: APIMiddlewareType
 }
 

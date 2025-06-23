@@ -52,10 +52,14 @@ export default function createApp(config: AppConfig): AServerApp {
     context.response = res
     return next()
   })
-
-  app.use(createLoggerMiddleware({
-    enableLoggerFile: config.enableLoggerFile,
-  }))
+  
+  // 是否开启日志
+  const { enableLogger = true } = config
+  if (enableLogger) {
+    app.use(createLoggerMiddleware({
+      enableLoggerFile: config.enableLoggerFile,
+    }))
+  }
 
   // 处理请求拦截，请求拦截信息放入上下文
   app.use(createInterceptMiddleware((interceptInfo) => {
