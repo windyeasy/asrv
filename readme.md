@@ -19,22 +19,22 @@
   - [x] 将代理接口重定向，jonserver: 无需在写接口
   - [x] json-server
   - [x] json-server拦截器-由拦截器进行返回
-  - [ ] 为API添加swagger
-
+  - [x] 为API添加swagger
+  - [ ] 为json-server添加swagger生成描述文件
   - [ ] ws处理
 
 - [x] 日志功能
 - [x] 添加MOCK函数
 - [x] proxy提示
-- [ ] defineServer
-- [ ] defineApi
-
-- [ ] 数据持久化
+- [x] defineServer
+- [x] defineApi
 - [ ] 使用TSDoc写文档和生成文档
-
-- [ ] replay-plugin
+- [ ] 数据持久化
+- [ ] history-plugin
+  - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
   - [ ] 先不考虑文件上传接口
 - [ ] readme
+- [ ] doc
 
 - [ ]  文档流
   - [ ] 上传文件，有一个配置缓存位置
