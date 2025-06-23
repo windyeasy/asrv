@@ -2,6 +2,32 @@
 
 一个开发助手服务
 
+## README-TODO
+
+1. JSONServer
+   1. 接口的基础MOCK
+   2. MOCK文档
+   3. 如何访问接口
+   4. JSONServer文档
+   5. 重定向使用
+   6. JSONServer拦截器的使用
+2. API定义
+   1. 基础定义
+      1. 字符串
+         1. 默认
+         2. JSON.stringify
+      2. 函数
+         1. 默认
+         2. 使用jsonServerData 
+   2. 分模块定义
+      1. `$deps`的使用
+      2. defineServerConfig
+      3. defineApiConfig
+   3. swagger的使用
+      1. 使用swagger案例
+3. 日志使用
+4. 代理工能使用
+
 ## TODO
 
 - [x] 实现代理功能
@@ -28,7 +54,6 @@
 - [x] proxy提示
 - [x] defineServer
 - [x] defineApi
-- [ ] 使用TSDoc写文档和生成文档
 - [ ] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
