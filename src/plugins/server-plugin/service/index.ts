@@ -1,8 +1,8 @@
 import type { Low } from 'lowdb'
 import { Service } from '@windyeasy/json-server'
 
-export type Data = Record<string, any>
-
+ type AnyO = Record<string, any>
+export type Data = Record<string, Array<any> | AnyO>
 export type DbType = Low<Data>
 
 export class AsrvService extends Service {
