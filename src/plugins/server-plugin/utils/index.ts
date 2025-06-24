@@ -1,5 +1,5 @@
 import type { APIMiddlewareType, ApiType, RedirectApiPrefix } from '../types'
-import type { Context } from '@/types'
+import type { Context, MiddlewareType } from '@/types'
 import chalk from 'chalk'
 
 export function checkApiKey(key: string): boolean {
@@ -74,6 +74,10 @@ function isJSON(str: string): boolean {
   }
 }
 
+
+export function isMiddlewareArray(input: unknown): input is MiddlewareType[] {
+  return Array.isArray(input) && input.every(fn => typeof fn === 'function')
+}
 export function apiRegister(api: ApiType, context: Context): void {
   const app = context.app
   const registerApiInfos = flatApiInfo(api)
@@ -92,7 +96,19 @@ export function apiRegister(api: ApiType, context: Context): void {
           res.send(value)
         }
       }
-      else {
+      else if (isMiddlewareArray(value)){
+        // 执行中间件数组, todo: 测试
+        const runMiddleware = (index: number) => {
+          if (index < value.length) {
+            const middleware = value[index]
+            middleware(req, res, () => runMiddleware(index + 1))
+          } else {
+            // 所有中间件执行完毕后调用 next() 继续后续处理
+            next()
+          }
+        }
+        runMiddleware(0)
+      }else {
         res.json(value)
       }
     })

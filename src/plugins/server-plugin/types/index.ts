@@ -1,13 +1,11 @@
 import type { NextFunction, Request, Response } from 'express'
 import type { AsrvService, Data } from '../service/index'
 
-import type { Context } from '@/types'
-
-export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction) => void
+export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction) => any
 
 type AnyO = Record<string, any>
 
-export type ApiKeyType = string | AnyO | APIMiddlewareType
+export type ApiKeyType = string   | APIMiddlewareType | APIMiddlewareType[] | AnyO
 
 export interface ApiType {
   [key: string]: string | ApiType | APIMiddlewareType | any[]
