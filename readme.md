@@ -18,7 +18,7 @@
          2. JSON.stringify
       2. 函数
          1. 默认
-         2. 使用jsonServerData 
+         2. 使用jsonServerData
    2. 分模块定义
       1. `$deps`的使用
       2. defineServerConfig
@@ -54,6 +54,11 @@
 - [x] proxy提示
 - [x] defineServer
 - [x] defineApi
+- [ ] 接口定义处理
+  - [x] useData不放在中间件中
+  - [x] 定义接口时可以传入多个中间件
+  - [x] 日志功能从新定义
+    - [x] 默认值false
 - [ ] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
@@ -65,6 +70,7 @@
   - [ ] 上传文件，有一个配置缓存位置
   - [ ] 使用默认文件，通过接口返回文件，模拟文件下载
 - [ ] 加载静态资源
+- [ ] docker
 
 ## License
 
