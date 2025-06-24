@@ -1,5 +1,5 @@
 import type { PluginType } from './plugin-deriver'
-import type { AppConfig, AServerApp, Context, InterceptInfo } from './types'
+import type { AppConfig, Context, InterceptInfo } from './types'
 
 import cors from 'cors'
 import express from 'express'
@@ -31,13 +31,13 @@ function reslovePlugins(config: AppConfig): AppConfig {
   }
 }
 
-function createAppByExpress(): AServerApp {
+function createAppByExpress() {
   const app = express()
   return app
 }
 
 const interceptInfos: InterceptInfo[] = []
-export default function createApp(config: AppConfig): AServerApp {
+export function createApp(config: AppConfig) {
   const port = config.port || 9000
 
   const app = createAppByExpress()
@@ -50,6 +50,7 @@ export default function createApp(config: AppConfig): AServerApp {
   app.use((req, res, next) => {
     context.request = req
     context.response = res
+    app.locals.context = context
     return next()
   })
   // 是否开启日志

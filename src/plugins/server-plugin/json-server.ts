@@ -88,7 +88,7 @@ export function bindRouter(context: Context, service: AsrvService, prefix = ''):
     const { data } = res.locals
 
     if (context.config.server?.jsonServerResponseInterceptor) {
-      return context.config.server.jsonServerResponseInterceptor(req, res, next, context)
+      return context.config.server.jsonServerResponseInterceptor(req, res, next)
     }
     if (data === undefined) {
       res.sendStatus(404)
@@ -121,10 +121,13 @@ export async function addJonServer(context: Context, data: Data): Promise<void> 
   await db.read()
   // Create service
   const service = new AsrvService(db)
-
-  // add use data
-  context.server = {
-    useData: () => [service.getData(), data => service.setData(data)],
+  if (context.server) {
+    context.server.service = service
+  }else {
+    context.server = {
+      service,
+    }
   }
+
   bindRouter(context, service)
 }

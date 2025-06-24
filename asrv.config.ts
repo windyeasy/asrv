@@ -1,8 +1,8 @@
-import { defineConfig, mock } from './dist/index'
+import { defineConfig, mock, useData } from './dist/index'
 
 export default defineConfig({
   port: 9000,
-  enableLogger: true,
+  enableLogger: false,
   server: {
     // mock数据, 自动生成接口
     db: mock({
@@ -25,5 +25,15 @@ export default defineConfig({
         },
       ],
     }),
+
+    api: {
+      '/api/testdata': async function (request, res) {
+        const [data, setData] = await useData(request)
+        data.user[0] = { id: 20, name: 'xiaoming' }
+        await setData({ ...data })
+        res.send('数据写入成功')
+      },
+    },
   },
+
 })

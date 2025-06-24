@@ -82,7 +82,7 @@ export function apiRegister(api: ApiType, context: Context): void {
     app[info.method](info.url, (req, res, next) => {
       const value = info.value
       if (typeof value === 'function') {
-        return value(req, res, next, context)
+        return value(req, res, next)
       }
       else if (typeof value === 'string') {
         if (isJSON(value)) {

@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { Data } from '../service/index'
+import type { AsrvService, Data } from '../service/index'
 
 import type { Context } from '@/types'
 
-export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction, context: Context) => void
+export type APIMiddlewareType = (request: Request, response: Response, next: NextFunction) => void
 
 type AnyO = Record<string, any>
 
@@ -33,5 +33,5 @@ export interface IServer {
 }
 
 export interface ServerContext {
-  useData: <T extends Data>() => [T, (value: T) => Promise<void>]
+  service?: AsrvService
 }

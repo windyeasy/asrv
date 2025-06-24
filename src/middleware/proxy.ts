@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import type { ProxyConfig } from '../types/index'
+import type {  ProxyConfig } from '../types/index'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
 export function useProxyMiddlewares(app: Express, config: ProxyConfig): void {

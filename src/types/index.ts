@@ -73,7 +73,7 @@ export interface AppConfig {
 }
 
 export interface Context {
-  app: AServerApp
+  app: Express,
   config: AppConfig
   request?: Express.Request
   response?: Express.Response
@@ -82,8 +82,5 @@ export interface Context {
   server?: ServerContext
 }
 
-export interface AServerApp extends Express {
-  context?: Context
-}
 
 export type AppConfigCbType = () => AppConfig

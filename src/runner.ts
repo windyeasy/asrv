@@ -5,7 +5,7 @@ import process from 'node:process'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
 import pkg from '../package.json'
-import createApp from './app'
+import { createApp } from './app'
 import { parseDepPaths, resloveConfig } from './config'
 
 /**
