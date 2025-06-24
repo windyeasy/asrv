@@ -54,10 +54,11 @@ export function createApp(config: AppConfig) {
     return next()
   })
   // 是否开启日志
-  const { enableLogger = true } = config
-  if (enableLogger) {
+  const loggerConfig = config.logger ??  { enable: false,  enableFile: false}
+
+  if (loggerConfig.enable) {
     app.use(createLoggerMiddleware({
-      enableLoggerFile: config.enableLoggerFile,
+      enableLoggerFile: loggerConfig.enableFile
     }))
   }
 

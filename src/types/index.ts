@@ -56,16 +56,18 @@ export interface AppConfig {
    */
   enableServer?: boolean
   server?: IServer
-  /**
-   * 是否开启日志记录，默认开启
-   * @default true
-   */
-  enableLogger?: boolean
-  /**
-   * 是否开启日志文件, 默认开启
-   * @default true
-   */
-  enableLoggerFile?: boolean
+  logger?: {
+    /**
+     * 是否开启日志记录，默认开启
+     * @default false
+     */
+    enable?: boolean
+    /**
+     * 是否开启日志文件, 默认开启
+     * @default false
+     */
+    enableFile?: boolean
+  }
   /**
    * swagger依赖文件，自动解析注入不需要手动传入
    */

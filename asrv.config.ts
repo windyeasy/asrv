@@ -2,8 +2,12 @@ import { defineConfig, mock, useData } from './dist/index'
 
 export default defineConfig({
   port: 9000,
-  enableLogger: false,
+  logger: {
+    enable: true,
+    enableFile: true
+  },
   server: {
+    
     // mock数据, 自动生成接口
     db: mock({
       'user|10-20': [
