@@ -9,6 +9,7 @@ export interface LoggerConfig {
    * @default true
    */
   enableLoggerFile?: boolean
+  level?: 'info' | 'warn' | 'error'
 }
 
 export function createLoggerMiddleware(config: LoggerConfig): MiddlewareType {
@@ -20,7 +21,7 @@ export function createLoggerMiddleware(config: LoggerConfig): MiddlewareType {
         datePattern: 'YYYY-MM-DD',
         zippedArchive: true,
         maxFiles: '14d',
-        level: 'info',
+        level: config.level || 'info',
         format: format.combine(
           format.timestamp(),
           format.printf(({ timestamp, level, message }) => {
@@ -33,6 +34,7 @@ export function createLoggerMiddleware(config: LoggerConfig): MiddlewareType {
     transports: [
       ...dailyRotates,
       new transports.Console({
+        level: config.level || 'info',
         format: format.combine(format.colorize(), format.simple()),
       }),
     ],

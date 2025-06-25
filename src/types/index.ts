@@ -67,6 +67,11 @@ export interface AppConfig {
      * @default false
      */
     enableFile?: boolean
+    /**
+     * 日志级别
+     * @default info
+     */
+    level?: 'info' | 'warn' | 'error'
   }
   /**
    * swagger依赖文件，自动解析注入不需要手动传入

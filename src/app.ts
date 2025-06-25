@@ -54,6 +54,7 @@ export function createApp(config: AppConfig): Express {
   if (loggerConfig.enable) {
     app.use(createLoggerMiddleware({
       enableLoggerFile: loggerConfig.enableFile,
+      level: loggerConfig.level,
     }))
   }
 
