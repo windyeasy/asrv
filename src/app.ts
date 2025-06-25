@@ -1,6 +1,6 @@
+import type { Express } from 'express'
 import type { PluginType } from './plugin-deriver'
 import type { AppConfig, Context, InterceptInfo } from './types'
-
 import cors from 'cors'
 import express from 'express'
 import { createLoggerMiddleware } from './logger'
@@ -31,16 +31,11 @@ function reslovePlugins(config: AppConfig): AppConfig {
   }
 }
 
-function createAppByExpress() {
-  const app = express()
-  return app
-}
-
 const interceptInfos: InterceptInfo[] = []
-export function createApp(config: AppConfig) {
+export function createApp(config: AppConfig): Express {
   const port = config.port || 9000
+  const app = express()
 
-  const app = createAppByExpress()
   const context: Context = {
     app,
     config,
@@ -54,11 +49,11 @@ export function createApp(config: AppConfig) {
     return next()
   })
   // 是否开启日志
-  const loggerConfig = config.logger ??  { enable: false,  enableFile: false}
+  const loggerConfig = config.logger ?? { enable: false, enableFile: false }
 
   if (loggerConfig.enable) {
     app.use(createLoggerMiddleware({
-      enableLoggerFile: loggerConfig.enableFile
+      enableLoggerFile: loggerConfig.enableFile,
     }))
   }
 
