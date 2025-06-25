@@ -32,26 +32,18 @@ export default defineConfig({
   port: 9000,
   server: {
     // mock数据, 自动生成接口
-    db: mock({
-      'user|10-20': [
+    db:{
+      users: [
         {
-          id: '@guid',
-          name: '@cname',
-          email: '@email',
-          address: '@county(true)',
-          phone: '@phone',
-        },
-      ],
-      'posts|10-20': [
+          id: 1,
+          name: '张三'
+        }，
         {
-          id: '@guid',
-          title: '@ctitle',
-          content: '@cparagraph',
-          author: '@cname',
-          date: '@date',
-        },
-      ],
-    })
+          id: 2,
+          name: '李四'
+        }
+      ]
+    }
   },
 })
 ```
@@ -75,6 +67,21 @@ npx asrv -c ./config.js
     "server": "asrv" // or "asrv -c ./config.js"
   }
 }
+```
+
+```shell
+# 生成了REST API接口
+$ curl http://localhost:9000/user
+[
+  {
+    "id": 1,
+    "name": '张三'
+  }，
+  {
+    "id": 2,
+    "name": '李四'
+  }
+]
 ```
 
 ### 使用搭配mock基础使用
