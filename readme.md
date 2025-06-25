@@ -4,7 +4,7 @@
 
 一个开发助手服务，结合了[Mockjs](http://mockjs.com/)和[json-server](https://github.com/typicode/json-server)快速生成符合REST API规范接口。
 
-快速定义接口并对传入数据，进行获取使用和修改。
+快速定义接口能够获取数据，对数据进行操作。
 
 ## 特性
 
@@ -137,7 +137,7 @@ $ curl http://localhost:9000/user
 ]
 ```
 
-### 使用从定向为json-server的接口加前缀`api`
+#### 使用重定向为json-server的接口加前缀`api`
 
 ```ts
 // asrv.config.ts
@@ -205,7 +205,7 @@ $ curl http://localhost:9000/api/user
 ]
 ```
 
-### 对JsonServer的结果进行拦截，使接口返回为常用形式
+#### 对JsonServer的结果进行拦截，使接口返回为常用形式
 
 非必要部分被省略， 接口mock和重定向，与上面一致
 
@@ -340,6 +340,7 @@ X-Powered-By: Express
       2. 函数
          1. 默认
          2. 使用jsonServerData
+      3. 中间件数组
    2. 分模块定义
       1. `$deps`的使用
       2. defineServerConfig
@@ -380,8 +381,8 @@ X-Powered-By: Express
   - [x] 定义接口时可以传入多个中间件
   - [x] 日志功能从新定义
     - [x] 默认值false
-    - [ ] level 默认info
-- [ ]修改配置文件过程中出错导致进程死亡，待修复
+    - [x] level 默认info
+- [x]修改配置文件过程中出错导致进程死亡，待修复
 - [ ] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
