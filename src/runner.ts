@@ -7,6 +7,8 @@ import chokidar from 'chokidar'
 import pkg from '../package.json'
 import { createApp } from './app'
 import { parseDepPaths, resloveConfig } from './config'
+import { fork  } from 'child_process'
+import type { ChildProcess } from 'node:child_process'
 
 /**
  * 获取本机所有可通过网络访问的 IPv4 地址
@@ -31,6 +33,9 @@ export function getAccessibleAddresses(port: number): string[] {
   return addresses
 }
 
+/**
+ * 代理信息打印提示
+ */
 function printProxyTips(addresses: string[], config: AppConfig['proxy']): void {
   if (config) {
     console.log(chalk.gray('Proxy server:'))
@@ -65,7 +70,64 @@ export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   return server
 }
 
-let server: null | Server = null
+
+export async function run(){
+  const args = process.argv.slice(2).filter(Boolean)
+  let server: null | Server = null
+  async function startRun(){
+       if (server)
+        server.close()
+      const configPath: string | undefined = args.length === 2 ? args[1] : undefined
+      const { config, path } = await resloveConfig(configPath)
+      config.swaggerDeps = [path]
+      const watchPaths: string[] = [path]
+      if (config.$deps) {
+        const deps = await parseDepPaths(config.$deps)
+        watchPaths.push(...deps)
+        // swagger依赖
+        config.swaggerDeps.push(...deps)
+      }
+
+      server = runApp(config)
+  }
+  startRun()
+}
+
+let child: null | ChildProcess = null
+
+function startServer(args: string[]){
+  if (child) {
+    child.kill()
+  }
+  child = fork('./bin/child-runner.mjs', args, {
+    cwd: process.cwd(),
+  })
+  child.on('exit', (code) => { 
+    if (code !== 0) {
+      console.error(`❌ Service restart failed please check the configuration`)
+    }
+  })
+}
+
+export async function watchFileChange(args: string[]){
+  const argConfigPath: string | undefined = args.length === 2 ? args[1] : undefined
+  const watchPaths: string[] = []
+  try {
+    const { config, path } = await resloveConfig(argConfigPath)
+    watchPaths.push(path)
+    if (config.$deps)
+      watchPaths.push(...config.$deps)
+  }catch (error) {
+    console.error(error)
+    process.exit(1)
+  }
+
+  startServer(args)
+  chokidar.watch(watchPaths, { ignoreInitial: true }).on('change', () => {
+    console.log(chalk.green(`asrv Config changed`))
+    startServer(args)
+  })
+}
 
 export async function runCli(): Promise<void> {
   const args = process.argv.slice(2).filter(Boolean)
@@ -98,34 +160,13 @@ export async function runCli(): Promise<void> {
     return
   }
 
-  async function startRunApp(): Promise<void> {
-    if (server)
-      server.close()
-    const configPath: string | undefined = args.length === 2 ? args[1] : undefined
-    const { config, path } = await resloveConfig(configPath)
-    config.swaggerDeps = [path]
-    const watchPaths: string[] = [path]
-    if (config.$deps) {
-      const deps = await parseDepPaths(config.$deps)
-      watchPaths.push(...deps)
-      // swagger依赖
-      config.swaggerDeps.push(...deps)
-    }
-
-    server = runApp(config)
-
-    chokidar.watch(watchPaths, { ignoreInitial: true }).on('change', () => {
-      console.log(chalk.green(`asrv Config changed`))
-      startRunApp()
-    })
-  }
-
   if (args.length === 2 && (args[0].toLowerCase() === '-c' || args[0].toLowerCase() === '--config')) {
-    startRunApp()
+    // startRunApp()
+    watchFileChange(args)
     return
   }
 
   if (args.length === 0) {
-    startRunApp()
+    watchFileChange(args)
   }
 }
