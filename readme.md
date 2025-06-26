@@ -577,7 +577,7 @@ export default defineConfig({
 日志功能默认是关闭的，需要打开。打开文件日志会创建一个日志文件，放在`/asrv/logs/`目录下
 
 ```ts
-import { defineConfig } from './dist/index'
+import { defineConfig } from 'asrv'
 
 export default defineConfig({
   port: 9000,
