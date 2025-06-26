@@ -17,7 +17,7 @@
 
 ## 安装
 ```shell
-npm install asrv
+npm install asrv -D
 ```
 ## 使用
 
@@ -32,12 +32,12 @@ export default defineConfig({
   port: 9000,
   server: {
     // mock数据, 自动生成接口
-    db:{
+    db: {
       users: [
         {
           id: 1,
           name: '张三'
-        }，
+        },
         {
           id: 2,
           name: '李四'
@@ -76,7 +76,7 @@ $ curl http://localhost:9000/user
   {
     "id": 1,
     "name": '张三'
-  }，
+  },
   {
     "id": 2,
     "name": '李四'
@@ -148,7 +148,7 @@ $ curl http://localhost:9000/user
 
 ```ts
 // asrv.config.ts
-import { defineConfig, mock } from './dist/index'
+import { defineConfig, mock } from 'asrv'
 
 export default defineConfig({
   port: 9000,
@@ -217,7 +217,7 @@ $ curl http://localhost:9000/api/user
 非必要部分被省略， 接口mock和重定向，与上面一致
 
 ```ts
-import { defineConfig, mock } from './dist/index'
+import { defineConfig, mock } from 'asrv'
 
 export default defineConfig({
   port: 9000,
@@ -293,15 +293,6 @@ delete请求操作，返回拦截后的数据
 
 ```shell
 $ http DELETE http://localhost:9000/api/user/F27ABdcB-1Ab6-c37f-d7f1-DcB4d1Bf3C15
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-Connection: keep-alive
-Content-Length: 35
-Content-Type: application/json; charset=utf-8
-Date: Wed, 25 Jun 2025 11:53:45 GMT
-ETag: W/"23-dtOKsPC9fU6cUvZdm5ZzPrg6ycE"
-Keep-Alive: timeout=5
-X-Powered-By: Express
 
 {
     "code": 0,
@@ -313,15 +304,6 @@ post请求操作
 
 ```shell
 $ http POST http://localhost:9000/api/user name=windyeasy email=test@qq.com address=testAddress phone=123456789
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-Connection: keep-alive
-Content-Length: 35
-Content-Type: application/json; charset=utf-8
-Date: Wed, 25 Jun 2025 12:00:15 GMT
-ETag: W/"23-EElcT2sjIuMSY8rZcDGQpKq+b10"
-Keep-Alive: timeout=5
-X-Powered-By: Express
 
 {
     "code": 0,
@@ -329,6 +311,270 @@ X-Powered-By: Express
 }
 ```
 
+### 定义接口（API配置项使用）
+
+#### 基础使用
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      api: {
+        'user': {
+        //  接口地址：/api/user/detail, 这样定义相当于：`get detail`
+          'detail': '用户详情',
+          // 可以设置请求方式，并且可以通过JSON.stringify()返回json数据
+          'post add': JSON.stringify({
+            code: 0,
+            message: '添加成功',
+          }),
+        },
+        'posts/list': JSON.stringify({
+          code: 0,
+          message: '获取列表成功',
+          data: [
+            { id: 1, title: '文章1' },
+            { id: 2, title: '文章2' },
+            { id: 3, title: '文章3' },
+          ],
+        }),
+      },
+    },
+  },
+})
+```
+
+```shell
+$ curl http://localhost:9000/api/user/detail
+用户详情
+```
+
+```shell
+$ http POST http://localhost:9000/api/user/add
+
+{
+    "code": 0,
+    "message": "添加成功"
+}
+```
+
+```shell
+$ curl http://localhost:9000/api/posts/list
+{
+  "code": 0,
+  "message": "获取列表成功",
+  "data": [
+    {
+      "id": 1,
+      "title": "文章1"
+    },
+    {
+      "id": 2,
+      "title": "文章2"
+    },
+    {
+      "id": 3,
+      "title": "文章3"
+    }
+  ]
+}
+```
+
+#### 使用的中间件函数
+
+支持单个，并且支持数组传入多个
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      api: {
+        // 中间件基础使用
+        'post posts/add': function (_, res) {
+          res.json({
+            code: 0,
+            message: '帖子创建成功',
+          })
+        },
+        // 通过数组传入数组传入中间件
+        'post login': [
+          function (req, res, next) {
+            const body = req.body
+            if (body.username === 'admin' && body.password === 'admin') {
+              next()
+            }
+            else {
+              // 提前提示错误
+              res.json({
+                code: -101,
+                message: '用户名或密码错误',
+              })
+            }
+          },
+          function (_, res) {
+            res.json({
+              code: 0,
+              message: '登录成功',
+            })
+          },
+        ],
+      },
+    },
+  },
+})
+```
+
+增加添加帖子的接口演示
+
+```shell
+$ http POST http://localhost:9000/api/posts/add
+
+{
+    "code": 0,
+    "message": "帖子创建成功"
+}
+```
+
+测试多个中间件的使用方法
+
+没有通过验证
+
+```shell
+$ http POST http://localhost:9000/api/login username=test password=123456
+
+{
+    "code": -101,
+    "message": "用户名或密码错误"
+}
+```
+
+#### 使用`useData`
+
+可以与JSONServer的数据结合使用，提供一个`useData`获取数据
+
+```ts
+import { defineConfig, useData } from 'asrv'
+
+interface DBType {
+  user: {
+    id: number
+    name: string
+  }[]
+}
+export default defineConfig({
+  port: 9000,
+  server: {
+    db: {
+      user: [
+        {
+          id: 1,
+          name: 'windyeasy',
+        },
+        {
+          id: 2,
+          name: 'xiaoming',
+        },
+      ],
+    },
+    api: {
+      api: {
+        'delete user/remove/:id': async function (req, res) {
+          const { id } = req.params
+          // 传入泛型，提供更好的类型提示
+          const [data, setData] = await useData<DBType>(req)
+          const index = data.user.findIndex(item => item.id === +id)
+          data.user.splice(index, 1)
+          await setData(data)
+          res.json({
+            code: 200,
+            message: '删除成功',
+          })
+        },
+      },
+    },
+  },
+})
+```
+
+查看原始数据
+
+```shell
+curl http://localhost:9000/user
+[
+  {
+    "id": "1",
+    "name": "windyeasy"
+  },
+  {
+    "id": "2",
+    "name": "xiaoming"
+  }
+]
+```
+
+调用删除接口，并验证数据
+
+```shell
+$ http DELETE http://localhost:9000/api/user/remove/2
+
+{
+    "code": 200,
+    "message": "删除成功"
+}
+```
+
+验证数据
+
+```shell
+$ curl http://localhost:9000/user
+
+[
+  {
+    "id": "1",
+    "name": "windyeasy"
+  }
+]
+```
+
+#### swagger的使用
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      /**
+       * @openapi
+       * /api/hello:
+       *   get:
+       *     description: Welcome to swagger-jsdoc!
+       *     responses:
+       *       200:
+       *         description: Returns a mysterious string.
+       */
+      '/api/hello': 'hello world',
+    },
+  },
+})
+```
+
+可以点击打开脚手架展示连接：http://localhost:9000，有一个页面展示swgger的地址
+
+![](./assets/0.png)
+
+![](./assets/1.png)
+
+### 分模块
+
+### 日志使用
 
 ## README-TODO
 
@@ -390,6 +636,7 @@ X-Powered-By: Express
     - [x] 默认值false
     - [x] level 默认info
 - [x]修改配置文件过程中出错导致进程死亡，待修复
+  - [x] 获取deps有错误，要支持文件通配符
 - [ ] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
