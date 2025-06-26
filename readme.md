@@ -572,45 +572,48 @@ export default defineConfig({
 
 ![](./assets/1.png)
 
-### 分模块
-
 ### 日志使用
+
+日志功能默认是关闭的，需要打开。打开文件日志会创建一个日志文件，放在`/asrv/logs/`目录下
+
+```ts
+import { defineConfig } from './dist/index'
+
+export default defineConfig({
+  port: 9000,
+  logger: {
+    // 开启日志，默认并开启控制台日志
+    enable: true,
+    // 开启文件日志
+    enableFile: true,
+  },
+  server: {
+    api: {
+      /**
+       * @openapi
+       * /api/hello:
+       *   get:
+       *     description: Welcome to swagger-jsdoc!
+       *     responses:
+       *       200:
+       *         description: Returns a mysterious string.
+       */
+      '/api/hello': 'hello world',
+    },
+  },
+})
+```
+
+### 分模块使用
 
 ## README-TODO
 
-1. JSONServer
-   1. 接口的基础MOCK
-   2. MOCK文档
-   3. 如何访问接口
-   4. JSONServer文档
-   5. 重定向使用
-   6. JSONServer拦截器的使用
-2. API定义
-   1. 基础定义
-      1. 字符串
-         1. 默认
-         2. JSON.stringify
-      2. 函数
-         1. 默认
-         2. 使用jsonServerData
-      3. 中间件数组
-   2. 分模块定义
-      1. `$deps`的使用
-      2. defineServerConfig
-      3. defineApiConfig
-   3. swagger的使用
-      1. 使用swagger案例
-3. 日志使用
-4. 代理工能使用
+1. 日志使用
+2. 分模块使用
+3. 代理功能使用
 
 ## TODO
 
-- [x] 实现代理功能
-- [x] 实现插件系统
-- [x] 拦截所有的请求
-- [x] defineConfig
-- [x] cli
-- [x] 监听文件变化重启服务
 - [ ] client-plugin
   - [x] 描述
   - [ ] 展示所有接口
@@ -623,12 +626,11 @@ export default defineConfig({
   - [x] 为API添加swagger
   - [ ] 为json-server添加swagger生成描述文件
   - [ ] ws处理
-
 - [x] 日志功能
 - [x] 添加MOCK函数
 - [x] proxy提示
-- [x] defineServer
-- [x] defineApi
+- [x] defineServerConfig
+- [x] defineApiConfig
 - [ ] 接口定义处理
   - [x] useData不放在中间件中
   - [x] 定义接口时可以传入多个中间件
