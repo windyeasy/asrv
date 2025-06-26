@@ -2,7 +2,7 @@ import type { Request } from 'express'
 import type { Data } from '@/plugins/server-plugin/service'
 import { useContext } from './useContext'
 
-export async function useData<T extends Data>(request: Request): Promise<[T, (data: T) => void]> {
+export async function useData<T = Data>(request: Request): Promise<[T, (data: T) => void]> {
   const context = useContext(request)
 
   if (!context) {

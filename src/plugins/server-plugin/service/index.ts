@@ -2,7 +2,11 @@ import type { Low } from 'lowdb'
 import { Service } from '@windyeasy/json-server'
 
  type AnyO = Record<string, any>
-export type Data = Record<string, Array<any> | AnyO>
+export interface Data {
+  [index: string]: any[] | AnyO
+  [index: number]: any[] | AnyO
+
+}
 export type DbType = Low<Data>
 
 export class AsrvService extends Service {
@@ -16,13 +20,13 @@ export class AsrvService extends Service {
     return this.#database.write()
   }
 
-  getData<T extends Data>(): T {
+  getData<T = Data>(): T {
     return this.#database.data as T
   }
 
-  async setData(data: Data): Promise<void> {
+  async setData<T = Data>(data: T): Promise<void> {
     if (this.#database.data !== data) {
-      this.#database.data = data
+      (this.#database.data as T) = data
       return this.write()
     }
   }
