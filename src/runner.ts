@@ -8,7 +8,8 @@ import chalk from 'chalk'
 import chokidar from 'chokidar'
 import pkg from '../package.json'
 import { createApp } from './app'
-import { parseDepPaths, resloveConfig } from './config'
+import { parseDepPaths, resloveConfig, __dirname} from './config'
+import path from 'node:path'
 
 /**
  * 获取本机所有可通过网络访问的 IPv4 地址
@@ -97,9 +98,8 @@ function startServer(args: string[]) {
   if (child) {
     child.kill()
   }
-  child = fork('./bin/child-runner.mjs', args, {
-    cwd: process.cwd(),
-  })
+  const childPath = path.resolve(__dirname, '../bin/child-runner.mjs')
+  child = fork(childPath, args)
   child.on('exit', (code) => {
     if (code !== 0) {
       console.error(`❌ Service restart failed please check the configuration`)

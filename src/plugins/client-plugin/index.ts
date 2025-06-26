@@ -1,7 +1,7 @@
 import type { PluginType } from '@/plugin-deriver'
 import type { Context } from '@/types'
 import path from 'node:path'
-import process from 'node:process'
+import { __dirname } from '@/config'
 import express from 'express'
 
 export default function clientPlugin(): PluginType {
@@ -9,7 +9,7 @@ export default function clientPlugin(): PluginType {
     name: 'client-plugin',
     apply: (context: Context) => {
       const app = context.app
-      const staticPath = path.resolve(process.cwd(), 'packages/web/dist')
+      const staticPath = path.resolve(__dirname, '../packages/web/dist')
       // 挂载静态目录
       app.use(express.static(staticPath))
     },
