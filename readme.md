@@ -31,7 +31,6 @@ import { defineConfig, mock } from 'asrv'
 export default defineConfig({
   port: 9000,
   server: {
-    // mock数据, 自动生成接口
     db: {
       users: [
         {
@@ -48,7 +47,7 @@ export default defineConfig({
 })
 ```
 
-在控制台使用CLI，默认会查询项目跟目录的`asrv.config.js/asrv.config.ts/asrv.config.mjs`等文件。
+在控制台使用CLI，默认会查询项目根目录的`asrv.config.js/asrv.config.ts/asrv.config.mjs`等文件。
 
 ```bash
 npx asrv
@@ -84,7 +83,7 @@ $ curl http://localhost:9000/user
 ]
 ```
 
-### 使用搭配mock基础使用
+### 搭配mock基础使用
 ```ts
 // asrv.config.ts
 import { defineConfig, mock } from 'asrv'
@@ -144,7 +143,7 @@ $ curl http://localhost:9000/user
 ]
 ```
 
-#### 使用重定向为json-server的接口加前缀`api`
+#### 使用重定向配置为json-server的接口添加`api`前缀
 
 ```ts
 // asrv.config.ts
@@ -385,7 +384,7 @@ $ curl http://localhost:9000/api/posts/list
 
 #### 使用的中间件函数
 
-支持单个，并且支持数组传入多个
+支持单个，并且支持通过数组传入多个中间件函数
 
 ```ts
 import { defineConfig } from 'asrv'
@@ -698,8 +697,6 @@ export default defineConfig({
   - [x] 日志功能从新定义
     - [x] 默认值false
     - [x] level 默认info
-- [x]修改配置文件过程中出错导致进程死亡，待修复
-  - [x] 获取deps有错误，要支持文件通配符
 - [ ] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
