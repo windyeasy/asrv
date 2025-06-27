@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-const origin = location.origin
+const baseServerUrl = ref('')
+if (import.meta.env.MODE === 'development') {
+  baseServerUrl.value = 'http://localhost:9000'
+}
+else if (import.meta.env.MODE === 'production') {
+  baseServerUrl.value = location.origin
+}
 </script>
 
 <template>
@@ -15,11 +21,11 @@ const origin = location.origin
         <div class="link">
           <a
             rel="noreferrer"
-            :href="`${origin}/api-swagger-doc`"
+            :href="`${baseServerUrl}/api-swagger-doc`"
             target="_blank"
             class=" text-green"
           >
-            {{ origin }}/api-swagger-doc
+            {{ baseServerUrl }}/api-swagger-doc
           </a>
         </div>
       </section>
@@ -38,6 +44,7 @@ const origin = location.origin
           </a>
         </div>
       </section> -->
+      
     </main>
   </div>
 </template>
