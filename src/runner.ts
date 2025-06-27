@@ -3,13 +3,13 @@ import type { Server } from 'node:http'
 import type { AppConfig, AppConfigCbType } from './types'
 import { fork } from 'node:child_process'
 import os from 'node:os'
+import path from 'node:path'
 import process from 'node:process'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
 import pkg from '../package.json'
 import { createApp } from './app'
-import { parseDepPaths, resloveConfig, __dirname} from './config'
-import path from 'node:path'
+import { __dirname, parseDepPaths, resloveConfig } from './config'
 
 /**
  * 获取本机所有可通过网络访问的 IPv4 地址
@@ -55,7 +55,7 @@ function printProxyTips(addresses: string[], config: AppConfig['proxy']): void {
 export function runApp(configOrCb: AppConfig | AppConfigCbType): Server {
   const config: AppConfig = typeof configOrCb === 'function' ? configOrCb() : configOrCb
   const app = createApp(config)
-
+  config.port = config.port || 9000
   const server = app.listen(config.port!, '0.0.0.0', () => {
     const addresses = getAccessibleAddresses(config.port!)
     // 提示代理信息
