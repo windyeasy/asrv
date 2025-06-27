@@ -606,11 +606,72 @@ export default defineConfig({
 
 ### 分模块使用
 
-## README-TODO
+当需要定义的接口数量过多时不利于维护，建议将接口定义在多个模块中，提供的`defineServerConfig`和`defineApiConfig`, 支持更好的提示
 
-1. 日志使用
-2. 分模块使用
-3. 代理功能使用
+```ts
+// asrv/api.ts
+import { defineApiConfig } from 'asrv'
+
+export default defineApiConfig({
+  frontapi: {
+    user: '用户列表',
+    posts: '文章列表',
+  },
+})
+```
+
+提供了`$deps`配置传入依赖文件，当文件发生修改时，会自动重启服务，为什么要使用配置呢？
+
+- 由于监听当前项目的所有文件发生修改，可能会导致性能问题，过程因此建议使用配置文件来监听文件修改
+
+```ts
+// asrv.config.ts
+
+import { defineConfig } from 'asrv'
+import frontApi from './asrv/api'
+
+export default defineConfig({
+  port: 9000,
+  // 定义依赖文件, 支持文件通配符，当依赖文件变化时，重启服务
+  $deps: ['./asrv/*.ts'],
+  server: {
+    api: {
+      // 使用模块进行扩展
+      ...frontApi,
+    },
+  },
+})
+```
+
+提供了`defineServerConfig`方法，可以将`server`配置项使用其他模块进行设置
+
+### 代理功能使用
+
+与`vite`的代理配置基本一致，注意：当定义了接口与接口名称相同时，请求优先使用定义的，如果需要关闭定义的接口请使用`enableServer`配置
+
+```ts
+import { defineConfig } from './dist'
+
+export default defineConfig({
+  port: 9000,
+
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3000/api',
+      changeOrigin: true,
+    },
+  },
+  // 当为false, server定义的接口将不会启用
+  enableServer: true,
+  server: {
+    api: {
+      api: {
+        '/api/user': 'user'
+      }
+    },
+  },
+})
+```
 
 ## TODO
 
