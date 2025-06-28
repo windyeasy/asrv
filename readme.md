@@ -32,7 +32,7 @@ export default defineConfig({
   port: 9000,
   server: {
     db: {
-      users: [
+      user: [
         {
           id: 1,
           name: '张三'
