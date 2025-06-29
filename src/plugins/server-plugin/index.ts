@@ -1,7 +1,7 @@
 import type { PluginType } from '@/plugin-deriver'
 import type { Context } from '@/types'
-import chalk from 'chalk'
-import { addJonServer } from './json-server'
+
+import { useJsonServer } from './json-server'
 import { useSwagger } from './swagger'
 import { apiRegister, changeRedirectApiPrefix } from './utils'
 
@@ -26,15 +26,8 @@ export function applayServer(context: Context): void {
       return next()
     })
   }
-
-  const db = serverConfig.db
-  if (!db) {
-    console.warn(chalk.yellow('[json-server] db is not defined'))
-    return
-  }
-
-  // add json server
-  addJonServer(context, db)
+  // json-server
+  useJsonServer(context)
 }
 
 export default function serverPlugin(): PluginType {
