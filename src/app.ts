@@ -45,7 +45,14 @@ export function createApp(config: AppConfig): Express {
   app.use((req, res, next) => {
     context.request = req
     context.response = res
-    app.locals.context = context
+
+    // 静止修改app.locals的context
+    Object.defineProperty(app.locals, 'context', {
+      value: context, // 原始对象，不冻结
+      writable: false, // ✅ 不能重新赋值
+      configurable: false, // ✅ 不能重新定义
+      enumerable: true,
+    })
     return next()
   })
   // 是否开启日志
