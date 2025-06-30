@@ -140,15 +140,14 @@ export async function addJonServer(context: Context, db: Low<Data>): Promise<voi
 }
 
 /**
- * 
+ *
  * test:
  *  1. static
- *     
+ *
  */
 export function useJsonServer(context: Context): void {
   const serverConfig = context.config.server!
   const data = serverConfig.db
-  console.log(data, 'test data')
   if (!serverConfig.dbFilePath && !data) {
     console.warn(chalk.yellow('[json-server] db is not defined'))
     return
