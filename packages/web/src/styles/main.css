@@ -5,25 +5,38 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+
 }
 
 :root {
-  --a-color: #666;
+  --icon-a-color: #666;
+  --icon-a-hover-color: #333;
+  --a-color: #686868;
   --a-hover-color: #333;
   --text-color: #333;
   --text-sub-color: #555;
+  --theme-color: #49cc90;
 }
 
 html.dark {
   background: #121212;
   color-scheme: dark;
-  --a-color: #eee;
-  --a-hover-color: #f5f5f5;
-  --text-color: #333;
+  --icon-a-color: #eee;
+  --icon-a-hover-color: #f5f5f5;
+  --a-color: #aaa;
+  --a-hover-color: #fff;
+  --text-color: #f5f5f5;
   --text-sub-color: #aaa;
 }
 
 .wrapper {
   margin: 0 auto;
   max-width: 900px;
+}
+
+.theme-color {
+  color: var(--theme-color);
+}
+.theme-bg {
+  background: var(--theme-color);
 }

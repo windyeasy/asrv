@@ -1,8 +1,8 @@
 import type { PluginType } from '@/plugin-deriver'
 import type { Context } from '@/types'
 import path from 'node:path'
-import { __dirname } from '@/config'
 import express from 'express'
+import { __dirname } from '@/config'
 
 export default function clientPlugin(): PluginType {
   return {

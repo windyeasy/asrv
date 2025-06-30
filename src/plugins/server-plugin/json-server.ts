@@ -139,12 +139,6 @@ export async function addJonServer(context: Context, db: Low<Data>): Promise<voi
   bindRouter(context, service)
 }
 
-/**
- *
- * test:
- *  1. static
- *
- */
 export function useJsonServer(context: Context): void {
   const serverConfig = context.config.server!
   const data = serverConfig.db
@@ -188,8 +182,12 @@ export function useJsonServer(context: Context): void {
       }
     }
   }
-  let writing = false
   const observer = new Observer(adapter)
+  const db = new Low(observer, data!)
+  let writing = false
+  let prevEndpoints = ''
+  let routes = data ? Object.keys(data) : []
+
   observer.onWriteStart = () => {
     writing = true
   }
@@ -197,7 +195,21 @@ export function useJsonServer(context: Context): void {
     writing = false
   }
 
-  const db = new Low(observer, data!)
+  observer.onReadStart = () => {
+    prevEndpoints = JSON.stringify(Object.keys(db.data).sort())
+  }
+  observer.onReadEnd = (data) => {
+    if (data === null) {
+      return
+    }
+
+    const nextEndpoints = JSON.stringify(Object.keys(data).sort())
+    if (prevEndpoints !== nextEndpoints) {
+       routes = Object.keys(data)
+     
+    }
+  }
+
   if (dbFilePath) {
     watch(dbFilePath).on('change', () => {
       if (!writing) {
@@ -212,5 +224,9 @@ export function useJsonServer(context: Context): void {
       }
     })
   }
+  const app = context.app
+  app.get('/json-server-routes', (_, res) => {
+    res.json(routes)
+  })
   addJonServer(context, db)
 }

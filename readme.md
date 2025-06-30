@@ -684,8 +684,9 @@ export default defineConfig({
   - [x] json-server
   - [x] json-server拦截器-由拦截器进行返回
   - [x] 为API添加swagger
-  - [ ] 为json-server添加swagger生成描述文件
-  - [ ] ws处理
+  - [ ]  ws处理
+  - [ ] 输出json-server接口接地址
+
 - [x] 日志功能
 - [x] 添加MOCK函数
 - [x] proxy提示
@@ -697,7 +698,7 @@ export default defineConfig({
   - [x] 日志功能从新定义
     - [x] 默认值false
     - [x] level 默认info
-- [ ] 数据持久化
+- [x] 数据持久化
 - [ ] history-plugin
   - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
   - [ ] 先不考虑文件上传接口
