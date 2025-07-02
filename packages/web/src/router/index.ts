@@ -6,6 +6,14 @@ export default createRouter({
       path: '/',
       component: () => import('@/views/home/index.vue'),
     },
+    {
+      path: '/history',
+      component: () => import('@/views/history/index.vue'),
+    },
+    {
+      path: '/history-detail',
+      component: () => import('@/views/history/detail.vue'),
+    },
   ],
   history: createWebHashHistory(),
 })

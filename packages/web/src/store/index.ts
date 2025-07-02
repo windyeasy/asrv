@@ -1,3 +1,12 @@
+import type { App } from 'vue'
 import { createPinia } from 'pinia'
+import useHistoryStore from './history'
 
-export default createPinia()
+const pinia = createPinia()
+function registerPinia(app: App<Element>) {
+  app.use(pinia)
+  const loginStore = useHistoryStore()
+  loginStore.loadLocalCurrent()
+}
+
+export default registerPinia

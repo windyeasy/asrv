@@ -16,6 +16,9 @@ body,
   --text-color: #333;
   --text-sub-color: #555;
   --theme-color: #49cc90;
+
+
+
 }
 
 html.dark {
@@ -27,6 +30,7 @@ html.dark {
   --a-hover-color: #fff;
   --text-color: #f5f5f5;
   --text-sub-color: #aaa;
+
 }
 
 .wrapper {
@@ -39,4 +43,8 @@ html.dark {
 }
 .theme-bg {
   background: var(--theme-color);
+}
+
+.text-color {
+  color: var(--text-color);
 }

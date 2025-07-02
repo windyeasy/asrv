@@ -1,24 +1,6 @@
 <script lang="ts" setup>
-import Request from '@/services/request'
-
-const baseServerUrl = ref('')
-if (import.meta.env.MODE === 'development') {
-  baseServerUrl.value = import.meta.env.VITE_BASE_URL
-}
-else if (import.meta.env.MODE === 'production') {
-  baseServerUrl.value = location.origin
-}
-
-const request = new Request({
-  baseURL: baseServerUrl.value,
-  timeout: 10000,
-  interceptors: {
-
-    responseSuccessFn: (res) => {
-      return res.data
-    },
-  },
-})
+import request from '@/services'
+import { BASE_URL } from '@/services/config'
 
 const jsonServerRoutes = ref<string[]>([])
 
@@ -42,28 +24,26 @@ request.get<string[]>({
         <div class="link">
           <a
             rel="noreferrer"
-            :href="`${baseServerUrl}/api-swagger-doc`"
+            :href="`${BASE_URL}/api-swagger-doc`"
             target="_blank"
           >
-            {{ baseServerUrl }}/api-swagger-doc
+            {{ BASE_URL }}/api-swagger-doc
           </a>
         </div>
       </section>
-      <!-- <section class="flex py-2">
+      <section class="flex py-2">
         <div class="title mr-2">
           History:
         </div>
         <div class="link">
-          <a
+          <router-link
             rel="noreferrer"
-            href="https://api.juejin.cn/swagger-ui/index.html"
-            target="_blank"
-            class="text-green"
+            to="/history"
           >
-            https://api.juejin.cn/swagger-ui/index.html
-          </a>
+            {{ BASE_URL }}/#/history
+          </router-link>
         </div>
-      </section> -->
+      </section>
       <section class="json-server-routes">
         <div class="title">
           JSON-Server-Routes:
@@ -72,10 +52,10 @@ request.get<string[]>({
           <div v-for="route in jsonServerRoutes" :key="route" class="route">
             <a
               rel="noreferrer"
-              :href="`${baseServerUrl}/${route}`"
+              :href="`${BASE_URL}/${route}`"
               target="_blank"
             >
-              {{ baseServerUrl }}/{{ route }}
+              {{ BASE_URL }}/{{ route }}
             </a>
           </div>
         </div>

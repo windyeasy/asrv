@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 
 import 'normalize.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import 'virtual:uno.css'
 import '@/styles/main.css'
 
