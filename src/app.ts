@@ -56,8 +56,7 @@ export function createApp(config: AppConfig): Express {
     })
     return next()
   })
-  // 使用历史记录
-  useHistory(context)
+
   // 是否开启日志
   const loggerConfig = config.logger ?? { enable: false, enableFile: false }
 
@@ -75,7 +74,8 @@ export function createApp(config: AppConfig): Express {
   app.use(cors())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-
+  // 使用历史记录
+  useHistory(context)
   // 配置代理
   if (config.proxy) {
     useProxyMiddlewares(app, config.proxy)

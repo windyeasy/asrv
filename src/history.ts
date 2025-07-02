@@ -8,6 +8,9 @@ export const historyBlackListDefault = [
   'asrv-history',
   'api-swagger-doc',
   'assets',
+  'json-server-router',
+  'well-known',
+  'vite',
 ]
 
 // 获取历史数据
