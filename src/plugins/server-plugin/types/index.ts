@@ -34,7 +34,11 @@ export interface IServer {
    * - `'dynamic'`: 动态模式，不会生成文件，会直接使用db对象，和mock结合使用可以实现重启后数据不一致
    * @default 'dynamic'
    */
-  mode?: 'static' | 'dynamic',
+  mode?: 'static' | 'dynamic'
+  /**
+   * json-server数据库文件路径
+   * @description - 默认为`process.cwd()/asrv/data/db.json`
+   */
   dbFilePath?: string
 }
 

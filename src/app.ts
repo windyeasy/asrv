@@ -3,6 +3,7 @@ import type { PluginType } from './plugin-deriver'
 import type { AppConfig, Context, InterceptInfo } from './types'
 import cors from 'cors'
 import express from 'express'
+import { useHistory } from './history'
 import { createLoggerMiddleware } from './logger'
 import createInterceptMiddleware from './middleware/intercept'
 import { useProxyMiddlewares } from './middleware/proxy'
@@ -55,6 +56,8 @@ export function createApp(config: AppConfig): Express {
     })
     return next()
   })
+  // 使用历史记录
+  useHistory(context)
   // 是否开启日志
   const loggerConfig = config.logger ?? { enable: false, enableFile: false }
 

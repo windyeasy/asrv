@@ -158,7 +158,7 @@ export function useJsonServer(context: Context): void {
       if (!existsSync(path.dirname(dbFilePath))) {
         mkdirSync(path.dirname(dbFilePath), { recursive: true })
       }
-      // 文件存在，不创建
+      // 文件不存在，创建
       if (!existsSync(dbFilePath))
         writeFileSync(dbFilePath, JSON.stringify(data || {}, null, 2))
     }

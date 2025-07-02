@@ -74,13 +74,25 @@ export interface AppConfig {
     level?: 'info' | 'warn' | 'error'
   }
   /**
+   * 是否开启json-server的history模式
+   * @description - 默认开启
+   * @default true
+   */
+  enableHistory?: boolean
+  /**
+   * history模式黑名单，有些接口不需要记录历史，可以配置url
+   * 传入的会与默认的进行合并
+   * @default ['asrv-history', 'api-swagger-doc']
+   */
+  historyBlackList?: string[]
+  /**
    * swagger依赖文件，自动解析注入不需要手动传入
    */
   swaggerDeps?: string[]
 }
 
 export interface Context {
-  app: Express,
+  app: Express
   config: AppConfig
   request?: Express.Request
   response?: Express.Response
@@ -88,6 +100,5 @@ export interface Context {
   interceptInfos?: InterceptInfo[]
   server?: ServerContext
 }
-
 
 export type AppConfigCbType = () => AppConfig

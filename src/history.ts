@@ -1,0 +1,105 @@
+import type { Context, MiddlewareType } from './types'
+import { existsSync, mkdirSync, read, readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
+import { useContext } from './hooks'
+
+export const historyBlackListDefault = [
+  'asrv-history',
+  'api-swagger-doc',
+  'assets',
+]
+
+// 获取历史数据
+export function getHistoryFile(): Record<string, any>[] {
+  const historyPath = path.join(process.cwd(), './asrv/data/history.json')
+  if (!existsSync(historyPath)) {
+    return []
+  }
+  const fileData = readFileSync(historyPath, 'utf-8')
+  try {
+    return JSON.parse(fileData)
+  }
+  catch (error) {
+    console.warn('Parse history  error:', error)
+  }
+  return []
+}
+
+// 保存历史数据
+export function saveHistoryFile(data: Record<string, any> | any[]): void {
+  const historyPath = path.join(process.cwd(), './asrv/data/history.json')
+  if (!existsSync(path.dirname(historyPath))) {
+    mkdirSync(path.dirname(historyPath), { recursive: true })
+  }
+  const historyData = getHistoryFile()
+  historyData.push(data)
+  writeFileSync(historyPath, JSON.stringify(historyData, null, 2))
+}
+
+/**
+ * 匹配历史记录黑名单
+ * @param url - 请求url
+ * @param blackList - 黑名单
+ * @returns - 是否匹配
+ */
+function matchBlackList(url: string, blackList: string[]): boolean {
+  if (url === '/') {
+    return true
+  }
+
+  for (let i = 0; i < blackList.length; i++) {
+    const item = blackList[i]
+    if (url.includes(item)) {
+      return true
+    }
+  }
+  return false
+}
+
+// 创建历史记录中间件
+export function createHistoryMiddleware(enable: boolean = true): MiddlewareType {
+  return (request, _, next) => {
+    // 处理黑名单
+    const context = useContext(request)
+    const historyBlackList = context!.config?.historyBlackList || []
+    historyBlackList.push(...historyBlackListDefault)
+
+    const { method, url, body, query, params } = request
+    console.log(url, 'test url')
+    if (matchBlackList(url, historyBlackList) || !enable) {
+      return next()
+    }
+    const timestamp = Date.now()
+    const interceptRequestInfo = {
+      url,
+      method,
+      headers: request.headers,
+      body,
+      query,
+      params,
+      timestamp,
+    }
+    saveHistoryFile(interceptRequestInfo)
+    // add relay-api-response-headers, 实现前端后在返回
+    //     res.set({
+    //   'Content-Type': 'application/json',
+    //   'Cache-Control': 'no-cache',
+    //   'X-Custom-Header': '12345'
+    // });
+    return next()
+  }
+}
+
+// 通过接口获取历史数据
+export const getHistoryDataMiddleware: MiddlewareType = (_, res) => {
+  const data = getHistoryFile()
+  res.json(data)
+}
+
+// 使用历史记录
+export function useHistory(context: Context): void {
+  const { config } = context
+  context.app.use(createHistoryMiddleware(config.enableHistory))
+  context.app.get('/asrv-history', getHistoryDataMiddleware)
+}
