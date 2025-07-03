@@ -11,6 +11,7 @@ export const historyBlackListDefault = [
   'json-server-routes',
   'vite',
   'favicon.ico',
+  '#',
 ]
 
 // 获取历史数据
@@ -62,7 +63,7 @@ function matchBlackList(url: string, blackList: string[]): boolean {
 
 // 创建历史记录中间件
 export function createHistoryMiddleware(enable: boolean = true): MiddlewareType {
-  return (request, _, next) => {
+  return (request, res, next) => {
     // 处理黑名单
     const context = useContext(request)
     const historyBlackList = context!.config?.historyBlackList || []
@@ -83,12 +84,10 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
       timestamp,
     }
     saveHistoryFile(interceptRequestInfo)
-    // add relay-api-response-headers, 实现前端后在返回
-    //     res.set({
-    //   'Content-Type': 'application/json',
-    //   'Cache-Control': 'no-cache',
-    //   'X-Custom-Header': '12345'
-    // });
+    // todo: 使用别人能使用的地址
+    // res.set({
+    //   'X-Debug-Replay-Address': `http://127.0.0.1:8080/#//history-detail/${timestamp}`,
+    // })
     return next()
   }
 }
