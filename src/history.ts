@@ -8,9 +8,9 @@ export const historyBlackListDefault = [
   'asrv-history',
   'api-swagger-doc',
   'assets',
-  'json-server-router',
-  'well-known',
+  'json-server-routes',
   'vite',
+  'favicon.ico',
 ]
 
 // 获取历史数据
@@ -69,7 +69,6 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     historyBlackList.push(...historyBlackListDefault)
 
     const { method, url, body, query, params } = request
-    console.log(url, 'test url')
     if (matchBlackList(url, historyBlackList) || !enable) {
       return next()
     }
@@ -99,10 +98,25 @@ export const getHistoryDataMiddleware: MiddlewareType = (_, res) => {
   const data = getHistoryFile()
   res.json(data)
 }
+// 查询历史记录
+export const queryHistoryMiddleware: MiddlewareType = (request, res) => {
+  const { timestamp } = request.params
+  if (!timestamp) {
+    res.json({
+      code: -1,
+      message: '参数错误',
+    })
+    return
+  }
+  const data = getHistoryFile()
+  const historyData = data.find((item: any) => item.timestamp === Number(timestamp))
+  res.json(historyData)
+}
 
 // 使用历史记录
 export function useHistory(context: Context): void {
   const { config } = context
   context.app.use(createHistoryMiddleware(config.enableHistory))
+  context.app.get('/asrv-history/:timestamp', queryHistoryMiddleware)
   context.app.get('/asrv-history', getHistoryDataMiddleware)
 }
