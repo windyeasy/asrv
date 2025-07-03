@@ -684,23 +684,25 @@ export default defineConfig({
   - [x] json-server
   - [x] json-server拦截器-由拦截器进行返回
   - [x] 为API添加swagger
+  - [x] 输出json-server接口接地址
   - [ ]  ws处理
-  - [ ] 输出json-server接口接地址
 
 - [x] 日志功能
 - [x] 添加MOCK函数
 - [x] proxy提示
 - [x] defineServerConfig
 - [x] defineApiConfig
-- [ ] 接口定义处理
+- [x] 接口定义处理
   - [x] useData不放在中间件中
   - [x] 定义接口时可以传入多个中间件
   - [x] 日志功能从新定义
     - [x] 默认值false
     - [x] level 默认info
 - [x] 数据持久化
-- [ ] history-plugin
-  - [ ] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
+- [ ] history
+  - [x] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
+  - [ ] auto-remove
+    - [ ] 缓存时间
   - [ ] 先不考虑文件上传接口
 - [ ] readme
 - [ ] doc
