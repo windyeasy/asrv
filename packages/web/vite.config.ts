@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
@@ -6,17 +7,18 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
 
+const pathSrc = path.resolve(__dirname, 'src')
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     UnoCSS(),
     Components({
-      dts: true,
+      dts: 'types/components.d.ts',
       resolvers: [ElementPlusResolver()],
     }),
     AutoImport({
-      dts: true, // or a custom path
+      dts: 'types/auto-import.d.ts', // or a custom path
       include: [
         /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
         /\.vue$/,
@@ -28,9 +30,8 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
       ],
-      dirs: [
-        'src/composables/**',
-      ],
+
+      dirs: [path.resolve(pathSrc, 'composables')],
       resolvers: [ElementPlusResolver()],
     }),
   ],

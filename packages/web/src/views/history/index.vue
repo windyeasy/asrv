@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import type { AsrvHistory } from '@/utils/send'
 import request from '@/services'
-import useHistoryStore from '@/store/history'
 import { fmtDate } from '@/utils/format'
 import { sendRequest } from '@/utils/send'
 
-const historyList = ref<any[]>([])
+const historyList = ref<AsrvHistory[]>([])
+const isLoading = ref(true)
 request.get({
   url: '/asrv-history',
 }).then((res) => {
   historyList.value = res
+  isLoading.value = false
+}).catch(() => {
+  isLoading.value = false
 })
 const router = useRouter()
 function toDetail(data: AsrvHistory) {
-  useHistoryStore().changeCurrent(data)
-  router.push('/history-detail')
+  router.push(`/history-detail/${data.timestamp}`)
 }
 
 function send(info: AsrvHistory) {
@@ -29,7 +31,7 @@ function send(info: AsrvHistory) {
         History
       </div>
     </header>
-    <el-table :data="historyList" style="width: 100%">
+    <el-table v-loading="isLoading" :data="historyList" style="width: 100%">
       <el-table-column prop="Url" label="url">
         <template #default="scope">
           <el-link type="success" @click="toDetail(scope.row)">
@@ -49,7 +51,7 @@ function send(info: AsrvHistory) {
             Detail
           </el-button>
           <el-button link type="success" size="small" @click="send(scope.row)">
-            Send
+            Replay Send
           </el-button>
         </template>
       </el-table-column>

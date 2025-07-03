@@ -17,3 +17,13 @@ declare module '*.vue' {
   const component: DefineComponent<object, object, any>
   export default component
 }
+
+// src/types/vue-json-view.d.ts
+declare module '@matpool/vue-json-view' {
+  import type { DefineComponent } from 'vue'
+
+  const component: DefineComponent<{
+    src: string | Record<string, any>
+  }, object, any>
+  export default component
+}

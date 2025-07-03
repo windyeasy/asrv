@@ -11,7 +11,7 @@ export default createRouter({
       component: () => import('@/views/history/index.vue'),
     },
     {
-      path: '/history-detail',
+      path: '/history-detail/:timestamp',
       component: () => import('@/views/history/detail.vue'),
     },
   ],
