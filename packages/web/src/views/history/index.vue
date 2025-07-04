@@ -45,7 +45,7 @@ function send(info: AsrvHistory) {
           {{ fmtDate(scope.row.timestamp) }}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="Operations" width="120">
+      <el-table-column fixed="right" label="Operations" align="center" width="180">
         <template #default="scope">
           <el-button link type="success" size="small" @click="toDetail(scope.row)">
             Detail

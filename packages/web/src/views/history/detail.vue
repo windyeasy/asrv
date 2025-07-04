@@ -3,6 +3,7 @@ import VueJsonView from '@matpool/vue-json-view'
 import request from '@/services'
 import { type AsrvHistory, sendRequest } from '@/utils/send'
 
+const { isDark } = useTheme()
 const route = useRoute()
 const timestamp = route.params.timestamp
 
@@ -27,6 +28,10 @@ function send() {
     result.value = res
   })
 }
+
+const jsonViewTheme = computed(() => {
+  return isDark.value ? 'monokai' : 'rj-default'
+})
 </script>
 
 <template>
@@ -42,7 +47,7 @@ function send() {
           Request
         </div>
         <div class="content pt-2">
-          <VueJsonView :src="detailData" />
+          <VueJsonView :src="detailData" :theme="jsonViewTheme" />
         </div>
       </section>
     </main>
@@ -52,7 +57,7 @@ function send() {
           Result
         </div>
         <div class="content">
-          <VueJsonView :src="result" />
+          <VueJsonView :src="result" :theme="jsonViewTheme" />
         </div>
       </section>
     </footer>
