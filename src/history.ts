@@ -74,6 +74,7 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     if (matchBlackList(url, historyBlackList) || !enable) {
       return next()
     }
+    // todo: timestamp 有可以重复，要生成一个唯一id
     const timestamp = Date.now()
     const interceptRequestInfo = {
       url,
