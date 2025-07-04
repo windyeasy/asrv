@@ -12,6 +12,7 @@ export const historyBlackListDefault = [
   'vite',
   'favicon.ico',
   '#',
+  '.well-known',
 ]
 
 // 获取历史数据
