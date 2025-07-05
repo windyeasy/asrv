@@ -34,7 +34,10 @@
     "test": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
-    "lint:fix": "pnpm run lint --fix"
+    "lint:fix": "pnpm run lint --fix",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@windyeasy/json-server": "1.0.0-beta.3-fork.1",
@@ -70,6 +73,7 @@
     "tsx": "^4.20.1",
     "typescript": "^5.8.3",
     "unconfig": "^7.3.2",
+    "vitepress": "^1.6.3",
     "vitest": "^3.2.3"
   },
   "simple-git-hooks": {
