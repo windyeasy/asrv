@@ -15,10 +15,10 @@ export const historyBlackListDefault = [
   '#',
   '.well-known',
 ]
+export const historyPath = path.join(process.cwd(), './asrv/cache/history.json')
 
 // 获取历史数据
 export function getHistoryFile(): Record<string, any>[] {
-  const historyPath = path.join(process.cwd(), './asrv/data/history.json')
   if (!existsSync(historyPath)) {
     return []
   }
@@ -34,7 +34,6 @@ export function getHistoryFile(): Record<string, any>[] {
 
 // 保存历史数据
 export function saveHistoryFile(data: Record<string, any> | any[]): void {
-  const historyPath = path.join(process.cwd(), './asrv/data/history.json')
   if (!existsSync(path.dirname(historyPath))) {
     mkdirSync(path.dirname(historyPath), { recursive: true })
   }
