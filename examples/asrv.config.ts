@@ -1,4 +1,4 @@
-import { defineConfig, mock } from './dist/index'
+import { defineConfig, mock } from '../dist/index'
 
 export default defineConfig({
   server: {
