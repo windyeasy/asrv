@@ -5,12 +5,12 @@ import { type AsrvHistory, sendRequest } from '@/utils/send'
 
 const { isDark } = useTheme()
 const route = useRoute()
-const timestamp = route.params.timestamp
+const id = route.params.id
 
 const detailData = ref<AsrvHistory | null>(null)
 const isLoading = ref(true)
 request.get<AsrvHistory>({
-  url: `/asrv-history/${timestamp}`,
+  url: `/asrv-history/${id}`,
 
 }).then((res) => {
   detailData.value = res

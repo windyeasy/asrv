@@ -16,7 +16,7 @@ request.get({
 })
 const router = useRouter()
 function toDetail(data: AsrvHistory) {
-  router.push(`/history-detail/${data.timestamp}`)
+  router.push(`/history-detail/${data.id}`)
 }
 
 function send(info: AsrvHistory) {

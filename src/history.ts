@@ -2,6 +2,7 @@ import type { Context, MiddlewareType } from './types'
 import { existsSync, mkdirSync, read, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
+import { v4 as uuidv4 } from 'uuid'
 import { useContext } from './hooks'
 
 export const historyBlackListDefault = [
@@ -62,6 +63,16 @@ function matchBlackList(url: string, blackList: string[]): boolean {
   return false
 }
 
+export interface InterceptRequestInfo {
+  id: string
+  url: string
+  method: string
+  headers: Record<string, any>
+  body?: any
+  query?: any
+  params?: any
+  timestamp: number
+}
 // 创建历史记录中间件
 export function createHistoryMiddleware(enable: boolean = true): MiddlewareType {
   return (request, res, next) => {
@@ -74,9 +85,10 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     if (matchBlackList(url, historyBlackList) || !enable) {
       return next()
     }
-    // todo: timestamp 有可以重复，要生成一个唯一id
     const timestamp = Date.now()
+    const id = uuidv4()
     const interceptRequestInfo = {
+      id,
       url,
       method,
       headers: request.headers,
@@ -101,8 +113,8 @@ export const getHistoryDataMiddleware: MiddlewareType = (_, res) => {
 }
 // 查询历史记录
 export const queryHistoryMiddleware: MiddlewareType = (request, res) => {
-  const { timestamp } = request.params
-  if (!timestamp) {
+  const { id } = request.params
+  if (!id) {
     res.json({
       code: -1,
       message: '参数错误',
@@ -110,7 +122,7 @@ export const queryHistoryMiddleware: MiddlewareType = (request, res) => {
     return
   }
   const data = getHistoryFile()
-  const historyData = data.find((item: any) => item.timestamp === Number(timestamp))
+  const historyData = data.find((item: any) => item.id === id)
   res.json(historyData)
 }
 
@@ -118,6 +130,6 @@ export const queryHistoryMiddleware: MiddlewareType = (request, res) => {
 export function useHistory(context: Context): void {
   const { config } = context
   context.app.use(createHistoryMiddleware(config.enableHistory))
-  context.app.get('/asrv-history/:timestamp', queryHistoryMiddleware)
+  context.app.get('/asrv-history/:id', queryHistoryMiddleware)
   context.app.get('/asrv-history', getHistoryDataMiddleware)
 }
