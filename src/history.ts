@@ -97,10 +97,11 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
       timestamp,
     }
     saveHistoryFile(interceptRequestInfo)
-    // todo: 使用别人能使用的地址
-    // res.set({
-    //   'X-Debug-Replay-Address': `http://127.0.0.1:8080/#//history-detail/${timestamp}`,
-    // })
+    // 快捷获得replay地址， 在用户使用时可以不需要重新填写与后端联调更方便
+    const port = context?.config?.port || 9000
+    res.set({
+      'X-Debug-Replay-Address': `http://localhost:${port}/#/history-detail/${id}`,
+    })
     return next()
   }
 }
