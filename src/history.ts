@@ -38,7 +38,7 @@ export function saveHistoryFile(data: Record<string, any> | any[]): void {
     mkdirSync(path.dirname(historyPath), { recursive: true })
   }
   const historyData = getHistoryFile()
-  historyData.push(data)
+  historyData.unshift(data)
   writeFileSync(historyPath, JSON.stringify(historyData, null, 2))
 }
 
