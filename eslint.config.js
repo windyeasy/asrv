@@ -30,5 +30,6 @@ export default antfu({
     'no-console': 'off',
     'antfu/no-import-dist': 'off',
     'ts/explicit-function-return-type': 'off',
+    'array-callback-return': 'off',
   },
 })

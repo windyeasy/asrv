@@ -1,19 +1,13 @@
 import { defineConfig, mock } from '../dist/index'
 
+// text proxy
+// asrv -c ./examples/test.config.ts
 export default defineConfig({
-  proxy: {
-    '/api': {
-      target: 'http://localhost:8096',
-      changeOrigin: true,
-      pathRewrite: {
-        '^/api': '',
-      },
-    },
-  },
+  port: 8096,
   server: {
     mode: 'dynamic',
     db: mock({
-      'user|2-3': [
+      'posts|2-3': [
         {
           id: '@guid',
           name: '@cname',

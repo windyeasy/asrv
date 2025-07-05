@@ -4,6 +4,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { v4 as uuidv4 } from 'uuid'
 import { useContext } from './hooks'
+import { getProxyHosts } from './middleware/proxy'
 
 export const historyBlackListDefault = [
   'asrv-history',
@@ -75,8 +76,17 @@ export interface InterceptRequestInfo {
 // 创建历史记录中间件
 export function createHistoryMiddleware(enable: boolean = true): MiddlewareType {
   return (request, res, next) => {
-    // 处理黑名单
     const context = useContext(request)
+    const host = request.headers.host
+
+    // 访问代理目标不加入历史记录
+    if (host && context!.config?.proxy) {
+      const hosts = getProxyHosts(context!.config!.proxy)
+      if (hosts.includes(host))
+        return next()
+    }
+
+    // 处理黑名单
     const historyBlackList = context!.config?.historyBlackList || []
     historyBlackList.push(...historyBlackListDefault)
 
@@ -86,6 +96,7 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     }
     const timestamp = Date.now()
     const id = uuidv4()
+
     const interceptRequestInfo = {
       id,
       url,
