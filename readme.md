@@ -674,33 +674,22 @@ export default defineConfig({
 
 ## TODO
 
-- [ ] client-plugin
-  - [x] 描述
-  - [ ] 展示所有接口
-  - [x] 使用vue开发页面
-- [x] 允许局域网访问
 - [ ] server-plugin
-  - [x] 将代理接口重定向，jonserver: 无需在写接口
-  - [x] json-server
-  - [x] json-server拦截器-由拦截器进行返回
-  - [x] 为API添加swagger
-  - [x] 输出json-server接口接地址
   - [ ]  ws处理
 
 - [x] 数据持久化
-- [ ] history
-  - [x] 对所有请求的数据进行缓存，可以在页面上显示，支持重新请求
-- [x] 优化页面布局
-- [ ] 返回能够进行replay的地址
-- [ ] timestamp修复使用id避免重复
 - [ ] readme
 - [ ] doc
 
 - [ ]  文档流
   - [ ] 上传文件，有一个配置缓存位置
   - [ ] 使用默认文件，通过接口返回文件，模拟文件下载
-- [ ] 加载静态资源
+- [ ] 贡献指南
 
+## TEST TODO
+
+- [x] push请求的history
+- [x] 代理接口的history
 ## License
 
 [MIT](./LICENSE) License © [windyeasy](https://github.com/windyeasy)
