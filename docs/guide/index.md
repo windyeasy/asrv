@@ -90,3 +90,7 @@ json-server的更多用法: <https://github.com/typicode/json-server>
 - 通过配置项定义接口
 
 查看： [服务](./server.md)，这一节
+
+- 使用请求拦截生成的历史记录重新发送请求与后端联调
+
+查看： [历史记录](./history.md), 这一节
