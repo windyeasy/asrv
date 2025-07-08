@@ -9,6 +9,5 @@ lib-cov
 logs
 node_modules
 temp
-asrv/logs
-asrv/cache
+asrv
 cache

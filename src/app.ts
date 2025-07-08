@@ -76,16 +76,19 @@ export function createApp(config: AppConfig): Express {
   app.use(express.urlencoded({ extended: true }))
   // 使用历史记录
   useHistory(context)
-  // 配置代理
-  if (config.proxy) {
-    useProxyMiddlewares(app, config.proxy)
-  }
+
 
   config = reslovePlugins(config)
+
 
   // add plugins
   if (config.plugins && config.plugins.length) {
     installPlugins(context, config.plugins)
+  }
+
+    // 配置代理
+  if (config.proxy) {
+    useProxyMiddlewares(app, config.proxy)
   }
 
   return app

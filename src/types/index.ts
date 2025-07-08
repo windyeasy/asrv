@@ -6,6 +6,7 @@ import type { IServer, ServerContext } from '@/plugins/server-plugin/types'
 
 export type MiddlewareType = (request: Request, response: Response, next: NextFunction) => any
 
+
 /**
  * 代理配置
  * @example

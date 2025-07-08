@@ -8,7 +8,6 @@ export async function useData<T = Data>(request: Request): Promise<[T, (data: T)
   if (!context) {
     throw new Error('context is null')
   }
-  console.log(context.server)
   if (!context.server || !context.server.service) {
     throw new Error('data service not enabled ')
   }
