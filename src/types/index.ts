@@ -82,9 +82,13 @@ export interface AppConfig {
   /**
    * history模式黑名单，有些接口不需要记录历史，可以配置url
    * 传入的会与默认的进行合并
-   * @default ['asrv-history', 'api-swagger-doc']
    */
   historyBlackList?: string[]
+  /**
+   * 历史记录返回测试的host，如何想要返回的地址可以被局域网其它设备访问可以配置
+   * @default 'localhost'
+   */
+  historyResHost?: string
   /**
    * swagger依赖文件，自动解析注入不需要手动传入
    */

@@ -10,6 +10,7 @@ export default defineConfig({
       },
     },
   },
+  // historyResHost: '192.168.1.7',
   server: {
     mode: 'dynamic',
     db: mock({
