@@ -1,4 +1,4 @@
-# 什么是ASRV？
+# 为什么使用ASRV？
 
 ASRV（Assistant Server） 为开端开发设计的服务端助手，灵感来源于[mockm](https://github.com/wll8/mockm)。可以快速生成符合REST API规范接口，有动态和静态模式，通过JSON文件来保存静态数据。
 

@@ -11,14 +11,14 @@ hero:
       text: 快速开始
       link: /guide/index.md
     - theme: alt
-      text: 什么是ASRV？
+      text: 为什么使用ASRV？
       link: /guide/why.md
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: MOCk
+    details: 使用Mockjs快速生成数据
+  - title: API快速生成
+    details: 使用json-server快速生成符合REST API规范接口，通过配置快速书写接口
+  - title: 生成请求拦截的历史记录
+    details: 请求拦截生成历史记录可以通过记录进行重新提交与后端联调时不需要手动填写参数
 ---

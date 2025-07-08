@@ -14,7 +14,7 @@ export default defineConfig({
       {
         text: '指南',
         items: [
-          { text: '什么是ASRV?', link: '/guide/why' },
+          { text: '为什么使用ASRV?', link: '/guide/why' },
           { text: '快速开始', link: '/guide/index' },
           { text: '服务', link: '/guide/server' },
           { text: 'Mock', link: '/guide/mock' },
@@ -27,7 +27,7 @@ export default defineConfig({
       // todo: mock, json-server
       {
         text: '案例',
-      }
+      },
     ],
 
     socialLinks: [
