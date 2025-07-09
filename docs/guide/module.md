@@ -4,6 +4,23 @@
 
 为了能够在拆分模块时，有更友好的提示提供了`defineServerConfig`和`defineApiConfig`方法，可以在拆分默认时使用这两个方法定义配置项。
 
+## $dep
+
+用于配置依赖项，文件地址，支持通配符。
+
+在对模块进行分离时当配置项发生改变应该重启服务，所以需要传入这个依赖项。
+
+为什么不直接扫描所有文件改变重启服务，修改与`asrv`功能无关的代码时，也会导致服务重启，频繁重启体验不是很好。
+
+```ts
+// asrv.config.ts
+import {defineConfig} from 'asrv'
+import serverConfig from './asrv/server.ts'
+
+export default defineConfig({
+  $deps: ['./asrv/**/*.ts']
+})
+```
 
 ## defineServerConfig
 
@@ -13,6 +30,8 @@
 
 新建一个`asrv/server.ts`文件配置server的配置项。
 
+**注意：**由于拆分模块时，使用传入文件地址使用相对地址可能出错，使用相对地址时是相对于`asrv.config.ts`文件的地址。
+
 ```ts
 import {defineServerConfig} from 'asrv'
 import apiConfig from "./api/index.ts"
@@ -20,7 +39,8 @@ import apiConfig from "./api/index.ts"
 export default defineServerConfig({
   mode: 'static',
   db: {},
-  dbFilePath: './db.json',
+  // 
+  dbFilePath: 'asrv/db.json',
   redirectApiPrefixes: [{from: '/api', to: ''}],
   jsonServerResponseInterceptor: (req, res) => {
     return res.json({})
@@ -38,6 +58,7 @@ import {defineConfig} from 'asrv'
 import serverConfig from './asrv/server.ts'
 
 export default defineConfig({
+  $deps: ['./asrv/**/*.ts'],
   server: serverConfig,
 })
 ```
@@ -103,6 +124,7 @@ export default defineApiConfig({
 ```ts
 import apiConfig from "./asrv/api/index"
 export default {
+  $deps: ['./asrv/**/*.ts'],
   server: {
     api: apiConfig
   }
