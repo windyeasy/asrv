@@ -66,7 +66,7 @@ export default defineConfig({
 使用`/`分割生成路由，也支持嵌套
 
 ```ts
-import { defineConfig } from '../dist/index'
+import { defineConfig } from 'asrv'
 
 export default defineConfig({
   port: 9000,
@@ -96,8 +96,201 @@ export default defineConfig({
 ### 配置项属性说明
 
 属性类型是字符串，有两种书写方式：
-1.
+
+1. `api/posts`直接传入一个字符串默认`GET`请求
+2. `get api/posts`传入字符串，通过一个空格进行分割，超过一个空格会提示警告并且不可用。空格前是请求方式，空格后是路由。使用错误请求方式提示警告并且不可用。
+3. 请求方式，不区分大小写
+```ts
+type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' 
+```
 
 ### 属性值
 
-类型作用
+属性值类型：
+
+```ts
+export type ApiKeyType = string | APIMiddlewareType | APIMiddlewareType[] | AnyO
+```
+
+值为字符串：
+
+当是JSON字符串，`response`会通过JSON的方式返回。可以通过JSON.stringify转换。
+
+```ts
+const config = {
+  api: {
+    '/api/test': '{"code": 0, "message": "success"}',
+    '/api/test2': JSON.stringify({code: 0, message: 'success'})
+  }
+}
+```
+
+不是JSON字符串，`response.send`发送数据。
+
+```ts
+const config = {
+  api: {
+    '/api/test': 'hello world'
+  }
+}
+```
+
+值为对象：
+
+由于定义API可以通过对象嵌套的方式生成路由地址，所有值为对象的情况
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      // 嵌套演示
+      api: {
+        user: {
+          'get list': '用户列表',
+          'post add': '添加用户'
+        },
+      }
+    },
+  },
+})
+
+```
+
+值为中间件函数：
+
+是express中间件函数，与express的写法一致。[express](https://expressjs.com/en/guide/using-middleware.html#using-middleware)。
+
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      'api/user/:id': (req, res)=>{
+        const id = req.params.id
+        res.json({
+          code: 0,
+          message: 'success',
+          data: {
+            id,
+            name: '张三',
+            age: 18
+          }
+        })
+      }
+    },
+  },
+})
+```
+
+值为中间件函数时：
+
+可以通过数组形式传入中间件函数， 也可以通过提供了`useMiddlewares`方法类似`express`的use方法给函数传入多个参数的形式使用中间件。
+
+```ts
+import { defineConfig } from 'asrv'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      // 嵌套演示
+      api: {
+       login: [
+        function (req, res, next) {
+            const body = req.body
+            if (body.username === 'admin' && body.password === 'admin') {
+              next()
+            }
+            else {
+              // 提前提示错误
+              res.json({
+                code: -101,
+                message: '用户名或密码错误',
+              })
+            }
+          },
+          function (_, res) {
+            res.json({
+              code: 0,
+              message: '登录成功',
+            })
+          },
+       ]
+      }
+    },
+  },
+})
+```
+
+useMiddlewares演示
+
+```ts
+import { defineConfig, useMiddlewares } from '../dist/index'
+
+export default defineConfig({
+  port: 9000,
+  server: {
+    api: {
+      // 嵌套演示
+      api: {
+       login: useMiddlewares(function (req, res, next) {
+            const body = req.body
+            if (body.username === 'admin' && body.password === 'admin') {
+              next()
+            }
+            else {
+              // 提前提示错误
+              res.json({
+                code: -101,
+                message: '用户名或密码错误',
+              })
+            }
+          },
+          function (_, res) {
+            res.json({
+              code: 0,
+              message: '登录成功',
+            })
+          },
+        )
+      }
+    },
+  },
+})
+```
+
+使用演示：
+
+1. 没有通过验证
+
+```shell
+$ http POST http://localhost:9000/api/login username=test password=123456
+
+{
+    "code": -101,
+    "message": "用户名或密码错误"
+}
+```
+
+2. 通过验证
+
+```shell
+$ http POST http://localhost:9000/api/login username=admin password=123456
+
+{
+    "code": 0,
+    "message": "登录成功"
+}
+```
+
+### 将API拆分为模块
+
+有些情况下写了很多的接口，在一个文件里面写不利于维护，这时我们可以将API拆分为多个文件，每个文件对应一个模块。
+
+详细使用：[配置项模块化](https://www.yuque.com/huangjian/doc/module)

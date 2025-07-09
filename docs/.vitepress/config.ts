@@ -18,6 +18,7 @@ export default defineConfig({
           { text: '快速开始', link: '/guide/index' },
           { text: '服务', link: '/guide/server' },
           { text: 'API定义', link: '/guide/api' },
+          { text: '配置项模块化', link: '/guide/module' },
           { text: 'Mock', link: '/guide/mock' },
           { text: 'Swigger', link: '/guide/history' },
           { text: '代理', link: '/guide/proxy' },

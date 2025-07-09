@@ -1,6 +1,13 @@
 # 服务
 
 在配置项里面有一个`server`的配置项，这一节我详细介绍这个配置项的使用。
+## enableServer
+
+类型：`Boolean`
+
+默认为true，表示启动server配置项。
+
+在使用代理时在后端的接口的功能还没有完成的情况下，我们可以使用server配置项来默认接口来实现功能。通过这个工具会优先使用server里面的服务，导致无法访问到后端的接口，可以通过这个配置项来关闭，达到能够正确访问的目的。
 
 ## server
 
@@ -404,3 +411,5 @@ $ http POST http://localhost:9000/api/user name=windyeasy email=test@qq.com addr
 server.api使用用于生成API接口的配置项，通过这个配置项可以生成API接口。
 
 详见: [API定义](./api.md)
+
+
