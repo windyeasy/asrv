@@ -1,4 +1,4 @@
-import { createUploadMiddleware, defineConfig, mock, sendFileReadStream, useFileData } from '../dist/index'
+import { createUploadMiddleware, defineConfig, mock, sendFileReadStream, useFileData, useUpload, useAccessFile } from '../dist/index'
 
 interface DbType {
   user: {
@@ -25,24 +25,25 @@ export default defineConfig({
   },
   // historyResHost: '192.168.1.7',
   server: {
-    mode: 'dynamic',
+    // mode: 'static',  
     db: mock({
       'user|2-3': [
         {
           id: '@guid',
           name: '@cname',
           email: '@email',
-          address: '@county(true)',
+          address: '@county(true)', 
           phone: '@phone',
         },
       ],
     }),
 
-    // 测试文件上传
+
     api: {
+      // 测试文件上传的基础使用
       'post /api/upload': createUploadMiddleware({
         type: 'single',
-        fieldName: 'file',
+        filedname: 'file',
       }, async (req, res) => {
         // 通过useData给db对象添加一个文件信息表，可以实现类似数据库的功能
         const [data, setData] = await useFileData<DbType>(req, 'file')
@@ -58,7 +59,7 @@ export default defineConfig({
           }
           data.file.unshift(fileInfo)
 
-          await setData(data)
+          await setData({...data})
           res.json({
             code: 200,
             message: '上传成功',
@@ -69,7 +70,7 @@ export default defineConfig({
           })
         }
       }),
-      'get file/preview/:id': async function (req, res) {
+      'get api/file/:id': async function (req, res) {
         const id = req.params.id
         const [data] = await useFileData<DbType>(req)
         if (data.file && data.file.length > 0) {
@@ -83,6 +84,44 @@ export default defineConfig({
           }
         }
       },
+
+      // 测试提供的工具方法
+      'post api/file2/upload': useUpload({
+        handler(res, fileInfos) {
+          const sendInfo = fileInfos.map(item => ({
+            id: item.id,
+            path: 'http://localhost:9000/api/file2/' +  item.id,
+          }))
+          // 一条数据
+          if (sendInfo.length === 1) {
+            res.json({
+              code: 0,
+              message: '上传成功', 
+              data: sendInfo[0],
+            })
+          }
+          // 多条数据
+          else if (sendInfo.length > 1) {
+            res.json({
+              code: 0,
+              message: '上传成功',
+              data: sendInfo,
+            })
+          } else {
+            res.json({
+              code: -1,
+              message: '上传失败',
+            })
+          }
+        }
+      }),
+      // 文件预览
+      'api/file2/:id': useAccessFile(),
+      // 文件下载
+      'api/file2/download/:id': useAccessFile({
+        download: true,
+      }),
+
     },
   },
 })

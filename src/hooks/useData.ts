@@ -17,8 +17,8 @@ export async function useData<T = Data>(request: Request): Promise<[T, (data: T)
     return service.getData() as T
   }
 
-  function setData(data: T): void {
-    service.setData(data)
+  function setData(data: T): Promise<void> {
+    return service.setData(data)
   }
   const data = await getData()
 
