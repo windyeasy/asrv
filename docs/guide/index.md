@@ -81,6 +81,11 @@ $ curl http://localhost:9000/user
 
 json-server的更多用法: <https://github.com/typicode/json-server>
 
+#### web页面
+
+当启动`asrv`时，会开启一个网站用于查看swagger、json-server生成路由以及请求历史记录等信息,点击服务地址可以查看。
+
+
 ## 其它用法
 
 - 搭配Mock使用
