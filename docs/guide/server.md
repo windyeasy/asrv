@@ -21,7 +21,7 @@ import { defineConfig, mock } from 'asrv'
 
 export default defineConfig({
   server: {
-    mode: 'dynamic' // 可以不配置，默认值：dynamic
+    mode: 'dynamic', // 可以不配置，默认值：dynamic
     // mock数据, 自动生成接口
     db: mock({
       'user|3-5': [
@@ -59,11 +59,11 @@ export default defineConfig({
   "users": [
     {
       "id": 1,
-      "name": "张三",
+      "name": "张三"
     },
     {
       "id": 2,
-      "name": "李四",
+      "name": "李四"
     }
   ]
 }
@@ -295,15 +295,18 @@ $ curl http://localhost:9000/api/user
 
 ### server.jsonServerResponseInterceptor
 
-对JsonServer的结果进行拦截，使接口返回为常用形式，这样开发完成后再次与后端进行对接时，接口返回的数据结构一致，不需要重复修改。
+对JsonServer的结果进行拦截，使接口返回为想要的格式。
 
-这个配置项着重书写了，jsonServerResponseInterceptor的使用，其它配置与server.redirectApiPrefixes一致
+这个配置项强调了jsonServerResponseInterceptor的使用，其它配置与server.redirectApiPrefixes配置一致
+
 ```ts
 import { defineConfig, mock } from 'asrv'
 
 export default defineConfig({
   port: 9000,
+  // ...
   server: {
+    // ...
     jsonServerResponseInterceptor(req, res) {
       const { data } = res.locals
 
@@ -396,7 +399,8 @@ $ http POST http://localhost:9000/api/user name=windyeasy email=test@qq.com addr
 }
 ```
 
+### server.api
 
+server.api使用用于生成API接口的配置项，通过这个配置项可以生成API接口。
 
-
-
+详见: [API定义](./api.md)

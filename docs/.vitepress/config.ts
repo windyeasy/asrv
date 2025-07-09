@@ -17,6 +17,7 @@ export default defineConfig({
           { text: '为什么使用ASRV?', link: '/guide/why' },
           { text: '快速开始', link: '/guide/index' },
           { text: '服务', link: '/guide/server' },
+          { text: 'API定义', link: '/guide/api' },
           { text: 'Mock', link: '/guide/mock' },
           { text: 'Swigger', link: '/guide/history' },
           { text: '代理', link: '/guide/proxy' },
