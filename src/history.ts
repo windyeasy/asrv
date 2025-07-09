@@ -78,7 +78,10 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
   return (request, res, next) => {
     const context = useContext(request)
     const host = request.headers.host
-
+    // 文件上传接口不加入历史记录，加入会导致文件过大
+    if (request.is('multipart/form-data')){
+      return next()
+    }
     // 访问代理目标不加入历史记录
     if (host && context!.config?.proxy) {
       const hosts = getProxyHosts(context!.config!.proxy)
