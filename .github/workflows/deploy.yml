@@ -1,0 +1,56 @@
+name: common-frontend-code-docs
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 设置服务器时区为东八区
+      - name: Set time zone
+        run: sudo timedatectl set-timezone 'Asia/Shanghai'
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+        
+      - name: Install pnpm globally
+        run: npm install -g pnpm
+        
+      - name: Install dependencies
+        run: pnpm i
+     
+      - name: Build
+        run: pnpm run docs:build
+     
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: artifact-${{ github.run_id }}
+          path: ./.vitepress/dist
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifact_name: artifact-${{ github.run_id }}
