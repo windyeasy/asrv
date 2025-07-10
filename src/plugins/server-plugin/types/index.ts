@@ -21,7 +21,7 @@ export interface IServer {
   api?: ApiType
   /**
    * 重定向api前缀
-   * @description - json-server生成的API，没有前缀，所以可以通过这个功能添加前缀
+   * json-server生成的API，没有前缀，所以可以通过这个功能添加前缀
    */
   redirectApiPrefixes?: RedirectApiPrefix[]
   /**
@@ -37,7 +37,7 @@ export interface IServer {
   mode?: 'static' | 'dynamic'
   /**
    * json-server数据库文件路径
-   * @description - 默认为`process.cwd()/asrv/data/db.json`
+   * @default - `process.cwd()/asrv/data/db.json`
    */
   dbFilePath?: string
 }

@@ -9,7 +9,7 @@ export type MiddlewareType = (request: Request, response: Response, next: NextFu
 
 /**
  * 代理配置
- * @example
+ * @see {@link https://github.com/chimurai/http-proxy-middleware/blob/master/recipes/pathFilter.md}
  */
 export interface ProxyConfig {
   [path: string]: Options | undefined
@@ -29,7 +29,9 @@ export interface InterceptRequestInfo {
   timestamp: number
 }
 
-// app
+/**
+ * createApp配置信息，脚手架配置
+ */
 export interface AppConfig {
   /**
    * 依赖的其他文件，当其他文化变化时，会重新启动服务，当配置api过多时可以分模块定义
@@ -47,7 +49,7 @@ export interface AppConfig {
   plugins?: PluginType[]
   /**
    * 是否开启服务端
-   * @description - 当接口地址与代理接口相同时，会使用本地定义的，所以设置这个值，可以关闭定义的接口
+   * - 当接口地址与代理接口相同时，会使用本地定义的，所以设置这个值，可以关闭定义的接口
    * @default true
    */
   enableServer?: boolean
@@ -71,7 +73,7 @@ export interface AppConfig {
   }
   /**
    * 是否开启json-server的history模式
-   * @description - 默认开启
+   * - 默认开启
    * @default true
    */
   enableHistory?: boolean
@@ -91,6 +93,9 @@ export interface AppConfig {
   swaggerDeps?: string[]
 }
 
+/**
+ * 自定义上下文，用于得到一些信息
+ */
 export interface Context {
   app: Express
   config: AppConfig
