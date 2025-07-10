@@ -1,7 +1,7 @@
 <!-- prettier-ignore-start -->
 # Interface: InterceptRequestInfo
 
-Defined in: [index.ts:21](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L21)
+Defined in: [index.ts:21](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L21)
 
 请求拦截信息，用于记录历史记录
 
@@ -11,7 +11,7 @@ Defined in: [index.ts:21](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > `optional` **body**: `any`
 
-Defined in: [index.ts:26](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L26)
+Defined in: [index.ts:26](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L26)
 
 ***
 
@@ -19,7 +19,7 @@ Defined in: [index.ts:26](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > **headers**: `Record`\<`string`, `any`\>
 
-Defined in: [index.ts:25](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L25)
+Defined in: [index.ts:25](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L25)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [index.ts:25](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > **id**: `string`
 
-Defined in: [index.ts:22](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L22)
+Defined in: [index.ts:22](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L22)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [index.ts:22](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > **method**: `string`
 
-Defined in: [index.ts:24](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L24)
+Defined in: [index.ts:24](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L24)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [index.ts:24](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > `optional` **params**: `any`
 
-Defined in: [index.ts:28](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L28)
+Defined in: [index.ts:28](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L28)
 
 ***
 
@@ -51,7 +51,7 @@ Defined in: [index.ts:28](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > `optional` **query**: `any`
 
-Defined in: [index.ts:27](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L27)
+Defined in: [index.ts:27](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L27)
 
 ***
 
@@ -59,7 +59,7 @@ Defined in: [index.ts:27](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > **timestamp**: `number`
 
-Defined in: [index.ts:29](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L29)
+Defined in: [index.ts:29](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L29)
 
 ***
 
@@ -67,6 +67,6 @@ Defined in: [index.ts:29](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de
 
 > **url**: `string`
 
-Defined in: [index.ts:23](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L23)
+Defined in: [index.ts:23](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L23)
 
 <!-- prettier-ignore-end -->

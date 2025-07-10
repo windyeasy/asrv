@@ -1,7 +1,7 @@
 <!-- prettier-ignore-start -->
 # Interface: ProxyConfig
 
-Defined in: [index.ts:14](https://github.com/windyeasy/asrv/blob/fa5fb27721a94de37974a89fe48a35f9f37683b8/src/types/index.ts#L14)
+Defined in: [index.ts:14](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L14)
 
 代理配置
 

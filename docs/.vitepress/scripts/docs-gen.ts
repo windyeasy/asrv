@@ -241,12 +241,36 @@ async function generateApiReference() {
       sourceDir: './docs/reference/api/interfaces',
       destDir: './docs/reference',
       files: ['AppConfig','Context', 'InterceptRequestInfo', 'ProxyConfig'],
+      modifications: [
+        {
+          type: 'replace',
+          pattern: String.raw`\.\.\/type-aliases`,
+          replacement: './type-aliases',
+        },
+        {
+          type: 'replace',
+          pattern: String.raw`\.\.\/interfaces`,
+          replacement: '',
+        },
+      ],
     },
     {
       type: 'folder',
       sourceDir: './docs/reference/api/type-aliases',
       destDir: './docs/reference/type-aliases',
-      files: ['AppConfigCbType', 'MiddlewareType'],
+      files: [],
+      modifications: [
+        {
+          type: 'replace',
+          pattern: String.raw`\.\.\/type-aliases`,
+          replacement: './type-aliases',
+        },
+         {
+          type: 'replace',
+          pattern: String.raw`\.\.\/interfaces`,
+          replacement: '',
+        },
+      ],
     },
   ]
 
