@@ -14,7 +14,7 @@
 
 ```ts
 // asrv.config.ts
-import {defineConfig} from 'asrv'
+import { defineConfig } from 'asrv'
 import serverConfig from './asrv/server.ts'
 
 export default defineConfig({
@@ -26,25 +26,23 @@ export default defineConfig({
 
 用于拆分server的配置项。
 
-
-
 新建一个`asrv/server.ts`文件配置server的配置项。
 
-**注意：**由于拆分模块时，使用传入文件地址使用相对地址可能出错，使用相对地址时是相对于`asrv.config.ts`文件的地址。
+**注意**：由于拆分模块时，使用传入文件地址使用相对地址可能出错，使用相对地址时是相对于`asrv.config.ts`文件的地址。
 
 ```ts
-import {defineServerConfig} from 'asrv'
-import apiConfig from "./api/index.ts"
+import { defineServerConfig } from 'asrv'
+import apiConfig from './api/index.ts'
 
 export default defineServerConfig({
   mode: 'static',
   db: {},
-  // 
+  //
   dbFilePath: 'asrv/db.json',
-  redirectApiPrefixes: [{from: '/api', to: ''}],
+  redirectApiPrefixes: [{ from: '/api', to: '' }],
   jsonServerResponseInterceptor: (req, res) => {
     return res.json({})
-  }
+  },
   // 可以对API在进行拆分
   api: apiConfig,
 })
@@ -54,7 +52,7 @@ export default defineServerConfig({
 
 ```ts
 // asrv.config.ts
-import {defineConfig} from 'asrv'
+import { defineConfig } from 'asrv'
 import serverConfig from './asrv/server.ts'
 
 export default defineConfig({
@@ -73,42 +71,40 @@ export default defineConfig({
 
 ```ts
 // asrv/api/user.ts
-import { defineApiConfig } from "asrv";
+import { defineApiConfig } from 'asrv'
 
 export default defineApiConfig({
   user: {
-    list: '用户列表',
-    detail: '用户详情',
+    'list': '用户列表',
+    'detail': '用户详情',
     'post add': '新增用户',
     'delete /:id': '删除用户'
   }
-});
-
+})
 ```
 
 新建一个帖子相关的模块`asrv/api/post.ts`
 
 ```ts
 // asrv/api/post.ts
-import { defineApiConfig } from "asrv";
+import { defineApiConfig } from 'asrv'
 
 export default defineApiConfig({
   post: {
-    list: 'post列表',
-    detail: 'post详情',
+    'list': 'post列表',
+    'detail': 'post详情',
     'post add': '新增post',
     'delete /:id': '删除post'
   }
-});
-
+})
 ```
 
 在`asrv/api/index.ts`中导出所有接口
 
 ```ts
-import { defineApiConfig } from "asrv";
-import userApi from "./user";
-import postApi from "./post";
+import { defineApiConfig } from 'asrv'
+import postApi from './post'
+import userApi from './user'
 
 export default defineApiConfig({
   // 加前缀
@@ -122,7 +118,7 @@ export default defineApiConfig({
 在`asrv.config.ts`或`asrv.config.js`中使用
 
 ```ts
-import apiConfig from "./asrv/api/index"
+import apiConfig from './asrv/api/index'
 export default {
   $deps: ['./asrv/**/*.ts'],
   server: {
