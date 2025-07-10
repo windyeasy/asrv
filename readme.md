@@ -91,9 +91,6 @@ $ curl http://localhost:9000/user
 
 - [ ] server-plugin
   - [ ]  ws处理
-- [x] 数据持久化
-
-- [ ] doc
 - [ ] 贡献指南
 
 ## License
