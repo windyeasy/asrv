@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'asrv',
+  base: '/asrv/',
   description: 'A server-side tool that assists front-end development',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
