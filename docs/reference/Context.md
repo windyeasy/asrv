@@ -1,7 +1,7 @@
 <!-- prettier-ignore-start -->
 # Interface: Context
 
-Defined in: [index.ts:99](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L99)
+Defined in: [index.ts:99](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L99)
 
 自定义上下文，用于得到一些信息进行操作
 
@@ -11,7 +11,7 @@ Defined in: [index.ts:99](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d
 
 > **app**: `Express`
 
-Defined in: [index.ts:100](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L100)
+Defined in: [index.ts:100](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L100)
 
 ***
 
@@ -19,7 +19,7 @@ Defined in: [index.ts:100](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8
 
 > **config**: [`AppConfig`](AppConfig.md)
 
-Defined in: [index.ts:101](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L101)
+Defined in: [index.ts:101](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L101)
 
 ***
 
@@ -27,7 +27,7 @@ Defined in: [index.ts:101](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8
 
 > **port**: `number`
 
-Defined in: [index.ts:104](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L104)
+Defined in: [index.ts:104](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L104)
 
 ***
 
@@ -35,7 +35,7 @@ Defined in: [index.ts:104](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8
 
 > `optional` **request**: `Request`
 
-Defined in: [index.ts:102](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L102)
+Defined in: [index.ts:102](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L102)
 
 ***
 
@@ -43,7 +43,7 @@ Defined in: [index.ts:102](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8
 
 > `optional` **response**: `Response`
 
-Defined in: [index.ts:103](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L103)
+Defined in: [index.ts:103](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L103)
 
 ***
 
@@ -51,6 +51,6 @@ Defined in: [index.ts:103](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8
 
 > `optional` **server**: `ServerContext`
 
-Defined in: [index.ts:105](https://github.com/windyeasy/asrv/blob/5a9660a0247bb8d58627252a61760ea755e2c446/src/types/index.ts#L105)
+Defined in: [index.ts:105](https://github.com/windyeasy/asrv/blob/a3533c4d057a6db892b30abc0201b03710d63650/src/types/index.ts#L105)
 
 <!-- prettier-ignore-end -->
