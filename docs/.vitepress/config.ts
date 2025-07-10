@@ -23,7 +23,7 @@ export default defineConfig({
           { text: '配置项模块化', link: '/guide/module' },
           { text: 'Hooks', link: '/guide/hooks' },
           { text: 'Mock', link: '/guide/mock' },
-          { text: 'Swigger', link: '/guide/history' },
+          { text: 'Swagger', link: '/guide/swagger' },
           { text: '代理', link: '/guide/proxy' },
           { text: '历史记录', link: '/guide/history' },
           { text: '日志', link: '/guide/logger' },
