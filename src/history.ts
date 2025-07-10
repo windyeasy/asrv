@@ -1,5 +1,5 @@
-import type { Context, MiddlewareType } from './types'
-import { existsSync, mkdirSync, read, readFileSync, writeFileSync } from 'node:fs'
+import type { Context, MiddlewareType, InterceptRequestInfo } from './types'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import { v4 as uuidv4 } from 'uuid'
@@ -63,16 +63,6 @@ function matchBlackList(url: string, blackList: string[]): boolean {
   return false
 }
 
-export interface InterceptRequestInfo {
-  id: string
-  url: string
-  method: string
-  headers: Record<string, any>
-  body?: any
-  query?: any
-  params?: any
-  timestamp: number
-}
 // 创建历史记录中间件
 export function createHistoryMiddleware(enable: boolean = true): MiddlewareType {
   return (request, res, next) => {
@@ -100,7 +90,7 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     const timestamp = Date.now()
     const id = uuidv4()
 
-    const interceptRequestInfo = {
+    const interceptRequestInfo: InterceptRequestInfo = {
       id,
       url,
       method,

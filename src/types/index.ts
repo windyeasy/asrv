@@ -16,9 +16,10 @@ export interface ProxyConfig {
 }
 
 /**
- * 请求拦截信息，用于后面获取请求信息实现replay
+ * 请求拦截信息，用于记录历史记录
  */
-export interface interceptRequestInfo {
+export interface InterceptRequestInfo {
+  id: string
   url: string
   method: string
   headers: Record<string, any>
@@ -27,12 +28,6 @@ export interface interceptRequestInfo {
   params?: any
   timestamp: number
 }
-
-export interface InterceptInfo {
-  interceptRequestInfo?: interceptRequestInfo
-}
-
-export type InterceptCbType = (interceptInfo: InterceptInfo) => void
 
 // app
 export interface AppConfig {
@@ -102,7 +97,6 @@ export interface Context {
   request?: Express.Request
   response?: Express.Response
   port: number
-  interceptInfos?: InterceptInfo[]
   server?: ServerContext
 }
 

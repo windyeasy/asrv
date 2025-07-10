@@ -1,11 +1,11 @@
 import type { Express } from 'express'
 import type { PluginType } from './plugin-deriver'
-import type { AppConfig, Context, InterceptInfo } from './types'
+import type { AppConfig, Context } from './types'
 import cors from 'cors'
 import express from 'express'
 import { useHistory } from './history'
 import { createLoggerMiddleware } from './logger'
-import createInterceptMiddleware from './middleware/intercept'
+
 import { useProxyMiddlewares } from './middleware/proxy'
 import PluginDeriver from './plugin-deriver'
 import clientPlugin from './plugins/client-plugin'
@@ -32,7 +32,7 @@ function reslovePlugins(config: AppConfig): AppConfig {
   }
 }
 
-const interceptInfos: InterceptInfo[] = []
+
 export function createApp(config: AppConfig): Express {
   const port = config.port || 9000
   const app = express()
@@ -41,7 +41,7 @@ export function createApp(config: AppConfig): Express {
     app,
     config,
     port,
-    interceptInfos,
+    
   }
   app.use((req, res, next) => {
     context.request = req
@@ -67,10 +67,7 @@ export function createApp(config: AppConfig): Express {
     }))
   }
 
-  // 处理请求拦截，请求拦截信息放入上下文
-  app.use(createInterceptMiddleware((interceptInfo) => {
-    interceptInfos.push(interceptInfo)
-  }))
+
   app.use(cors())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
