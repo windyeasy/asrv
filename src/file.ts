@@ -279,7 +279,7 @@ export interface UseAccessFileOptions {
 export function useAccessFile(options: UseAccessFileOptions = {}): MiddlewareType {
   const { paramType = 'params', paramFieldname = 'id', download = false, fieldname = 'files' } = options
   return async (req, res) => {
-    let id = req[paramType][paramFieldname]
+    const id = req[paramType][paramFieldname]
     if (id) {
       const [data] = await useFileData<any>(req)
       if (data[fieldname] && data[fieldname].length > 0) {
