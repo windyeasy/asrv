@@ -94,7 +94,7 @@ export interface AppConfig {
 }
 
 /**
- * 自定义上下文，用于得到一些信息
+ * 自定义上下文，用于得到一些信息进行操作
  */
 export interface Context {
   app: Express

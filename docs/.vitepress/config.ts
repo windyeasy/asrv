@@ -32,7 +32,17 @@ export default defineConfig({
       },
       // todo: mock, json-server
       {
-        text: '案例',
+        text: 'API Reference',
+        items: [
+          {
+            text: 'API Config',
+            link: '/reference/AppConfig'
+          },
+          {
+            text: 'Context',
+            link: '/reference/Context'
+          }
+        ]
       },
     ],
 

@@ -37,7 +37,8 @@
     "lint:fix": "pnpm run lint --fix",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:generate": "tsx ./docs/.vitepress/scripts/docs-gen.ts"
   },
   "dependencies": {
     "@windyeasy/json-server": "1.0.0-beta.3-fork.1",
@@ -73,6 +74,8 @@
     "tsc": "^2.0.4",
     "tsdown": "^0.12.7",
     "tsx": "^4.20.1",
+    "typedoc": "^0.28.7",
+    "typedoc-plugin-markdown": "^4.7.0",
     "typescript": "^5.8.3",
     "unconfig": "^7.3.2",
     "vitepress": "^1.6.3",
