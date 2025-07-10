@@ -9,9 +9,14 @@
 
 在使用代理时在后端的接口的功能还没有完成的情况下，我们可以使用server配置项来默认接口来实现功能。通过这个工具会优先使用server里面的服务，导致无法访问到后端的接口，可以通过这个配置项来关闭，达到能够正确访问的目的。
 
+## 相关hooks
+
+- [useData](./hooks.html#usedata) - 使用JSONServer使用的数据源，能够让定义的接口更灵活。
+
 ## server
 
 用于生成接口模拟数据和定义接口的配置项。
+
 ### server.mode
 
 配置项，用于设置模拟数据模式，可选值有`dynamic`和`static`。
@@ -411,5 +416,3 @@ $ http POST http://localhost:9000/api/user name=windyeasy email=test@qq.com addr
 server.api使用用于生成API接口的配置项，通过这个配置项可以生成API接口。
 
 详见: [API定义](./api.md)
-
-

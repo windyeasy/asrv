@@ -8,6 +8,8 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: '首页', link: '/' },
+      { text: 'MocK.js', link: 'http://mockjs.com/' },
+      { text: 'json-server', link: 'https://github.com/typicode/json-server' },
     ],
 
     sidebar: [
@@ -19,6 +21,7 @@ export default defineConfig({
           { text: '服务', link: '/guide/server' },
           { text: 'API定义', link: '/guide/api' },
           { text: '配置项模块化', link: '/guide/module' },
+          { text: 'Hooks', link: '/guide/hooks' },
           { text: 'Mock', link: '/guide/mock' },
           { text: 'Swigger', link: '/guide/history' },
           { text: '代理', link: '/guide/proxy' },

@@ -101,7 +101,7 @@ export default defineConfig({
 2. `get api/posts`传入字符串，通过一个空格进行分割，超过一个空格会提示警告并且不可用。空格前是请求方式，空格后是路由。使用错误请求方式提示警告并且不可用。
 3. 请求方式，不区分大小写
 ```ts
-type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' 
+type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 ```
 
 ### 属性值
@@ -120,7 +120,7 @@ export type ApiKeyType = string | APIMiddlewareType | APIMiddlewareType[] | AnyO
 const config = {
   api: {
     '/api/test': '{"code": 0, "message": "success"}',
-    '/api/test2': JSON.stringify({code: 0, message: 'success'})
+    '/api/test2': JSON.stringify({ code: 0, message: 'success' })
   }
 }
 ```
@@ -156,13 +156,11 @@ export default defineConfig({
     },
   },
 })
-
 ```
 
 值为中间件函数：
 
-是express中间件函数，与express的写法一致。[express](https://expressjs.com/en/guide/using-middleware.html#using-middleware)。
-
+是express中间件函数，与express的写法一致，[express](https://expressjs.com/en/guide/using-middleware.html#using-middleware)。
 
 ```ts
 import { defineConfig } from 'asrv'
@@ -171,7 +169,7 @@ export default defineConfig({
   port: 9000,
   server: {
     api: {
-      'api/user/:id': (req, res)=>{
+      'api/user/:id': (req, res) => {
         const id = req.params.id
         res.json({
           code: 0,
@@ -188,9 +186,13 @@ export default defineConfig({
 })
 ```
 
-值为中间件函数时：
+值为中间件函数数组：
 
-可以通过数组形式传入中间件函数， 也可以通过提供了`useMiddlewares`方法类似`express`的use方法给函数传入多个参数的形式使用中间件。
+可以通过数组形式传入中间件函数。
+
+相关hook
+
+- [useMiddlewares](./hooks.md#usemiddlewares) - 通过函数多个参数形式传入中间件。
 
 ```ts
 import { defineConfig } from 'asrv'
@@ -201,8 +203,8 @@ export default defineConfig({
     api: {
       // 嵌套演示
       api: {
-       login: [
-        function (req, res, next) {
+        login: [
+          function (req, res, next) {
             const body = req.body
             if (body.username === 'admin' && body.password === 'admin') {
               next()
@@ -221,44 +223,7 @@ export default defineConfig({
               message: '登录成功',
             })
           },
-       ]
-      }
-    },
-  },
-})
-```
-
-useMiddlewares演示
-
-```ts
-import { defineConfig, useMiddlewares } from '../dist/index'
-
-export default defineConfig({
-  port: 9000,
-  server: {
-    api: {
-      // 嵌套演示
-      api: {
-       login: useMiddlewares(function (req, res, next) {
-            const body = req.body
-            if (body.username === 'admin' && body.password === 'admin') {
-              next()
-            }
-            else {
-              // 提前提示错误
-              res.json({
-                code: -101,
-                message: '用户名或密码错误',
-              })
-            }
-          },
-          function (_, res) {
-            res.json({
-              code: 0,
-              message: '登录成功',
-            })
-          },
-        )
+        ]
       }
     },
   },
