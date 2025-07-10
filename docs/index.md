@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: 快速开始
-      link: /guide/index.md
+      link: /guide/start.md
     - theme: alt
       text: 为什么使用ASRV？
       link: /guide/why.md

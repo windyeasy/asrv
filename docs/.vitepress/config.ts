@@ -17,7 +17,7 @@ export default defineConfig({
         text: '指南',
         items: [
           { text: '为什么使用ASRV?', link: '/guide/why' },
-          { text: '快速开始', link: '/guide/index' },
+          { text: '快速开始', link: '/guide/start' },
           { text: '服务', link: '/guide/server' },
           { text: 'API定义', link: '/guide/api' },
           { text: '配置项模块化', link: '/guide/module' },
