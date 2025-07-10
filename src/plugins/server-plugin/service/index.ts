@@ -25,7 +25,7 @@ export class AsrvService extends Service {
   }
 
   async setData<T = Data>(data: T): Promise<void> {
-    if (this.#database.data !== data) {
+    if (data) {
       (this.#database.data as T) = data
       return this.write()
     }

@@ -76,7 +76,7 @@ export function createUploadMiddleware(option: CreateUploadOption = {}, ...handl
  * @param fileName - 文件名
  * @returns
  */
- function readUploadFile(fileName: string): fs.ReadStream | undefined {
+function readUploadFile(fileName: string): fs.ReadStream | undefined {
   try {
     const fileReadStream = fs.createReadStream(`${UPLOAD_PATH}/${fileName}`)
     return fileReadStream
@@ -107,7 +107,7 @@ export function sendFileReadStream(res: Response, mimetype: string, fileName: st
 // 静态文件映射信息
 const MAP_FILEINFOPATH = `${UPLOAD_PATH}/filemap.json`
 
- function getMapFile(): any[] {
+function getMapFile(): any[] {
   if (!existsSync(MAP_FILEINFOPATH)) {
     return []
   }
@@ -121,9 +121,8 @@ const MAP_FILEINFOPATH = `${UPLOAD_PATH}/filemap.json`
   return []
 }
 
-
 // 保存映射信息
- function saveMapFile(data: any[]): void {
+function saveMapFile(data: any[]): void {
   if (!existsSync(path.dirname(MAP_FILEINFOPATH))) {
     mkdirSync(path.dirname(MAP_FILEINFOPATH), { recursive: true })
   }
@@ -131,9 +130,9 @@ const MAP_FILEINFOPATH = `${UPLOAD_PATH}/filemap.json`
   const mapFData = getMapFile()
   // 过滤重复数据
   const saveData: any[] = []
-  const cacheMapFileIds: (string|number)[] = mapFData.map(item => item.id)
-  data.forEach(item => {
-    if (!cacheMapFileIds.includes(item.id)){
+  const cacheMapFileIds: (string | number)[] = mapFData.map(item => item.id)
+  data.forEach((item) => {
+    if (!cacheMapFileIds.includes(item.id)) {
       saveData.push(item)
     }
   })
@@ -164,16 +163,15 @@ export async function useFileData<T extends Record<string, any>>(req: Request, f
   return [data as T, (data: T) => {
     if (data && typeof data === 'object') {
       const fileInfos = data[fieldname]
-     
+
       if (Array.isArray(fileInfos)) {
         saveMapFile(fileInfos)
       }
     }
 
-    return setData({...data})
+    return setData(data)
   }]
 }
-
 
 export interface FileDataType {
   id: string | number
@@ -195,8 +193,8 @@ export interface UseUploadOptions extends CreateUploadOption {
    * 通过文件信息返回访问信息
    * @param res 响应对象
    * @param fileInfos 处理后的文件信息
-   * @returns 
-   */ 
+   * @returns
+   */
   handler: (res: Response, fileInfos: FileDataType[]) => void
 }
 
@@ -208,11 +206,11 @@ export interface UseUploadOptions extends CreateUploadOption {
  */
 export function useUpload(options: UseUploadOptions): MiddlewareType | MiddlewareType[] {
   const { fieldname = 'files', ...createOptions } = options
-  const { type = 'single', filedname = 'file'} = createOptions
+  const { type = 'single', filedname = 'file' } = createOptions
   return createUploadMiddleware({ type, filedname, ...createOptions }, async (req, res) => {
     const [data, setData] = await useFileData(req, fieldname)
     const fileData: FileDataType[] = []
- 
+
     if (type === 'single') {
       if (req.file) {
         fileData.unshift({
@@ -236,15 +234,15 @@ export function useUpload(options: UseUploadOptions): MiddlewareType | Middlewar
         originalname: item.originalname,
         createAt: Date.now(),
       })))
-
     }
-    if (data[fieldname]){
+    if (data[fieldname]) {
       data[fieldname].unshift(...fileData)
-    }else{
+    }
+    else {
       data[fieldname] = fileData
     }
-  
-    await setData({...data})
+
+    await setData(data)
 
     options.handler && options.handler(res, fileData)
   })
@@ -270,7 +268,7 @@ export interface UseAccessFileOptions {
    * 是否下载文件
    * @default false
    */
-  download?: boolean  
+  download?: boolean
 }
 
 /**
@@ -278,22 +276,22 @@ export interface UseAccessFileOptions {
  * @param options - 配置项
  * @returns 中间件
  */
-export function useAccessFile(options: UseAccessFileOptions = {}): MiddlewareType { 
+export function useAccessFile(options: UseAccessFileOptions = {}): MiddlewareType {
   const { paramType = 'params', paramFieldname = 'id', download = false, fieldname = 'files' } = options
   return async (req, res) => {
     let id = req[paramType][paramFieldname]
-    if (id){
-        const [data] = await useFileData<any>(req)
-        if (data[fieldname] && data[fieldname].length > 0) {
-          const fileInfo = data[fieldname].find((item: any) => String(item.id) === String(id))
-          if (fileInfo) {
-            sendFileReadStream(res, fileInfo.mimetype, fileInfo.filename, download)
-          }
-          else {
-            res.status(404)
-            res.send('file not found')
-          }
+    if (id) {
+      const [data] = await useFileData<any>(req)
+      if (data[fieldname] && data[fieldname].length > 0) {
+        const fileInfo = data[fieldname].find((item: any) => String(item.id) === String(id))
+        if (fileInfo) {
+          sendFileReadStream(res, fileInfo.mimetype, fileInfo.filename, download)
         }
+        else {
+          res.status(404)
+          res.send('file not found')
+        }
+      }
     }
   }
 }

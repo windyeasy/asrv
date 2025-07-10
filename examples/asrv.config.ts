@@ -1,4 +1,4 @@
-import { createUploadMiddleware, defineConfig, mock, sendFileReadStream, useFileData, useUpload, useAccessFile } from '../dist/index'
+import { createUploadMiddleware, defineConfig, mock, sendFileReadStream, useAccessFile, useFileData, useUpload } from '../dist/index'
 
 interface DbType {
   user: {
@@ -25,19 +25,18 @@ export default defineConfig({
   },
   // historyResHost: '192.168.1.7',
   server: {
-    // mode: 'static',  
+    // mode: 'static',
     db: mock({
       'user|2-3': [
         {
           id: '@guid',
           name: '@cname',
           email: '@email',
-          address: '@county(true)', 
+          address: '@county(true)',
           phone: '@phone',
         },
       ],
     }),
-
 
     api: {
       // 测试文件上传的基础使用
@@ -59,7 +58,7 @@ export default defineConfig({
           }
           data.file.unshift(fileInfo)
 
-          await setData({...data})
+          await setData(data)
           res.json({
             code: 200,
             message: '上传成功',
@@ -90,13 +89,13 @@ export default defineConfig({
         handler(res, fileInfos) {
           const sendInfo = fileInfos.map(item => ({
             id: item.id,
-            path: 'http://localhost:9000/api/file2/' +  item.id,
+            path: `http://localhost:9000/api/file2/${item.id}`,
           }))
           // 一条数据
           if (sendInfo.length === 1) {
             res.json({
               code: 0,
-              message: '上传成功', 
+              message: '上传成功',
               data: sendInfo[0],
             })
           }
@@ -107,13 +106,14 @@ export default defineConfig({
               message: '上传成功',
               data: sendInfo,
             })
-          } else {
+          }
+          else {
             res.json({
               code: -1,
               message: '上传失败',
             })
           }
-        }
+        },
       }),
       // 文件预览
       'api/file2/:id': useAccessFile(),
