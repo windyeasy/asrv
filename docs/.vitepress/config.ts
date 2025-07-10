@@ -21,6 +21,7 @@ export default defineConfig({
           { text: '服务', link: '/guide/server' },
           { text: 'API定义', link: '/guide/api' },
           { text: '配置项模块化', link: '/guide/module' },
+          { text: '实现文件接口', link: '/guide/file' },
           { text: 'Hooks', link: '/guide/hooks' },
           { text: 'Mock', link: '/guide/mock' },
           { text: 'Swagger', link: '/guide/swagger' },
