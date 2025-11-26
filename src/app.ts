@@ -41,7 +41,6 @@ export function createApp(config: AppConfig): Express {
     app,
     config,
     port,
-    
   }
   app.use((req, res, next) => {
     context.request = req
