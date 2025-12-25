@@ -1,4 +1,4 @@
-import type { Context, MiddlewareType, InterceptRequestInfo } from './types'
+import type { Context, InterceptRequestInfo, MiddlewareType } from './types'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
@@ -69,7 +69,7 @@ export function createHistoryMiddleware(enable: boolean = true): MiddlewareType 
     const context = useContext(request)
     const host = request.headers.host
     // 文件上传接口不加入历史记录，加入会导致文件过大
-    if (request.is('multipart/form-data')){
+    if (request.is('multipart/form-data')) {
       return next()
     }
     // 访问代理目标不加入历史记录
