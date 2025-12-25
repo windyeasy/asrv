@@ -10,16 +10,13 @@
 
 配置项，默认开启可以关闭。
 
-## 查看记录
-
-点击`web`页面上的`history`导航查看记录，点击详情可以重新发送请求。
-
 ```ts
 import { defineConfig } from './dist'
 
 export default defineConfig({
- server: {
-   db: {
+  enableHistory: true, // default true
+  server: {
+    db: {
       user: [
         {
           id: 1,
@@ -31,7 +28,32 @@ export default defineConfig({
         }
       ]
     }
- }
+  }
+})
+```
+
+## 查看记录
+
+点击`web`页面上的`history`导航查看记录，点击详情可以重新发送请求。
+
+```ts
+import { defineConfig } from './dist'
+
+export default defineConfig({
+  server: {
+    db: {
+      user: [
+        {
+          id: 1,
+          name: '张三'
+        },
+        {
+          id: 2,
+          name: '李四'
+        }
+      ]
+    }
+  }
 })
 ```
 
