@@ -1,4 +1,4 @@
-import { createUploadMiddleware, defineConfig, mock, sendFileReadStream, useAccessFile, useFileData, useUpload } from '../dist/index'
+import { createUploadMiddleware, defineConfig, mock, mockString, sendFileReadStream, useAccessFile, useFileData, useUpload } from '../dist/index'
 
 interface DbType {
   user: {
@@ -13,6 +13,7 @@ interface DbType {
     mimetype: string
   }[]
 }
+
 export default defineConfig({
   proxy: {
     '/api': {
@@ -39,6 +40,12 @@ export default defineConfig({
     }),
 
     api: {
+      // 测试mockString
+      'api/books/list': mockString({
+        id: '@guid',
+        name: '@title',
+        date: '@date',
+      }),
       // 测试文件上传的基础使用
       'post /api/upload': createUploadMiddleware({
         type: 'single',
