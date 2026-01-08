@@ -90,6 +90,7 @@ $ curl http://localhost:9000/user
 ## TODO
 
 - [ ] db.json通过配置项关闭db.json文件生成
+- [ ] 隔一段时间刷新数据
 - [ ] server-plugin
   - [ ]  ws处理
 - [ ] 贡献指南
