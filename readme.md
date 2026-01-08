@@ -89,6 +89,7 @@ $ curl http://localhost:9000/user
 
 ## TODO
 
+- [ ] 使用默认port被占用往前递增
 - [ ] db.json通过配置项关闭db.json文件生成
 - [ ] 隔一段时间刷新数据
 - [ ] server-plugin
