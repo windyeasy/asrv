@@ -55,16 +55,22 @@ export default defineConfig({
 - 直接使用
 
 ```ts
-import { defineConfig, mock } from 'asrv'
+import { defineConfig, mock, mockString } from 'asrv'
 
 export default defineConfig({
   server: {
     api: {
-      'api/user/detail': JSON.string(mock({
+      'api/user/detail': JSON.stringify(mock({
         id: '@guid',
         name: '@cname',
         age: '@integer(18, 30)',
       })),
+      // 通过mockString直接生成字符串
+      'api/books/list': mockString({
+        id: '@guid',
+        name: '@cname',
+        date: '@date'
+      }),
       // 通过中间件使用
       'api/post/detail': (req, res) => {
         res.json(mock({
